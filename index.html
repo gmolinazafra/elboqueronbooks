@@ -43,15 +43,48 @@
             -webkit-font-smoothing: antialiased;
         }
         
-        /* HERO con gradiente mar profundo */
-        .hero-gradient {
-            background: 
-                radial-gradient(ellipse at top, rgba(59, 160, 224, 0.10) 0%, transparent 60%),
-                radial-gradient(ellipse at center, rgba(15, 30, 61, 0.4) 0%, transparent 70%),
-                linear-gradient(180deg, #050d1a 0%, #0a1628 60%, #0f1e3d 100%);
+        /* === BARRA DE NAVEGACIÓN STICKY === */
+        .nav-bar {
+            background: rgba(10, 22, 40, 0.92);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(59, 160, 224, 0.15);
         }
         
-        /* Reflejos sutiles tipo agua en hero */
+        .category-pill {
+            transition: all 0.25s ease;
+            white-space: nowrap;
+            position: relative;
+        }
+        .category-pill::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            transform: translateX(-50%) scaleX(0);
+            width: 60%;
+            height: 2px;
+            background: #3ba0e0;
+            transition: transform 0.25s ease;
+        }
+        .category-pill.active { color: #3ba0e0; }
+        .category-pill.active::after { transform: translateX(-50%) scaleX(1); }
+        .category-pill:hover { color: #5fb3e8; }
+        
+        .pills-scroll {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .pills-scroll::-webkit-scrollbar { display: none; }
+        
+        /* === HERO INTERMEDIO (logo separador entre destacados y biblioteca) === */
+        .hero-divider {
+            background: 
+                radial-gradient(ellipse at top, rgba(59, 160, 224, 0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at bottom, rgba(15, 30, 61, 0.4) 0%, transparent 70%),
+                linear-gradient(180deg, #050d1a 0%, #0a1628 50%, #050d1a 100%);
+        }
+        
         .hero-light {
             background-image: 
                 repeating-linear-gradient(
@@ -63,13 +96,13 @@
                 );
         }
         
-        /* === EFECTO MAR REAL: ondas SVG animadas === */
+        /* === ONDAS DE MAR ANIMADAS === */
         .ocean-waves {
             position: absolute;
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 120px;
+            height: 100px;
             overflow: hidden;
             pointer-events: none;
         }
@@ -90,17 +123,6 @@
         .wave-layer-1 { animation: wave-move-1 18s linear infinite; }
         .wave-layer-2 { animation: wave-move-2 25s linear infinite; opacity: 0.5; }
         .wave-layer-3 { animation: wave-move-1 35s linear infinite; opacity: 0.3; }
-        
-        /* Reflejos brillantes en el agua */
-        .water-shimmer {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 80px;
-            background: linear-gradient(180deg, transparent 0%, rgba(59, 160, 224, 0.08) 100%);
-            pointer-events: none;
-        }
         
         .ornament-line {
             display: flex;
@@ -125,9 +147,7 @@
             animation: shimmer 2s infinite linear;
         }
         
-        .book-card {
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
+        .book-card { transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
         .book-card:hover { transform: translateY(-6px); }
         .book-card:hover .book-cover {
             box-shadow: 0 20px 50px rgba(59, 160, 224, 0.25), 0 0 0 1px rgba(59, 160, 224, 0.3);
@@ -151,49 +171,6 @@
         }
         #scrollTopBtn.visible { opacity: 1; visibility: visible; }
         #scrollTopBtn:hover { transform: translateY(-3px); }
-        
-        /* === BARRA DE NAVEGACIÓN HORIZONTAL === */
-        .nav-bar {
-            background: rgba(10, 22, 40, 0.85);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(59, 160, 224, 0.15);
-        }
-        
-        .category-pill {
-            transition: all 0.25s ease;
-            white-space: nowrap;
-            position: relative;
-        }
-        .category-pill::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 50%;
-            transform: translateX(-50%) scaleX(0);
-            width: 60%;
-            height: 2px;
-            background: #3ba0e0;
-            transition: transform 0.25s ease;
-        }
-        .category-pill.active {
-            color: #3ba0e0;
-        }
-        .category-pill.active::after {
-            transform: translateX(-50%) scaleX(1);
-        }
-        .category-pill:hover {
-            color: #5fb3e8;
-        }
-        
-        /* Scroll horizontal de pills en móvil */
-        .pills-scroll {
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-        }
-        .pills-scroll::-webkit-scrollbar {
-            display: none;
-        }
         
         @keyframes fadeUp {
             from { opacity: 0; transform: translateY(20px); }
@@ -219,40 +196,94 @@
 </head>
 <body>
     
-    <!-- ============ HERO COMPACTO ============ -->
-    <section class="hero-gradient relative px-4 pt-12 pb-32 overflow-hidden">
+    <!-- ============ 1. BARRA DE NAVEGACIÓN ARRIBA DEL TODO ============ -->
+    <nav id="topNav" class="nav-bar sticky top-0 z-30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+            <div class="flex items-center gap-4">
+                
+                <!-- Logo mini -->
+                <a href="#" class="flex-shrink-0 flex items-center gap-2">
+                    <img src="logo.png" alt="El Boquerón Books" class="h-9 sm:h-10 object-contain"
+                         onerror="this.style.display='none'">
+                    <span class="hidden sm:block font-display text-lg text-foam tracking-wide">
+                        El Boquerón
+                    </span>
+                </a>
+                
+                <!-- Categorías scrolleables -->
+                <div class="flex-1 overflow-x-auto pills-scroll">
+                    <div id="categoriesNav" class="flex items-center gap-1 sm:gap-2 min-w-max">
+                        <div class="skeleton h-8 w-20 rounded-full"></div>
+                        <div class="skeleton h-8 w-24 rounded-full"></div>
+                        <div class="skeleton h-8 w-20 rounded-full"></div>
+                        <div class="skeleton h-8 w-28 rounded-full"></div>
+                    </div>
+                </div>
+                
+                <!-- Buscador -->
+                <div class="flex-shrink-0 relative">
+                    <input 
+                        type="text" 
+                        id="searchInput" 
+                        placeholder="Buscar..." 
+                        class="w-32 sm:w-56 md:w-72 pl-9 pr-3 py-2 bg-navy/60 border border-navy-light text-foam placeholder:text-mist/60 rounded-full text-sm focus:outline-none focus:border-wave focus:bg-navy transition-all"
+                        aria-label="Buscar libros">
+                    <svg class="absolute left-3 top-2.5 h-4 w-4 text-mist" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ============ 2. FAVORITOS DEL BOQUERÓN ============ -->
+    <section id="featuredSection" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-16">
+        <div class="flex items-center gap-4 mb-8">
+            <div class="h-px flex-1 bg-gradient-to-r from-transparent via-wave to-wave"></div>
+            <h2 class="font-display text-3xl sm:text-4xl text-foam font-light italic px-4">
+                Favoritos del Boquerón
+            </h2>
+            <div class="h-px flex-1 bg-gradient-to-l from-transparent via-wave to-wave"></div>
+        </div>
+        <p class="text-center text-mist text-sm mb-10 max-w-xl mx-auto">
+            Una selección personal de las lecturas que más nos han marcado.
+        </p>
+        <div id="featuredGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5 sm:gap-7"></div>
+    </section>
+
+    <!-- ============ 3. LOGO Y NOMBRE (separador en medio) ============ -->
+    <section class="hero-divider relative py-16 sm:py-20 px-4 overflow-hidden">
         
         <div class="absolute inset-0 hero-light opacity-50 pointer-events-none"></div>
         
         <!-- Plancton decorativo -->
         <div class="absolute inset-0 pointer-events-none overflow-hidden">
-            <div class="absolute top-[20%] left-[12%] w-1 h-1 bg-wave rounded-full opacity-40"></div>
-            <div class="absolute top-[30%] right-[18%] w-1.5 h-1.5 bg-wave rounded-full opacity-30"></div>
-            <div class="absolute top-[55%] left-[22%] w-1 h-1 bg-wave-soft rounded-full opacity-50"></div>
-            <div class="absolute top-[35%] right-[10%] w-1 h-1 bg-wave-soft rounded-full opacity-40"></div>
+            <div class="absolute top-[20%] left-[10%] w-1 h-1 bg-wave rounded-full opacity-40"></div>
+            <div class="absolute top-[30%] right-[15%] w-1.5 h-1.5 bg-wave rounded-full opacity-30"></div>
+            <div class="absolute top-[60%] left-[20%] w-1 h-1 bg-wave-soft rounded-full opacity-50"></div>
+            <div class="absolute top-[50%] right-[10%] w-1 h-1 bg-wave-soft rounded-full opacity-40"></div>
         </div>
         
         <div class="relative z-10 max-w-3xl mx-auto text-center">
             
-            <!-- Logo (más compacto) -->
-            <div class="fade-up delay-1 mb-5">
+            <!-- Logo grande -->
+            <div class="fade-up delay-1 mb-6">
                 <img src="logo.png" alt="El Boquerón Books" 
-                     class="h-20 sm:h-24 md:h-28 mx-auto object-contain drop-shadow-2xl"
+                     class="h-24 sm:h-32 md:h-40 mx-auto object-contain drop-shadow-2xl"
                      onerror="this.style.display='none'">
             </div>
             
-            <!-- Título más compacto -->
-            <h1 class="fade-up delay-2 font-display text-3xl sm:text-4xl md:text-5xl font-light tracking-wider text-foam mb-1">
+            <h1 class="fade-up delay-2 font-display text-4xl sm:text-5xl md:text-6xl font-light tracking-wider text-foam mb-2">
                 EL BOQUERÓN
             </h1>
             
-            <div class="fade-up delay-2 ornament-line max-w-[200px] mx-auto mb-3">
-                <span class="font-body text-wave tracking-[0.4em] text-xs sm:text-sm font-light">
+            <div class="fade-up delay-2 ornament-line max-w-[220px] mx-auto mb-4">
+                <span class="font-body text-wave tracking-[0.4em] text-sm font-light">
                     BOOKS
                 </span>
             </div>
             
-            <p class="fade-up delay-3 font-body text-mist tracking-[0.2em] text-[10px] sm:text-xs uppercase mb-6">
+            <p class="fade-up delay-3 font-body text-mist tracking-[0.2em] text-xs uppercase mb-6">
                 Libros que transforman vidas
             </p>
             
@@ -279,115 +310,53 @@
             
         </div>
         
-        <!-- ====== EFECTO MAR ABAJO DEL HERO ====== -->
-        <div class="water-shimmer"></div>
+        <!-- Olas del mar abajo -->
         <div class="ocean-waves">
-            <!-- Capa 3 (atrás, más opaca) -->
             <svg class="wave-layer-3" viewBox="0 0 2400 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M0,60 C300,90 600,30 1200,60 C1800,90 2100,30 2400,60 L2400,120 L0,120 Z" fill="#0f1e3d"/>
             </svg>
-            <!-- Capa 2 (medio) -->
             <svg class="wave-layer-2" viewBox="0 0 2400 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M0,80 C400,40 800,100 1200,70 C1600,40 2000,100 2400,80 L2400,120 L0,120 Z" fill="#1a2d4f"/>
             </svg>
-            <!-- Capa 1 (delante, con tono wave) -->
             <svg class="wave-layer-1" viewBox="0 0 2400 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M0,90 C300,70 600,110 1200,90 C1800,70 2100,110 2400,90 L2400,120 L0,120 Z" fill="#0a1628" opacity="0.95"/>
-                <!-- Brillos en la cresta -->
                 <path d="M0,90 C300,70 600,110 1200,90 C1800,70 2100,110 2400,90" fill="none" stroke="#3ba0e0" stroke-width="1" opacity="0.4"/>
             </svg>
         </div>
     </section>
 
-    <!-- ============ BARRA DE NAVEGACIÓN STICKY ============ -->
-    <nav id="topNav" class="nav-bar sticky top-0 z-30">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
-            <div class="flex items-center gap-4">
-                
-                <!-- Logo mini (aparece al hacer scroll) -->
-                <a href="#" class="flex-shrink-0 hidden sm:block">
-                    <img src="logo.png" alt="" class="h-9 object-contain"
-                         onerror="this.style.display='none'">
-                </a>
-                
-                <!-- Categorías scrolleables -->
-                <div class="flex-1 overflow-x-auto pills-scroll">
-                    <div id="categoriesNav" class="flex items-center gap-1 sm:gap-2 min-w-max">
-                        <div class="skeleton h-8 w-20 rounded-full"></div>
-                        <div class="skeleton h-8 w-24 rounded-full"></div>
-                        <div class="skeleton h-8 w-20 rounded-full"></div>
-                        <div class="skeleton h-8 w-28 rounded-full"></div>
-                    </div>
-                </div>
-                
-                <!-- Buscador compacto -->
-                <div class="flex-shrink-0 relative">
-                    <input 
-                        type="text" 
-                        id="searchInput" 
-                        placeholder="Buscar..." 
-                        class="w-40 sm:w-56 md:w-72 pl-9 pr-3 py-2 bg-navy/60 border border-navy-light text-foam placeholder:text-mist/60 rounded-full text-sm focus:outline-none focus:border-wave focus:bg-navy transition-all"
-                        aria-label="Buscar libros">
-                    <svg class="absolute left-3 top-2.5 h-4 w-4 text-mist" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                    </svg>
-                </div>
+    <!-- ============ 4. TODA LA BIBLIOTECA ============ -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+        <div class="flex items-end justify-between mb-8 flex-wrap gap-4">
+            <div>
+                <h2 id="catalogTitle" class="font-display text-3xl sm:text-4xl text-foam font-light">
+                    Toda la biblioteca
+                </h2>
+                <p id="resultsCount" class="text-mist text-sm mt-1">Cargando libros...</p>
             </div>
         </div>
-    </nav>
-
-    <!-- ============ CONTENIDO PRINCIPAL ============ -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
         
-        <!-- Destacados -->
-        <section id="featuredSection" class="mb-16 hidden">
-            <div class="flex items-center gap-4 mb-8">
-                <div class="h-px flex-1 bg-gradient-to-r from-transparent via-wave to-wave"></div>
-                <h2 class="font-display text-3xl sm:text-4xl text-foam font-light italic px-4">
-                    Favoritos del Boquerón
-                </h2>
-                <div class="h-px flex-1 bg-gradient-to-l from-transparent via-wave to-wave"></div>
-            </div>
-            <p class="text-center text-mist text-sm mb-10 max-w-xl mx-auto">
-                Una selección personal de las lecturas que más nos han marcado.
-            </p>
-            <div id="featuredGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5 sm:gap-7"></div>
-        </section>
+        <div id="booksGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5 sm:gap-7">
+            <div><div class="skeleton book-cover rounded-lg"></div><div class="skeleton h-4 mt-3 rounded w-3/4"></div><div class="skeleton h-3 mt-2 rounded w-1/2"></div></div>
+            <div><div class="skeleton book-cover rounded-lg"></div><div class="skeleton h-4 mt-3 rounded w-3/4"></div><div class="skeleton h-3 mt-2 rounded w-1/2"></div></div>
+            <div><div class="skeleton book-cover rounded-lg"></div><div class="skeleton h-4 mt-3 rounded w-3/4"></div><div class="skeleton h-3 mt-2 rounded w-1/2"></div></div>
+            <div class="hidden sm:block"><div class="skeleton book-cover rounded-lg"></div><div class="skeleton h-4 mt-3 rounded w-3/4"></div><div class="skeleton h-3 mt-2 rounded w-1/2"></div></div>
+            <div class="hidden md:block"><div class="skeleton book-cover rounded-lg"></div><div class="skeleton h-4 mt-3 rounded w-3/4"></div><div class="skeleton h-3 mt-2 rounded w-1/2"></div></div>
+            <div class="hidden lg:block"><div class="skeleton book-cover rounded-lg"></div><div class="skeleton h-4 mt-3 rounded w-3/4"></div><div class="skeleton h-3 mt-2 rounded w-1/2"></div></div>
+            <div class="hidden lg:block"><div class="skeleton book-cover rounded-lg"></div><div class="skeleton h-4 mt-3 rounded w-3/4"></div><div class="skeleton h-3 mt-2 rounded w-1/2"></div></div>
+            <div class="hidden lg:block"><div class="skeleton book-cover rounded-lg"></div><div class="skeleton h-4 mt-3 rounded w-3/4"></div><div class="skeleton h-3 mt-2 rounded w-1/2"></div></div>
+        </div>
         
-        <!-- Galería completa -->
-        <section>
-            <div class="flex items-end justify-between mb-8 flex-wrap gap-4">
-                <div>
-                    <h2 id="catalogTitle" class="font-display text-3xl sm:text-4xl text-foam font-light">
-                        Toda la biblioteca
-                    </h2>
-                    <p id="resultsCount" class="text-mist text-sm mt-1">Cargando libros...</p>
-                </div>
-            </div>
-            
-            <div id="booksGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5 sm:gap-7">
-                <div><div class="skeleton book-cover rounded-lg"></div><div class="skeleton h-4 mt-3 rounded w-3/4"></div><div class="skeleton h-3 mt-2 rounded w-1/2"></div></div>
-                <div><div class="skeleton book-cover rounded-lg"></div><div class="skeleton h-4 mt-3 rounded w-3/4"></div><div class="skeleton h-3 mt-2 rounded w-1/2"></div></div>
-                <div><div class="skeleton book-cover rounded-lg"></div><div class="skeleton h-4 mt-3 rounded w-3/4"></div><div class="skeleton h-3 mt-2 rounded w-1/2"></div></div>
-                <div class="hidden sm:block"><div class="skeleton book-cover rounded-lg"></div><div class="skeleton h-4 mt-3 rounded w-3/4"></div><div class="skeleton h-3 mt-2 rounded w-1/2"></div></div>
-                <div class="hidden md:block"><div class="skeleton book-cover rounded-lg"></div><div class="skeleton h-4 mt-3 rounded w-3/4"></div><div class="skeleton h-3 mt-2 rounded w-1/2"></div></div>
-                <div class="hidden lg:block"><div class="skeleton book-cover rounded-lg"></div><div class="skeleton h-4 mt-3 rounded w-3/4"></div><div class="skeleton h-3 mt-2 rounded w-1/2"></div></div>
-                <div class="hidden lg:block"><div class="skeleton book-cover rounded-lg"></div><div class="skeleton h-4 mt-3 rounded w-3/4"></div><div class="skeleton h-3 mt-2 rounded w-1/2"></div></div>
-                <div class="hidden lg:block"><div class="skeleton book-cover rounded-lg"></div><div class="skeleton h-4 mt-3 rounded w-3/4"></div><div class="skeleton h-3 mt-2 rounded w-1/2"></div></div>
-            </div>
-            
-            <div id="noResults" class="hidden text-center py-20">
-                <p class="font-display text-3xl text-foam italic mb-2">Sin capturas en esta red.</p>
-                <p class="text-mist text-sm">Prueba con otra búsqueda o categoría.</p>
-            </div>
-            
-            <div id="errorMessage" class="hidden text-center py-20">
-                <p class="font-display text-2xl text-foam mb-2">No hemos podido cargar la biblioteca.</p>
-                <p class="text-mist text-sm">Recarga la página o vuelve en unos minutos.</p>
-            </div>
-        </section>
+        <div id="noResults" class="hidden text-center py-20">
+            <p class="font-display text-3xl text-foam italic mb-2">Sin capturas en esta red.</p>
+            <p class="text-mist text-sm">Prueba con otra búsqueda o categoría.</p>
+        </div>
         
-    </main>
+        <div id="errorMessage" class="hidden text-center py-20">
+            <p class="font-display text-2xl text-foam mb-2">No hemos podido cargar la biblioteca.</p>
+            <p class="text-mist text-sm">Recarga la página o vuelve en unos minutos.</p>
+        </div>
+    </section>
 
     <!-- Botón subir -->
     <button id="scrollTopBtn" 
@@ -402,7 +371,6 @@
     <footer class="bg-deep border-t border-navy mt-20">
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <div class="text-center space-y-6">
-                
                 <img src="logo.png" alt="El Boquerón Books" 
                      class="h-12 mx-auto object-contain opacity-80"
                      onerror="this.style.display='none'">
@@ -439,9 +407,7 @@
     <script>
         // ====================================================================
         // ⚠️  URL DE GOOGLE SHEETS (publicada como CSV)
-        // ====================================================================
-        // Columnas en la fila 1 de la Sheet:
-        //   titulo | autor | portada | enlace_amazon | descripcion | categoria | destacado
+        // Columnas en fila 1: titulo | autor | portada | enlace_amazon | descripcion | categoria | destacado
         // Para destacar un libro: escribe "si" en la columna "destacado".
         // ====================================================================
         const GOOGLE_SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQg6ccizy_zr8T-lASuKegNsXkvJLUQ2mciHxBt2HU2v4v-iY3YAYioR7suQUKWl3DxkFykCglay0kV/pub?output=csv';
