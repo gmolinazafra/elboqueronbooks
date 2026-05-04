@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="El Boquerón Books - Selección curada de libros recomendados">
+    <title>El Boquerón Books</title>
+    
+    <!-- Tailwind CSS vía CDN (sin dependencias externas) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Configuración personalizada de Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'bone': '#f9fafb',
+                        'navy': '#0f1e3d',
+                        'navy-soft': '#1e3a5f'
+                    },
+                    fontFamily: {
+                        'serif-display': ['Georgia', 'Times New Roman', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            background-color: #f9fafb;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        /* Animación para el esqueleto de carga */
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+        
+        .skeleton {
+            background: linear-gradient(90deg, #e5e7eb 0%, #f3f4f6 50%, #e5e7eb 100%);
+            background-size: 1000px 100%;
+            animation: shimmer 2s infinite linear;
+        }
+        
+        /* Transición suave para las tarjetas */
+        .book-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .book-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(15, 30, 61, 0.15);
+        }
+        
+        /* Botón scroll-to-top */
+        #scrollTopBtn {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        
+        #scrollTopBtn.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Estilo galería: imágenes prominentes */
+        .book-cover {
+            aspect-ratio: 2/3;
+            object-fit: cover;
+            background-color: #e5e7eb;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+    
+    <!-- ============ HEADER ============ -->
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-40 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                
+                <!-- Logo + Título -->
+                <div class="flex items-center gap-3">
+                    <!-- IMPORTANTE: Coloca tu archivo logo.png en la raíz del repositorio -->
+                    <img src="logo.png" alt="El Boquerón Books Logo" 
+                         class="h-12 w-12 object-contain"
+                         onerror="this.style.display='none'">
+                    <div>
+                        <h1 class="text-2xl sm:text-3xl font-bold text-navy font-serif-display tracking-tight">
+                            El Boquerón Books
+                        </h1>
+                        <p class="text-xs text-gray-500 italic">Lecturas con sabor a mar</p>
+                    </div>
+                </div>
+                
+                <!-- Buscador instantáneo -->
+                <div class="w-full sm:w-auto sm:min-w-[300px]">
+                    <div class="relative">
+                        <input 
+                            type="text" 
+                            id="searchInput" 
+                            placeholder="Buscar por título, autor..." 
+                            class="w-full px-4 py-2 pl-10 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-navy focus:border-transparent text-sm"
+                            aria-label="Buscar libros">
+                        <svg class="absolute left-3 top-2.5 h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ============ HERO ============ -->
+    <section class="bg-bone py-8 sm:py-12 border-b border-gray-100">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h2 class="text-2xl sm:text-4xl font-bold text-navy font-serif-display mb-3">
+                Una selección cuidada de libros
+            </h2>
+            <p class="text-gray-600 text-sm sm:text-base max-w-2xl mx-auto">
+                Recomendaciones honestas, lecturas que valen la pena. Cada portada cuenta una historia.
+            </p>
+        </div>
+    </section>
+
+    <!-- ============ GALERÍA DE LIBROS ============ -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+        
+        <!-- Contador de resultados -->
+        <div id="resultsCount" class="text-sm text-gray-500 mb-6 hidden"></div>
+        
+        <!-- Grid de libros (se llena dinámicamente) -->
+        <div id="booksGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6">
+            <!-- ESQUELETO DE CARGA: 10 placeholders mientras se descargan los datos -->
+            <div class="skeleton-card">
+                <div class="skeleton book-cover rounded-lg"></div>
+                <div class="skeleton h-4 mt-3 rounded w-3/4"></div>
+                <div class="skeleton h-3 mt-2 rounded w-1/2"></div>
+            </div>
+            <div class="skeleton-card">
+                <div class="skeleton book-cover rounded-lg"></div>
+                <div class="skeleton h-4 mt-3 rounded w-3/4"></div>
+                <div class="skeleton h-3 mt-2 rounded w-1/2"></div>
+            </div>
+            <div class="skeleton-card">
+                <div class="skeleton book-cover rounded-lg"></div>
+                <div class="skeleton h-4 mt-3 rounded w-3/4"></div>
+                <div class="skeleton h-3 mt-2 rounded w-1/2"></div>
+            </div>
+            <div class="skeleton-card">
+                <div class="skeleton book-cover rounded-lg"></div>
+                <div class="skeleton h-4 mt-3 rounded w-3/4"></div>
+                <div class="skeleton h-3 mt-2 rounded w-1/2"></div>
+            </div>
+            <div class="skeleton-card hidden sm:block">
+                <div class="skeleton book-cover rounded-lg"></div>
+                <div class="skeleton h-4 mt-3 rounded w-3/4"></div>
+                <div class="skeleton h-3 mt-2 rounded w-1/2"></div>
+            </div>
+            <div class="skeleton-card hidden md:block">
+                <div class="skeleton book-cover rounded-lg"></div>
+                <div class="skeleton h-4 mt-3 rounded w-3/4"></div>
+                <div class="skeleton h-3 mt-2 rounded w-1/2"></div>
+            </div>
+            <div class="skeleton-card hidden lg:block">
+                <div class="skeleton book-cover rounded-lg"></div>
+                <div class="skeleton h-4 mt-3 rounded w-3/4"></div>
+                <div class="skeleton h-3 mt-2 rounded w-1/2"></div>
+            </div>
+            <div class="skeleton-card hidden lg:block">
+                <div class="skeleton book-cover rounded-lg"></div>
+                <div class="skeleton h-4 mt-3 rounded w-3/4"></div>
+                <div class="skeleton h-3 mt-2 rounded w-1/2"></div>
+            </div>
+        </div>
+        
+        <!-- Mensaje de "sin resultados" -->
+        <div id="noResults" class="hidden text-center py-16">
+            <p class="text-gray-500 text-lg">No hemos encontrado libros con esa búsqueda.</p>
+            <p class="text-gray-400 text-sm mt-2">Prueba con otro título o autor.</p>
+        </div>
+        
+        <!-- Mensaje de error -->
+        <div id="errorMessage" class="hidden text-center py-16">
+            <p class="text-red-600 text-lg font-semibold">Ha habido un problema al cargar los libros.</p>
+            <p class="text-gray-500 text-sm mt-2">Por favor, recarga la página o inténtalo más tarde.</p>
+        </div>
+        
+    </main>
+
+    <!-- ============ BOTÓN SUBIR AL INICIO ============ -->
+    <button id="scrollTopBtn" 
+            aria-label="Subir al inicio"
+            class="fixed bottom-6 right-6 bg-navy hover:bg-navy-soft text-white rounded-full p-3 shadow-lg z-50">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/>
+        </svg>
+    </button>
+
+    <!-- ============ FOOTER ============ -->
+    <footer class="bg-navy text-white mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="text-center space-y-3">
+                <p class="font-serif-display text-lg">El Boquerón Books</p>
+                
+                <!-- AVISO LEGAL OBLIGATORIO DE AMAZON -->
+                <p class="text-xs text-gray-300 max-w-2xl mx-auto leading-relaxed">
+                    Como afiliado de Amazon, 
+                    <a href="http://elboqueronbooks.com" class="underline hover:text-white">elboqueronbooks.com</a> 
+                    percibe dinero con las compras elegibles.
+                </p>
+                
+                <p class="text-xs text-gray-400 pt-3 border-t border-navy-soft mt-4">
+                    © <span id="currentYear"></span> El Boquerón Books. Todos los derechos reservados.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ============ JAVASCRIPT ============ -->
+    <script>
+        // ========================================================================
+        // ⚠️  CONFIGURACIÓN: PEGA AQUÍ LA URL DE TU GOOGLE SHEET PUBLICADA COMO CSV
+        // ========================================================================
+        // Para obtener el enlace:
+        //   1. Abre tu Google Sheet
+        //   2. Archivo → Compartir → Publicar en la web
+        //   3. En "Vincular": elige la hoja concreta y formato "Valores separados por comas (.csv)"
+        //   4. Pulsa "Publicar" y copia la URL que termina en /pub?gid=...&single=true&output=csv
+        //
+        // 💡 La hoja debe tener estas columnas (encabezados en la fila 1):
+        //   titulo | autor | portada | enlace_amazon | descripcion | categoria
+        // ========================================================================
+        
+        const GOOGLE_SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQg6ccizy_zr8T-lASuKegNsXkvJLUQ2mciHxBt2HU2v4v-iY3YAYioR7suQUKWl3DxkFykCglay0kV/pub?output=csv';
+        
+        // Variables globales
+        let allBooks = [];
+        const booksGrid = document.getElementById('booksGrid');
+        const searchInput = document.getElementById('searchInput');
+        const noResults = document.getElementById('noResults');
+        const errorMessage = document.getElementById('errorMessage');
+        const resultsCount = document.getElementById('resultsCount');
+        const scrollTopBtn = document.getElementById('scrollTopBtn');
+        
+        // Año actual en el footer
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+        
+        // ========================================================================
+        // PARSER CSV (maneja comillas y comas dentro de campos)
+        // ========================================================================
+        function parseCSV(text) {
+            const rows = [];
+            let currentRow = [];
+            let currentField = '';
+            let inQuotes = false;
+            
+            for (let i = 0; i < text.length; i++) {
+                const char = text[i];
+                const nextChar = text[i + 1];
+                
+                if (inQuotes) {
+                    if (char === '"' && nextChar === '"') {
+                        currentField += '"';
+                        i++;
+                    } else if (char === '"') {
+                        inQuotes = false;
+                    } else {
+                        currentField += char;
+                    }
+                } else {
+                    if (char === '"') {
+                        inQuotes = true;
+                    } else if (char === ',') {
+                        currentRow.push(currentField.trim());
+                        currentField = '';
+                    } else if (char === '\n' || char === '\r') {
+                        if (currentField || currentRow.length > 0) {
+                            currentRow.push(currentField.trim());
+                            rows.push(currentRow);
+                            currentRow = [];
+                            currentField = '';
+                        }
+                        if (char === '\r' && nextChar === '\n') i++;
+                    } else {
+                        currentField += char;
+                    }
+                }
+            }
+            
+            // Última fila si no termina con salto de línea
+            if (currentField || currentRow.length > 0) {
+                currentRow.push(currentField.trim());
+                rows.push(currentRow);
+            }
+            
+            return rows;
+        }
+        
+        // ========================================================================
+        // CARGAR LIBROS DESDE GOOGLE SHEETS
+        // ========================================================================
+        async function loadBooks() {
+            try {
+                if (!GOOGLE_SHEET_CSV_URL || GOOGLE_SHEET_CSV_URL.startsWith('PEGA_AQUÍ')) {
+                    throw new Error('No has configurado la URL de Google Sheets');
+                }
+                
+                const response = await fetch(GOOGLE_SHEET_CSV_URL);
+                if (!response.ok) throw new Error('Error de red');
+                
+                const csvText = await response.text();
+                const rows = parseCSV(csvText);
+                
+                if (rows.length < 2) throw new Error('La hoja está vacía');
+                
+                // La primera fila son los encabezados
+                const headers = rows[0].map(h => h.toLowerCase().trim());
+                const books = rows.slice(1)
+                    .filter(row => row.length >= headers.length && row.some(c => c)) // ignorar filas vacías
+                    .map(row => {
+                        const book = {};
+                        headers.forEach((header, idx) => {
+                            book[header] = row[idx] || '';
+                        });
+                        return book;
+                    });
+                
+                allBooks = books;
+                renderBooks(books);
+                
+            } catch (error) {
+                console.error('Error cargando libros:', error);
+                booksGrid.classList.add('hidden');
+                errorMessage.classList.remove('hidden');
+            }
+        }
+        
+        // ========================================================================
+        // RENDERIZAR LIBROS EN LA GALERÍA
+        // ========================================================================
+        function renderBooks(books) {
+            booksGrid.innerHTML = '';
+            
+            if (books.length === 0) {
+                booksGrid.classList.add('hidden');
+                noResults.classList.remove('hidden');
+                resultsCount.classList.add('hidden');
+                return;
+            }
+            
+            booksGrid.classList.remove('hidden');
+            noResults.classList.add('hidden');
+            
+            // Mostrar contador solo si hay búsqueda activa
+            if (searchInput.value.trim()) {
+                resultsCount.textContent = `${books.length} ${books.length === 1 ? 'libro encontrado' : 'libros encontrados'}`;
+                resultsCount.classList.remove('hidden');
+            } else {
+                resultsCount.classList.add('hidden');
+            }
+            
+            books.forEach(book => {
+                const card = document.createElement('article');
+                card.className = 'book-card group';
+                
+                const link = book.enlace_amazon || '#';
+                const cover = book.portada || '';
+                const title = book.titulo || 'Sin título';
+                const author = book.autor || '';
+                
+                card.innerHTML = `
+                    <a href="${link}" target="_blank" rel="noopener nofollow sponsored" class="block">
+                        <div class="overflow-hidden rounded-lg bg-gray-200 shadow-md">
+                            <img 
+                                src="${cover}" 
+                                alt="Portada de ${title}" 
+                                class="book-cover w-full group-hover:scale-105 transition-transform duration-500"
+                                loading="lazy"
+                                onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 300%22%3E%3Crect width=%22200%22 height=%22300%22 fill=%22%23e5e7eb%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 fill=%22%239ca3af%22 font-family=%22sans-serif%22 font-size=%2214%22%3ESin portada%3C/text%3E%3C/svg%3E'">
+                        </div>
+                        <h3 class="mt-3 text-sm sm:text-base font-semibold text-navy line-clamp-2 leading-snug">
+                            ${title}
+                        </h3>
+                        ${author ? `<p class="text-xs sm:text-sm text-gray-500 italic mt-1">${author}</p>` : ''}
+                    </a>
+                `;
+                
+                booksGrid.appendChild(card);
+            });
+        }
+        
+        // ========================================================================
+        // FILTRO DE BÚSQUEDA INSTANTÁNEO
+        // ========================================================================
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase().trim();
+            
+            if (!query) {
+                renderBooks(allBooks);
+                return;
+            }
+            
+            const filtered = allBooks.filter(book => {
+                return (
+                    (book.titulo || '').toLowerCase().includes(query) ||
+                    (book.autor || '').toLowerCase().includes(query) ||
+                    (book.categoria || '').toLowerCase().includes(query) ||
+                    (book.descripcion || '').toLowerCase().includes(query)
+                );
+            });
+            
+            renderBooks(filtered);
+        });
+        
+        // ========================================================================
+        // BOTÓN SUBIR AL INICIO
+        // ========================================================================
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 400) {
+                scrollTopBtn.classList.add('visible');
+            } else {
+                scrollTopBtn.classList.remove('visible');
+            }
+        });
+        
+        scrollTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        
+        // ========================================================================
+        // INICIO
+        // ========================================================================
+        loadBooks();
+    </script>
+
+    <!-- ========================================================================
+         📦 CÓMO SUBIR ESTO A GITHUB PAGES (paso a paso)
+         ========================================================================
+         1. Crea un repositorio nuevo en GitHub (puede ser público o privado).
+         2. Sube DOS archivos a la raíz del repositorio:
+              - index.html  (este archivo)
+              - logo.png    (tu logo con la silueta del boquerón)
+         3. En GitHub: pestaña "Settings" → "Pages" (menú lateral izquierdo).
+         4. En "Source", selecciona la rama "main" y carpeta "/ (root)". Guarda.
+         5. Espera 1-2 minutos. Tu web estará en:
+              https://TU-USUARIO.github.io/NOMBRE-DEL-REPO/
+         6. Si tienes el dominio elboqueronbooks.com, ve a "Settings → Pages →
+            Custom domain" y configúralo allí + apunta los DNS a GitHub.
+         
+         ⚠️  IMPORTANTE: Antes de subir, recuerda reemplazar la constante
+         GOOGLE_SHEET_CSV_URL (línea ~245) con la URL real de tu Google Sheet.
+         ======================================================================== -->
+</body>
+</html>
