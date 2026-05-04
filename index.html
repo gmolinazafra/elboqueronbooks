@@ -212,27 +212,15 @@
                         <div class="skeleton h-8 w-28 rounded-full"></div>
                     </div>
                 </div>
-                
-                <div class="flex-shrink-0 relative">
-                    <input 
-                        type="text" 
-                        id="searchInput" 
-                        placeholder="Buscar..." 
-                        class="w-32 sm:w-56 md:w-72 pl-9 pr-3 py-2 bg-deep border border-navy-light text-foam placeholder:text-mist/70 rounded-full text-sm focus:outline-none focus:border-wave focus:bg-navy transition-all"
-                        aria-label="Buscar libros">
-                    <svg class="absolute left-3 top-2.5 h-4 w-4 text-mist" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                    </svg>
-                </div>
             </div>
         </div>
     </nav>
 
     <!-- ============ 2. LOGO MINI SEPARADOR ============ -->
-    <section class="divider-section py-12 sm:py-16 px-4">
+    <section class="divider-section py-6 sm:py-8 px-4">
         <div class="max-w-3xl mx-auto text-center fade-up">
             <img src="logo.png" alt="El Boquerón Books" 
-                 class="h-20 sm:h-24 mx-auto object-contain drop-shadow-xl mb-4"
+                 class="h-14 sm:h-16 mx-auto object-contain drop-shadow-xl mb-3"
                  onerror="this.style.display='none'">
             <div class="ornament-line max-w-xs mx-auto">
                 <span class="font-display italic text-mist text-sm tracking-wide">
@@ -243,8 +231,8 @@
     </section>
 
     <!-- ============ 3. CARRUSEL DE DESTACADOS ============ -->
-    <section id="featuredSection" class="hidden relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-        <div class="flex items-center gap-4 mb-8">
+    <section id="featuredSection" class="hidden relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-16">
+        <div class="flex items-center gap-4 mb-6">
             <div class="h-px flex-1 bg-gradient-to-r from-transparent via-wave to-wave"></div>
             <h2 class="font-display text-2xl sm:text-3xl md:text-4xl text-foam font-light italic px-4 whitespace-nowrap">
                 Favoritos del Boquerón
@@ -380,7 +368,6 @@
         const carouselTrack = document.getElementById('carouselTrack');
         const carouselPrev = document.getElementById('carouselPrev');
         const carouselNext = document.getElementById('carouselNext');
-        const searchInput = document.getElementById('searchInput');
         const noResults = document.getElementById('noResults');
         const errorMessage = document.getElementById('errorMessage');
         const resultsCount = document.getElementById('resultsCount');
@@ -610,11 +597,6 @@
             
             books.forEach(book => booksGrid.appendChild(createBookCard(book, false)));
         }
-        
-        searchInput.addEventListener('input', (e) => {
-            activeSearch = e.target.value.toLowerCase().trim();
-            applyFilters();
-        });
         
         window.addEventListener('scroll', () => {
             if (window.scrollY > 600) {
