@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="El Boquerón Books · Libros que transforman vidas. Una selección curada de lecturas recomendadas.">
+    <meta name="description" content="El Boquerón Books · Libros que transforman vidas.">
     <title>El Boquerón Books · Libros que transforman vidas</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
@@ -43,18 +43,20 @@
             -webkit-font-smoothing: antialiased;
         }
         
-        /* === BARRA DE NAVEGACIÓN STICKY === */
+        /* === NAV === */
         .nav-bar {
-            background: rgba(10, 22, 40, 0.92);
+            background: rgba(15, 30, 61, 0.95);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(59, 160, 224, 0.15);
+            border-bottom: 1px solid rgba(59, 160, 224, 0.2);
         }
         
         .category-pill {
             transition: all 0.25s ease;
             white-space: nowrap;
             position: relative;
+            color: #e8eef5;
+            font-weight: 400;
         }
         .category-pill::after {
             content: '';
@@ -67,9 +69,16 @@
             background: #3ba0e0;
             transition: transform 0.25s ease;
         }
-        .category-pill.active { color: #3ba0e0; }
+        .category-pill.active {
+            color: #5fb3e8;
+            font-weight: 500;
+        }
         .category-pill.active::after { transform: translateX(-50%) scaleX(1); }
         .category-pill:hover { color: #5fb3e8; }
+        .category-pill .count {
+            color: #a8b8cc;
+            opacity: 0.8;
+        }
         
         .pills-scroll {
             scrollbar-width: none;
@@ -77,52 +86,41 @@
         }
         .pills-scroll::-webkit-scrollbar { display: none; }
         
-        /* === HERO INTERMEDIO (logo separador entre destacados y biblioteca) === */
-        .hero-divider {
+        /* === SEPARADOR CON LOGO MINI === */
+        .divider-section {
             background: 
-                radial-gradient(ellipse at top, rgba(59, 160, 224, 0.08) 0%, transparent 60%),
-                radial-gradient(ellipse at bottom, rgba(15, 30, 61, 0.4) 0%, transparent 70%),
-                linear-gradient(180deg, #050d1a 0%, #0a1628 50%, #050d1a 100%);
+                radial-gradient(ellipse at center, rgba(59, 160, 224, 0.06) 0%, transparent 70%),
+                linear-gradient(180deg, #050d1a 0%, #0a1628 100%);
         }
         
-        .hero-light {
-            background-image: 
-                repeating-linear-gradient(
-                    180deg,
-                    transparent 0,
-                    transparent 60px,
-                    rgba(59, 160, 224, 0.03) 61px,
-                    rgba(59, 160, 224, 0.03) 62px
-                );
+        /* === CARRUSEL === */
+        .carousel-track {
+            scroll-behavior: smooth;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            scroll-snap-type: x mandatory;
+        }
+        .carousel-track::-webkit-scrollbar { display: none; }
+        .carousel-item {
+            scroll-snap-align: start;
+            flex-shrink: 0;
         }
         
-        /* === ONDAS DE MAR ANIMADAS === */
-        .ocean-waves {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 100px;
-            overflow: hidden;
-            pointer-events: none;
+        .carousel-btn {
+            transition: all 0.25s ease;
+            background: rgba(15, 30, 61, 0.85);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(59, 160, 224, 0.3);
         }
-        .ocean-waves svg {
-            position: absolute;
-            bottom: 0;
-            width: 200%;
-            height: 100%;
+        .carousel-btn:hover {
+            background: rgba(59, 160, 224, 0.9);
+            border-color: rgba(59, 160, 224, 0.8);
+            transform: translateY(-50%) scale(1.05);
         }
-        @keyframes wave-move-1 {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
+        .carousel-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
         }
-        @keyframes wave-move-2 {
-            0% { transform: translateX(-50%); }
-            100% { transform: translateX(0); }
-        }
-        .wave-layer-1 { animation: wave-move-1 18s linear infinite; }
-        .wave-layer-2 { animation: wave-move-2 25s linear infinite; opacity: 0.5; }
-        .wave-layer-3 { animation: wave-move-1 35s linear infinite; opacity: 0.3; }
         
         .ornament-line {
             display: flex;
@@ -173,13 +171,10 @@
         #scrollTopBtn:hover { transform: translateY(-3px); }
         
         @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        .fade-up { animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) both; }
-        .delay-1 { animation-delay: 0.1s; }
-        .delay-2 { animation-delay: 0.3s; }
-        .delay-3 { animation-delay: 0.5s; }
+        .fade-up { animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; }
         
         ::-webkit-scrollbar { width: 10px; }
         ::-webkit-scrollbar-track { background: #050d1a; }
@@ -196,23 +191,21 @@
 </head>
 <body>
     
-    <!-- ============ 1. BARRA DE NAVEGACIÓN ARRIBA DEL TODO ============ -->
+    <!-- ============ 1. BARRA DE NAVEGACIÓN ============ -->
     <nav id="topNav" class="nav-bar sticky top-0 z-30">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
             <div class="flex items-center gap-4">
                 
-                <!-- Logo mini -->
                 <a href="#" class="flex-shrink-0 flex items-center gap-2">
-                    <img src="logo.png" alt="El Boquerón Books" class="h-9 sm:h-10 object-contain"
+                    <img src="logo.png" alt="El Boquerón Books" class="h-10 sm:h-11 object-contain"
                          onerror="this.style.display='none'">
-                    <span class="hidden sm:block font-display text-lg text-foam tracking-wide">
+                    <span class="hidden sm:block font-display text-xl text-foam tracking-wide">
                         El Boquerón
                     </span>
                 </a>
                 
-                <!-- Categorías scrolleables -->
                 <div class="flex-1 overflow-x-auto pills-scroll">
-                    <div id="categoriesNav" class="flex items-center gap-1 sm:gap-2 min-w-max">
+                    <div id="categoriesNav" class="flex items-center gap-2 sm:gap-3 min-w-max">
                         <div class="skeleton h-8 w-20 rounded-full"></div>
                         <div class="skeleton h-8 w-24 rounded-full"></div>
                         <div class="skeleton h-8 w-20 rounded-full"></div>
@@ -220,13 +213,12 @@
                     </div>
                 </div>
                 
-                <!-- Buscador -->
                 <div class="flex-shrink-0 relative">
                     <input 
                         type="text" 
                         id="searchInput" 
                         placeholder="Buscar..." 
-                        class="w-32 sm:w-56 md:w-72 pl-9 pr-3 py-2 bg-navy/60 border border-navy-light text-foam placeholder:text-mist/60 rounded-full text-sm focus:outline-none focus:border-wave focus:bg-navy transition-all"
+                        class="w-32 sm:w-56 md:w-72 pl-9 pr-3 py-2 bg-deep border border-navy-light text-foam placeholder:text-mist/70 rounded-full text-sm focus:outline-none focus:border-wave focus:bg-navy transition-all"
                         aria-label="Buscar libros">
                     <svg class="absolute left-3 top-2.5 h-4 w-4 text-mist" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
@@ -236,96 +228,63 @@
         </div>
     </nav>
 
-    <!-- ============ 2. FAVORITOS DEL BOQUERÓN ============ -->
-    <section id="featuredSection" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-16">
+    <!-- ============ 2. LOGO MINI SEPARADOR ============ -->
+    <section class="divider-section py-12 sm:py-16 px-4">
+        <div class="max-w-3xl mx-auto text-center fade-up">
+            <img src="logo.png" alt="El Boquerón Books" 
+                 class="h-20 sm:h-24 mx-auto object-contain drop-shadow-xl mb-4"
+                 onerror="this.style.display='none'">
+            <div class="ornament-line max-w-xs mx-auto">
+                <span class="font-display italic text-mist text-sm tracking-wide">
+                    Libros que transforman vidas
+                </span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ 3. CARRUSEL DE DESTACADOS ============ -->
+    <section id="featuredSection" class="hidden relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
         <div class="flex items-center gap-4 mb-8">
             <div class="h-px flex-1 bg-gradient-to-r from-transparent via-wave to-wave"></div>
-            <h2 class="font-display text-3xl sm:text-4xl text-foam font-light italic px-4">
+            <h2 class="font-display text-2xl sm:text-3xl md:text-4xl text-foam font-light italic px-4 whitespace-nowrap">
                 Favoritos del Boquerón
             </h2>
             <div class="h-px flex-1 bg-gradient-to-l from-transparent via-wave to-wave"></div>
         </div>
-        <p class="text-center text-mist text-sm mb-10 max-w-xl mx-auto">
-            Una selección personal de las lecturas que más nos han marcado.
+        
+        <!-- Carrusel -->
+        <div class="relative group">
+            <!-- Botón izquierda -->
+            <button id="carouselPrev" 
+                    aria-label="Anterior"
+                    class="carousel-btn hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full items-center justify-center text-foam shadow-xl -ml-5 opacity-0 group-hover:opacity-100 transition-opacity">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+                </svg>
+            </button>
+            
+            <!-- Botón derecha -->
+            <button id="carouselNext" 
+                    aria-label="Siguiente"
+                    class="carousel-btn hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full items-center justify-center text-foam shadow-xl -mr-5 opacity-0 group-hover:opacity-100 transition-opacity">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                </svg>
+            </button>
+            
+            <!-- Track del carrusel -->
+            <div id="carouselTrack" class="carousel-track flex gap-5 sm:gap-7 overflow-x-auto pb-4">
+                <!-- Items se inyectan dinámicamente -->
+            </div>
+        </div>
+        
+        <!-- Indicador de scroll en móvil -->
+        <p class="text-center text-mist/60 text-xs mt-4 md:hidden">
+            ← desliza para ver más →
         </p>
-        <div id="featuredGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5 sm:gap-7"></div>
     </section>
 
-    <!-- ============ 3. LOGO Y NOMBRE (separador en medio) ============ -->
-    <section class="hero-divider relative py-16 sm:py-20 px-4 overflow-hidden">
-        
-        <div class="absolute inset-0 hero-light opacity-50 pointer-events-none"></div>
-        
-        <!-- Plancton decorativo -->
-        <div class="absolute inset-0 pointer-events-none overflow-hidden">
-            <div class="absolute top-[20%] left-[10%] w-1 h-1 bg-wave rounded-full opacity-40"></div>
-            <div class="absolute top-[30%] right-[15%] w-1.5 h-1.5 bg-wave rounded-full opacity-30"></div>
-            <div class="absolute top-[60%] left-[20%] w-1 h-1 bg-wave-soft rounded-full opacity-50"></div>
-            <div class="absolute top-[50%] right-[10%] w-1 h-1 bg-wave-soft rounded-full opacity-40"></div>
-        </div>
-        
-        <div class="relative z-10 max-w-3xl mx-auto text-center">
-            
-            <!-- Logo grande -->
-            <div class="fade-up delay-1 mb-6">
-                <img src="logo.png" alt="El Boquerón Books" 
-                     class="h-24 sm:h-32 md:h-40 mx-auto object-contain drop-shadow-2xl"
-                     onerror="this.style.display='none'">
-            </div>
-            
-            <h1 class="fade-up delay-2 font-display text-4xl sm:text-5xl md:text-6xl font-light tracking-wider text-foam mb-2">
-                EL BOQUERÓN
-            </h1>
-            
-            <div class="fade-up delay-2 ornament-line max-w-[220px] mx-auto mb-4">
-                <span class="font-body text-wave tracking-[0.4em] text-sm font-light">
-                    BOOKS
-                </span>
-            </div>
-            
-            <p class="fade-up delay-3 font-body text-mist tracking-[0.2em] text-xs uppercase mb-6">
-                Libros que transforman vidas
-            </p>
-            
-            <!-- Iconos sociales -->
-            <div class="fade-up delay-3 flex items-center justify-center gap-3 text-mist">
-                <a href="#" aria-label="Facebook" class="hover:text-wave transition-colors p-1.5">
-                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                    </svg>
-                </a>
-                <span class="text-navy-light text-xs">·</span>
-                <a href="#" aria-label="Instagram" class="hover:text-wave transition-colors p-1.5">
-                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                    </svg>
-                </a>
-                <span class="text-navy-light text-xs">·</span>
-                <a href="#" aria-label="YouTube" class="hover:text-wave transition-colors p-1.5">
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-                    </svg>
-                </a>
-            </div>
-            
-        </div>
-        
-        <!-- Olas del mar abajo -->
-        <div class="ocean-waves">
-            <svg class="wave-layer-3" viewBox="0 0 2400 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0,60 C300,90 600,30 1200,60 C1800,90 2100,30 2400,60 L2400,120 L0,120 Z" fill="#0f1e3d"/>
-            </svg>
-            <svg class="wave-layer-2" viewBox="0 0 2400 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0,80 C400,40 800,100 1200,70 C1600,40 2000,100 2400,80 L2400,120 L0,120 Z" fill="#1a2d4f"/>
-            </svg>
-            <svg class="wave-layer-1" viewBox="0 0 2400 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0,90 C300,70 600,110 1200,90 C1800,70 2100,110 2400,90 L2400,120 L0,120 Z" fill="#0a1628" opacity="0.95"/>
-                <path d="M0,90 C300,70 600,110 1200,90 C1800,70 2100,110 2400,90" fill="none" stroke="#3ba0e0" stroke-width="1" opacity="0.4"/>
-            </svg>
-        </div>
-    </section>
-
-    <!-- ============ 4. TODA LA BIBLIOTECA ============ -->
+    <!-- ============ 4. BIBLIOTECA COMPLETA ============ -->
     <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
         <div class="flex items-end justify-between mb-8 flex-wrap gap-4">
             <div>
@@ -367,7 +326,7 @@
         </svg>
     </button>
 
-    <!-- ============ FOOTER ============ -->
+    <!-- ============ FOOTER (con redes sociales) ============ -->
     <footer class="bg-deep border-t border-navy mt-20">
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <div class="text-center space-y-6">
@@ -417,8 +376,10 @@
         let activeSearch = '';
         
         const booksGrid = document.getElementById('booksGrid');
-        const featuredGrid = document.getElementById('featuredGrid');
         const featuredSection = document.getElementById('featuredSection');
+        const carouselTrack = document.getElementById('carouselTrack');
+        const carouselPrev = document.getElementById('carouselPrev');
+        const carouselNext = document.getElementById('carouselNext');
         const searchInput = document.getElementById('searchInput');
         const noResults = document.getElementById('noResults');
         const errorMessage = document.getElementById('errorMessage');
@@ -486,7 +447,7 @@
                     .filter(b => b.titulo);
                 
                 buildCategoriesNav();
-                renderFeatured();
+                renderFeaturedCarousel();
                 applyFilters();
                 
             } catch (error) {
@@ -508,14 +469,14 @@
             categoriesNav.innerHTML = '';
             categories.forEach(cat => {
                 const btn = document.createElement('button');
-                btn.className = 'category-pill px-3 py-2 rounded-full text-sm font-body text-mist';
+                btn.className = 'category-pill px-2 py-2 rounded-full text-sm font-body';
                 btn.dataset.category = cat.toLowerCase();
                 if (cat.toLowerCase() === activeCategory) btn.classList.add('active');
                 
                 const count = cat === 'Todos' 
                     ? allBooks.length 
                     : allBooks.filter(b => (b.categoria || '').toLowerCase() === cat.toLowerCase()).length;
-                btn.innerHTML = `${cat} <span class="text-xs text-mist/50 ml-0.5">(${count})</span>`;
+                btn.innerHTML = `${cat} <span class="count text-xs ml-0.5">(${count})</span>`;
                 
                 btn.addEventListener('click', () => {
                     activeCategory = cat.toLowerCase();
@@ -528,7 +489,10 @@
             });
         }
         
-        function renderFeatured() {
+        // ========================================================================
+        // CARRUSEL DE DESTACADOS
+        // ========================================================================
+        function renderFeaturedCarousel() {
             const featured = allBooks.filter(b => 
                 ['si', 'sí', 'yes', 'true', '1', 'x'].includes((b.destacado || '').toLowerCase())
             );
@@ -539,11 +503,32 @@
             }
             
             featuredSection.classList.remove('hidden');
-            featuredGrid.innerHTML = '';
+            carouselTrack.innerHTML = '';
+            
             featured.forEach(book => {
-                featuredGrid.appendChild(createBookCard(book, true));
+                const item = createBookCard(book, true);
+                // Tamaño fijo para el carrusel: 2 cols en móvil, 4-5 en escritorio
+                item.classList.add('carousel-item', 'w-[45%]', 'sm:w-[30%]', 'md:w-[22%]', 'lg:w-[18%]');
+                carouselTrack.appendChild(item);
             });
+            
+            updateCarouselButtons();
         }
+        
+        function updateCarouselButtons() {
+            const maxScroll = carouselTrack.scrollWidth - carouselTrack.clientWidth;
+            carouselPrev.disabled = carouselTrack.scrollLeft <= 5;
+            carouselNext.disabled = carouselTrack.scrollLeft >= maxScroll - 5;
+        }
+        
+        carouselPrev.addEventListener('click', () => {
+            carouselTrack.scrollBy({ left: -carouselTrack.clientWidth * 0.8, behavior: 'smooth' });
+        });
+        carouselNext.addEventListener('click', () => {
+            carouselTrack.scrollBy({ left: carouselTrack.clientWidth * 0.8, behavior: 'smooth' });
+        });
+        carouselTrack.addEventListener('scroll', updateCarouselButtons);
+        window.addEventListener('resize', updateCarouselButtons);
         
         function createBookCard(book, isFeatured = false) {
             const card = document.createElement('article');
