@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- VERSIÓN: 2026-05-07-FIX-AMAZON-LINK -->
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -623,6 +624,7 @@
     </footer>
 
     <script>
+        console.log('%c[Boquerón] Versión 2026-05-07-FIX cargada ✓', 'color: #10b981; font-weight: bold; font-size: 14px;');
         // ====================================================================
         // ⚠️  URL DE GOOGLE SHEETS (publicada como CSV)
         // Columnas: titulo | autor | portada | enlace_amazon | descripcion | categoria | destacado
@@ -762,7 +764,7 @@
             titulo:         ['titulo', 'title', 'nombre', 'libro'],
             autor:          ['autor', 'author', 'autores'],
             portada:        ['portada', 'imagen', 'image', 'cover', 'img', 'foto'],
-            enlace_amazon:  ['enlace_amazon', 'enlace', 'link', 'url', 'amazon', 'amazon_url', 'enlace_compra'],
+            enlace_amazon:  ['enlace_amazon', 'amazon_link', 'enlace', 'link', 'url', 'amazon', 'amazon_url', 'enlace_compra', 'comprar', 'compra'],
             descripcion:    ['descripcion', 'description', 'desc', 'sinopsis'],
             categoria:      ['categoria', 'category', 'genero', 'tema'],
             destacado:      ['destacado', 'featured', 'favorito', 'top']
@@ -776,6 +778,17 @@
                 const aliases = FIELD_ALIASES[field];
                 const idx = normalized.findIndex(h => aliases.includes(h));
                 if (idx !== -1) map[field] = idx;
+            }
+            // FALLBACK ULTRA-PERMISIVO para el enlace de Amazon: si no se encontró,
+            // busca CUALQUIER columna cuyo nombre contenga "amazon", "link" o "url"
+            if (map.enlace_amazon === undefined) {
+                const idx = normalized.findIndex(h => 
+                    h.includes('amazon') || h.includes('link') || h.includes('url')
+                );
+                if (idx !== -1) {
+                    map.enlace_amazon = idx;
+                    console.log('[Boquerón] Columna de enlace detectada por fallback en posición:', idx, '(nombre:', normalized[idx], ')');
+                }
             }
             return { map, normalized };
         }
