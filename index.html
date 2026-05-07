@@ -748,33 +748,81 @@
             return rows;
         }
         
+        // Normaliza un nombre de cabecera: minúsculas, sin acentos, sin espacios extra
+        function normalizeHeader(h) {
+            return (h || '')
+                .toLowerCase()
+                .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // quita acentos
+                .replace(/\s+/g, '_')
+                .trim();
+        }
+
+        // Aliases admitidos para cada campo lógico que usa la web
+        const FIELD_ALIASES = {
+            titulo:         ['titulo', 'title', 'nombre', 'libro'],
+            autor:          ['autor', 'author', 'autores'],
+            portada:        ['portada', 'imagen', 'image', 'cover', 'img', 'foto'],
+            enlace_amazon:  ['enlace_amazon', 'enlace', 'link', 'url', 'amazon', 'amazon_url', 'enlace_compra'],
+            descripcion:    ['descripcion', 'description', 'desc', 'sinopsis'],
+            categoria:      ['categoria', 'category', 'genero', 'tema'],
+            destacado:      ['destacado', 'featured', 'favorito', 'top']
+        };
+
+        // Construye un mapa { campo_logico -> indice_de_columna } a partir de las cabeceras reales
+        function buildHeaderMap(headerRow) {
+            const normalized = headerRow.map(normalizeHeader);
+            const map = {};
+            for (const field in FIELD_ALIASES) {
+                const aliases = FIELD_ALIASES[field];
+                const idx = normalized.findIndex(h => aliases.includes(h));
+                if (idx !== -1) map[field] = idx;
+            }
+            return { map, normalized };
+        }
+
         async function loadBooks() {
             try {
-                const response = await fetch(GOOGLE_SHEET_CSV_URL);
-                if (!response.ok) throw new Error('Error de red');
+                const response = await fetch(GOOGLE_SHEET_CSV_URL, { cache: 'no-store' });
+                if (!response.ok) throw new Error('Error de red (HTTP ' + response.status + ')');
                 
-                const csvText = await response.text();
+                // Forzar UTF-8 explícitamente para que los acentos y la ñ no se rompan
+                const buffer = await response.arrayBuffer();
+                const csvText = new TextDecoder('utf-8').decode(buffer);
+
                 const rows = parseCSV(csvText);
                 if (rows.length < 2) throw new Error('La hoja está vacía');
-                
-                const headers = rows[0].map(h => h.toLowerCase().trim());
+
+                const { map: headerMap, normalized } = buildHeaderMap(rows[0]);
+                console.log('[Boquerón] Cabeceras detectadas:', normalized);
+                console.log('[Boquerón] Mapeo de columnas:', headerMap);
+
+                if (headerMap.titulo === undefined) {
+                    throw new Error('No encuentro la columna "titulo" en el Sheets. Cabeceras: ' + normalized.join(' | '));
+                }
+                if (headerMap.enlace_amazon === undefined) {
+                    console.warn('[Boquerón] Aviso: no se ha encontrado columna de enlace de Amazon. Los libros no enlazarán.');
+                }
+
                 allBooks = rows.slice(1)
                     .filter(row => row.some(c => c))
                     .map(row => {
                         const book = {};
-                        headers.forEach((header, idx) => {
-                            book[header] = (row[idx] || '').trim();
-                        });
+                        for (const field in headerMap) {
+                            book[field] = (row[headerMap[field]] || '').trim();
+                        }
                         return book;
                     })
                     .filter(b => b.titulo);
-                
+
+                console.log('[Boquerón] Libros cargados:', allBooks.length);
+                if (allBooks[0]) console.log('[Boquerón] Ejemplo de primer libro:', allBooks[0]);
+
                 buildCategoriesDropdown();
                 renderFeaturedCarousel();
                 applyFilters();
                 
             } catch (error) {
-                console.error('Error cargando libros:', error);
+                console.error('[Boquerón] Error cargando libros:', error);
                 booksGrid.classList.add('hidden');
                 featuredSection.classList.add('hidden');
                 errorMessage.classList.remove('hidden');
@@ -896,7 +944,13 @@
             const card = document.createElement('article');
             card.className = `book-card group ${isFeatured ? 'featured-card' : ''}`;
             
-            const link = book.enlace_amazon || '#';
+            // Sanear el enlace: eliminar espacios, añadir https:// si falta
+            let link = (book.enlace_amazon || '').trim();
+            if (link && !/^https?:\/\//i.test(link)) {
+                link = 'https://' + link;
+            }
+            if (!link) link = '#';
+
             const cover = book.portada || '';
             const title = book.titulo || 'Sin título';
             const author = book.autor || '';
