@@ -151,7 +151,7 @@ footer{padding:24px 0 70px;font-size:12px;color:#69756f}
 @keyframes librinShadow{0%,100%{transform:scaleX(1);opacity:1}50%{transform:scaleX(.72);opacity:.55}}
 
 /* ---------- chat ---------- */
-.chat{position:fixed;right:20px;top:104px;width:min(365px,calc(100vw - 28px));height:525px;max-height:calc(100vh - 124px);z-index:95;background:var(--paper2);border:1px solid var(--line);border-radius:20px;box-shadow:0 24px 65px rgba(0,0,0,.22);display:none;flex-direction:column;overflow:hidden}
+.chat{position:fixed;right:20px;top:104px;width:min(380px,calc(100vw - 28px));height:560px;max-height:calc(100vh - 124px);z-index:95;background:var(--paper2);border:1px solid var(--line);border-radius:20px;box-shadow:0 24px 65px rgba(0,0,0,.22);display:none;flex-direction:column;overflow:hidden}
 .chat.open{display:flex}
 .chat-head{background:var(--green);color:#fff;padding:14px 16px;display:flex;align-items:center;gap:10px}
 .chat-avatar{width:46px;height:46px;border-radius:50%;overflow:hidden;background:#fff;flex-shrink:0}
@@ -233,6 +233,21 @@ footer{padding:20px 0 28px}
  .benefits{max-width:min(1000px,75%);flex-wrap:wrap;gap:12px 30px}.benefits .all{margin-left:0}
  .pile{z-index:1;top:calc(var(--bgH) * .655);right:calc(var(--bgH) * .045);width:calc(var(--bgH) * .33);height:auto}
 }
+
+/* ---------- chat de Librín: mensajes enriquecidos ---------- */
+.msg p{margin:0 0 6px}.msg p:last-child{margin:0}
+.msg.bot strong{color:var(--ink)}
+.chat-chips{display:flex;flex-wrap:wrap;gap:6px;padding:8px 10px 10px}
+.chat-chips[hidden]{display:none}
+.chat-chips button{padding:7px 11px;font-size:11.5px;color:var(--ink);transition:border-color .15s,background .15s}
+.chat-chips button:hover{border-color:var(--green);background:#f3f8f5}
+.bcard{display:grid;grid-template-columns:48px 1fr;gap:10px;align-items:center;max-width:90%;margin:0 0 8px;padding:8px;background:#fff;border:1px solid #e1d9cc;border-radius:12px}
+.bc-cover{width:48px;height:72px;object-fit:cover;border-radius:3px;box-shadow:0 4px 10px rgba(0,0,0,.15)}
+.bcard b{display:block;font-size:12.5px;line-height:1.2;color:var(--ink)}
+.bcard small{display:block;margin:2px 0 7px;font-size:11px;line-height:1.3;color:#6b7771}
+.bcard a{display:inline-flex;align-items:center;gap:5px;padding:4px 9px;border:1px solid rgba(19,63,52,.22);border-radius:8px;font-size:11.5px;font-weight:600;color:var(--ink)}
+.bcard a:hover{border-color:var(--green)}
+.bcard a img{height:13px;width:auto;margin-top:4px}
 
 /* ---------- responsive ---------- */
 @media(min-width:1440px){.bookmark{margin-left:-56px}}
@@ -378,14 +393,7 @@ footer{padding:20px 0 28px}
 <section class="chat" id="chat" aria-label="Chat de Librín">
  <div class="chat-head"><div class="chat-avatar"><img src="assets/librin-avatar.webp" alt="" width="128" height="128"></div><div class="chat-id"><strong>Librín</strong><small>Asistente de lectura de El Boquerón Books</small></div><button class="chat-close" id="chatClose" type="button" aria-label="Cerrar">×</button></div>
  <div class="chat-body" id="chatBody" aria-live="polite"></div>
- <div class="chat-chips">
-  <button type="button" data-q="Recomiéndame un libro">Recomiéndame uno</button>
-  <button type="button" data-q="Quiero algo de empresa y trabajo">Empresa y trabajo</button>
-  <button type="button" data-q="Quiero algo de IA y tecnología">IA y tecnología</button>
-  <button type="button" data-q="Quiero algo de salud">Salud y bienestar</button>
-  <button type="button" data-q="¿Quién es Gustavo?">¿Quién es Gustavo?</button>
-  <button type="button" data-q="¿Qué es BookMark?">¿Qué es BookMark?</button>
- </div>
+ <div class="chat-chips" id="chatChips" hidden></div>
  <form class="chat-form" id="chatForm"><input id="chatInput" type="text" placeholder="Escribe como si hablaras conmigo..." autocomplete="off" aria-label="Escribe tu mensaje"><button aria-label="Enviar">→</button></form>
  <div class="chat-note">Librín es un asistente virtual. Si no sabe algo, te lo dirá.</div>
 </section>
@@ -405,30 +413,269 @@ if('IntersectionObserver' in window){
  new IntersectionObserver(([e])=>floatBox.classList.toggle('off',e.isIntersecting&&e.boundingClientRect.width>0),{threshold:.15}).observe(heroLibrin);
 }else{floatBox.classList.remove('off')}
 
+/* ===================== Librín · asistente de lectura (motor propio, sin IA externa) ===================== */
+const Librin=(()=>{
+const norm=s=>(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9\s]/g,' ').replace(/\s+/g,' ').trim();
+const stem=w=>w.length>5&&w.endsWith('es')?w.slice(0,-2):(w.length>4&&w.endsWith('s')?w.slice(0,-1):w);
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const lev=(a,b)=>{if(Math.abs(a.length-b.length)>2)return 9;const d=Array.from({length:b.length+1},(_,i)=>i);for(let i=1;i<=a.length;i++){let p=d[0];d[0]=i;for(let j=1;j<=b.length;j++){const t=d[j];d[j]=Math.min(d[j]+1,d[j-1]+1,p+(a[i-1]===b[j-1]?0:1));p=t}}return d[b.length]};
+
+const BOOKS=[
+ {id:'titulitis',title:'TITULITIS',sub:'Cuando las empresas confunden formación con talento',asin:'B0HJXDSBFT',img:'71uw7EAj21L',local:'titulitis',
+  alias:['titulitis'],
+  kw:{empresa:3,empresario:3,rrhh:4,'recursos humanos':4,seleccion:4,contratar:4,contratacion:4,entrevista:3,curriculum:4,cv:3,talento:4,titulo:4,carrera:2,universidad:3,grado:2,fp:4,'formacion profesional':4,autodidacta:4,experiencia:3,jefe:2,directivo:3,dirige:3,dirigir:3,liderazgo:2,equipo:2,trabajo:2,empleo:3,oposicion:1,estudiar:2,estudio:2,master:2,meritocracia:3,'sin estudios':4,'sin titulo':5,infravalorado:3,trabajador:2,plantilla:3,negocio:1},
+  pitch:'Va de por qué muchas empresas descartan talento real por no tener un papel. **No va contra estudiar**: critica usar el título como atajo para no evaluar lo que una persona sabe hacer, y defiende la FP, la experiencia y el aprendizaje autodidacta.',
+  para:'empresarios, directivos y RR. HH., y también profesionales con experiencia sin grado, perfiles de FP, autodidactas y estudiantes',
+  gift:'alguien que contrata o dirige equipos, o alguien que se siente infravalorado por no tener un título'},
+ {id:'algoritmo',title:'El algoritmo no sabe vivir',sub:'Lo que nadie te cuenta cuando empieza tu vida adulta',asin:'B0HJX61794',img:'71YWhQ50+YL',local:'algoritmo',
+  alias:['algoritmo no sabe vivir','el algoritmo'],
+  kw:{joven:4,hijo:3,hija:3,nieto:3,nieta:3,sobrino:3,adolescente:4,chaval:4,estudiante:2,redes:4,'redes sociales':4,tiktok:4,instagram:4,youtube:3,movil:3,pantalla:4,influencer:4,algoritmo:4,tecnologia:3,internet:2,'vida adulta':4,proposito:3,disciplina:3,libertad:2,criterio:2,comparar:2,comparacion:2,dopamina:3,distraccion:3,concentracion:3,profesor:2,alumno:3,generacion:3,veinteanero:4,madurar:3,independizarse:3,motivacion:2},
+  pitch:'Está pensado para quien empieza su vida adulta: ayuda a **no confundir lo que se ve en redes con la realidad**, a entender que consumir contenido no es lo mismo que aprender y a construir criterio propio. Sin sermones ni guerra generacional.',
+  para:'jóvenes de 17 a 25 años; muchas veces lo compran padres, abuelos o profesores para regalarlo',
+  gift:'un hijo, nieto o alumno que empieza su vida adulta'},
+ {id:'nomepasa',title:'No me pasa nada y aun así duele',sub:'Lo que la artritis no deja ver y cómo acompañar sin hacer daño',asin:'B0H21Q1QQ1',img:'61vo00Y1LKL',local:'no-me-pasa',
+  alias:['no me pasa nada','aun asi duele'],
+  kw:{artritis:5,dolor:4,duele:4,articulacion:4,reuma:4,reumatoide:5,enfermedad:3,cronica:3,cronico:3,invisible:4,acompanar:4,pareja:3,familiar:3,cuidar:3,cuidador:4,empatia:4,comprension:3,incomprendido:4,rigidez:4,inflamacion:2,salud:2,fibromialgia:3,lupus:3,autoinmune:3},
+  pitch:'Pone palabras a lo que vive una persona con artritis y que desde fuera no se ve, y explica **cómo acompañar sin hacer daño sin querer**: qué ayuda, qué frases sobran y cómo estar de verdad.',
+  para:'personas con artritis u otro dolor crónico, y sobre todo sus parejas, familias y amigos',
+  gift:'alguien que convive con dolor crónico, o quien le cuida'},
+ {id:'sana',title:'Sana tu cuerpo, recupera tu vida',sub:'La guía antiinflamatoria definitiva',asin:'B0GZDC1GPP',img:'71lDSspk7pL',local:'sana',
+  alias:['sana tu cuerpo','recupera tu vida'],
+  kw:{salud:3,antiinflamatoria:5,antiinflamatorio:5,inflamacion:4,receta:5,cocina:4,cocinar:4,comer:3,comida:3,alimentacion:4,dieta:3,nutricion:4,suplemento:5,suplementacion:5,vitamina:3,fatiga:5,cansancio:4,cansado:4,energia:3,agotamiento:4,agotado:4,cuidarme:3,cuidarse:3,habito:3,bienestar:3,medibitacora:5,digestion:2,sano:3,saludable:4},
+  pitch:'Es una guía práctica antiinflamatoria: **55 recetas**, suplementación estratégica y el **método MediBitácora Pro** para registrar cómo te sientes y plantar cara a la fatiga crónica con hábitos concretos.',
+  para:'quien quiere cuidarse a través de la alimentación y los hábitos, sobre todo si arrastra cansancio o fatiga',
+  gift:'alguien que quiere empezar a cuidarse o que siempre va cansado'},
+ {id:'chatgpt',title:'ChatGPT para gerentes de CAT',sub:'Productividad, ventas, control interno y ventaja competitiva con IA',asin:'B0GZLP5GJP',img:'71XMz-PXojL',local:'chatgpt-cat',
+  alias:['chatgpt para gerentes','gerentes de cat','chatgpt','chat gpt'],
+  kw:{chatgpt:5,'chat gpt':5,ia:4,'inteligencia artificial':5,gpt:4,prompt:4,automatizar:4,automatizacion:4,desguace:5,cat:4,'centro autorizado':5,vehiculo:3,coche:3,pieza:4,recambio:4,chatarra:3,reciclaje:3,gerente:4,gestion:3,productividad:4,venta:4,vender:3,'venta online':4,'control interno':5,legal:3,normativa:3,negocio:3,pyme:3,competencia:2,taller:2,tecnologia:3,herramienta:2,oficina:2,excel:2},
+  pitch:'Enseña a usar ChatGPT en el día a día de un **Centro Autorizado de Tratamiento (desguace)**: automatizar tareas, vender más online, reforzar el control interno y la parte legal, y ganar ventaja frente a la competencia.',
+  para:'gerentes, dueños y responsables de desguaces y CAT, y en general pymes que quieren aplicar IA sin complicarse',
+  gift:'alguien que dirige un desguace o un negocio del sector del automóvil'}
+];
+const BY=Object.fromEntries(BOOKS.map(b=>[b.id,b]));
+BOOKS.forEach(b=>{b.nkw=Object.entries(b.kw).map(([k,v])=>[norm(k),v]);b.nalias=b.alias.map(norm)});
+
+const ctx={focus:null,last:[],shown:[],awaiting:null,miss:0,name:null,scores:null};
+const has=(t,re)=>re.test(t);
+const tokens=t=>t.split(' ').filter(Boolean);
+
+function score(t){
+  const toks=tokens(t).map(stem),padded=' '+t+' ',res={};
+  for(const b of BOOKS){let s=0;
+    for(const [k,v] of b.nkw){
+      if(k.includes(' ')){if(padded.includes(' '+k+' '))s+=v;continue}
+      const ks=stem(k);
+      if(toks.includes(ks)){s+=v;continue}
+      if(ks.length>=5&&toks.some(w=>w.length>=4&&lev(w,ks)<=(ks.length>=9?2:1)))s+=v*.8;
+    }
+    for(const a of b.nalias)if(padded.includes(' '+a+' '))s+=10;
+    res[b.id]=s}
+  return Object.entries(res).sort((a,b)=>b[1]-a[1]);
+}
+function findBook(t){
+  const p=' '+t+' ';
+  for(const b of BOOKS)for(const a of b.nalias)if(p.includes(' '+a+' '))return b.id;
+  const ord={primero:0,primer:0,segundo:1,tercero:2,tercer:2,cuarto:3,quinto:4,ultimo:-1};
+  for(const [w,i] of Object.entries(ord))if(p.includes(' '+w+' ')&&ctx.last.length)return ctx.last[i<0?ctx.last.length-1:Math.min(i,ctx.last.length-1)];
+  const toks=tokens(t);
+  if(toks.some(w=>w.length>=7&&lev(w,'titulitis')<=2))return 'titulitis';
+  if(toks.some(w=>w.length>=7&&lev(w,'algoritmo')<=2))return 'algoritmo';
+  return null;
+}
+const refersFocus=t=>has(t,/\b(ese|este|esa|esta|eso|ese libro|este libro|el libro|lo|le)\b/);
+
+/* respuestas */
+const R=(text,books=[],chips=null)=>({text,books,chips});
+const CH={
+  start:['Recomiéndame un libro','Busco un regalo','Ver todos los libros','¿Quién es Gustavo?'],
+  topics:['Empresa y trabajo','Jóvenes y redes sociales','Salud y alimentación','Artritis y dolor crónico','IA para desguaces'],
+  gift:['Para un hijo o nieto joven','Para alguien que dirige un negocio','Para alguien con dolor crónico','Para alguien que quiere cuidarse','Para alguien de un desguace'],
+  after:b=>['¿Para quién es?','Cuéntame más','Otra opción','¿Dónde lo compro?'],
+};
+function recommend(ids,intro,alt){
+  const [a,b]=ids;ctx.focus=a;ctx.last=ids.slice();ids.forEach(i=>{if(!ctx.shown.includes(i))ctx.shown.push(i)});
+  const A=BY[a];
+  let txt=(intro?intro+'\n':'')+(alt?pick([`¿Qué tal **${A.title}**?`,`**${A.title}**.`]):pick([`Te recomendaría **${A.title}**.`,`Para eso encaja muy bien **${A.title}**.`,`Mi apuesta: **${A.title}**.`]))+' '+A.pitch;
+  if(b){txt+=`\nY si lo quieres enfocar de otra forma, mira también **${BY[b].title}**: está pensado para ${BY[b].para}.`}
+  return R(txt,ids,CH.after(a));
+}
+function describe(id,mode){
+  const B=BY[id];ctx.focus=id;ctx.last=[id];if(!ctx.shown.includes(id))ctx.shown.push(id);
+  if(mode==='para')return R(`**${B.title}** está pensado para ${B.para}.\nComo regalo es ideal para ${B.gift}.`,[id],['Cuéntame más','Otra opción','¿Dónde lo compro?']);
+  return R(`**${B.title}** — ${B.sub}.\n${B.pitch}\nEs para ${B.para}.`,[id],['¿Para quién es?','Otra opción','¿Dónde lo compro?']);
+}
+function another(){
+  const order=ctx.scores?ctx.scores.map(x=>x[0]):BOOKS.map(b=>b.id);
+  const rest=order.filter(i=>!ctx.shown.includes(i));
+  if(!rest.length){ctx.shown=ctx.focus?[ctx.focus]:[];return R('Ya te he enseñado los cinco 😄 Aquí los tienes todos juntos para que compares:',BOOKS.map(b=>b.id),CH.topics)}
+  const id=rest[0];return recommend([id],pick(['Vale, otra opción distinta:','Te propongo otro:','Mira este otro:']),true);
+}
+function listAll(){ctx.last=BOOKS.map(b=>b.id);return R('Estos son los cinco libros de Gustavo. Dime qué te interesa y te digo cuál encaja mejor contigo:',ctx.last,CH.topics)}
+
+function reply(raw){
+  const t=norm(raw);
+  if(!t)return R('Escríbeme lo que buscas y te ayudo 🙂',[],CH.start);
+
+  /* cuidado ante todo */
+  if(has(t,/\b(suicid\w*|quitarme la vida|no quiero vivir|matarme|acabar con todo|hacerme dano)\b/)){
+    ctx.awaiting=null;
+    return R('Siento mucho que estés pasando por algo así. No estás solo/a. Por favor, habla ahora con alguien que pueda ayudarte: en España puedes llamar gratis al **024** (atención a la conducta suicida, 24 horas) o al **112** si hay peligro inmediato.',[],['Ver todos los libros']);
+  }
+
+  const greet=has(t,/^(hola|holi|buenas|hey|ey|saludos|buenos dias|buenas tardes|buenas noches)\b/);
+  const nm=raw.match(/\b(?:me llamo|mi nombre es)\s+([A-Za-zÁÉÍÓÚÑáéíóúñ]{2,20})/i);
+  if(nm){ctx.name=nm[1][0].toUpperCase()+nm[1].slice(1).toLowerCase()}
+  const hi=ctx.name?`, ${ctx.name}`:'';
+  if(nm&&tokens(t).length<=4)return R(pick([`¡Encantado, ${ctx.name}! 🐟 Yo soy Librín. ¿Buscas algo para ti o es para regalar?`,`¡Un placer, ${ctx.name}! Cuéntame qué te interesa y te digo qué libro encaja contigo.`]),[],CH.start);
+
+  /* respuestas a una pregunta pendiente */
+  if(ctx.awaiting==='gift'){
+    const sc=score(t);ctx.awaiting=null;
+    if(sc[0][1]>=3){ctx.scores=sc;return recommend(sc[1][1]>=Math.max(3,sc[0][1]*.75)?[sc[0][0],sc[1][0]]:[sc[0][0]],pick(['¡Buen regalo!','Perfecto, para esa persona lo tengo claro.']))}
+  }
+  if(ctx.awaiting==='topic'){
+    const sc=score(t);ctx.awaiting=null;ctx.scores=sc;
+    if(sc[0][1]>=3)return recommend(sc[1][1]>=Math.max(3,sc[0][1]*.75)?[sc[0][0],sc[1][0]]:[sc[0][0]]);
+  }
+  if(has(t,/^(si|sip|vale|ok|okey|claro|venga|dale|perfecto|genial|por favor|porfa)$/)){
+    if(ctx.focus)return describe(ctx.focus);
+    ctx.awaiting='topic';return R('¡Genial! ¿Qué tema te interesa más?',[],CH.topics);
+  }
+  if(has(t,/^(no|nop|nada|no gracias|de momento no|asi esta bien)$/))return R(pick(['Sin problema. Si te surge cualquier duda sobre los libros, aquí sigo 🐟','Perfecto. Aquí estaré si me necesitas.']),[],CH.start);
+
+  if(has(t,/\b(gracias|muchas gracias|mil gracias|te lo agradezco|thanks)\b/))return R(pick([`¡A ti${hi}! Que disfrutes la lectura 📚`,`Un placer${hi}. Si quieres otra recomendación, dímelo.`]),[],CH.start);
+  if(has(t,/\b(adios|hasta luego|hasta pronto|chao|chau|nos vemos|bye)\b/))return R(pick([`¡Hasta pronto${hi}! Buena lectura 🐟`,'¡Nos vemos! Aquí me tienes cuando quieras.']),[],null);
+
+  if(has(t,/\b(quien eres|que eres|como te llamas|eres un (bot|robot|humano|persona|ia)|eres (una )?(ia|persona|humano|maquina)|hablo con (una )?(persona|maquina|robot))\b/))
+    return R('Soy **Librín**, el boquerón lector de la casa 🐟📚. Soy un asistente virtual, no una persona: me sé de memoria los libros de Gustavo y te ayudo a encontrar el que mejor encaja contigo.',[],CH.start);
+  if(has(t,/\b(por que (un )?boqueron|porque boqueron|por que te llamas|por que librin)\b/))
+    return R('Porque El Boquerón Books nace en Málaga, y aquí el boquerón es de la familia. Y lo de Librín… bueno, un boquerón que vive entre libros no podía llamarse de otra forma 😄',[],CH.start);
+  if(has(t,/\b(chiste|broma|algo gracioso)\b/))
+    return R(pick(['¿Sabes por qué los libros nunca pasan frío? Porque siempre llevan tapa 📚','Un libro le dice a otro: «¿Qué te pasa?». Y el otro: «Nada, que tengo muchos problemas… y todos resueltos al final» 😄','Yo no leo en la playa: con tanta agua se me mojan las páginas… y las aletas 🐟']),[],CH.start);
+  if(has(t,/\b(que tal|como estas|como va)\b/)&&tokens(t).length<=4)
+    return R(pick([`¡Muy bien${hi}, rodeado de libros, que es como mejor se está! ¿Te ayudo a elegir uno?`,'¡Nadando entre páginas, como siempre! ¿Buscas algo en concreto?']),[],CH.start);
+
+  const book=findBook(t);
+
+  if(has(t,/\b(bookmark|marcapaginas|marca paginas|marcador)\b/))
+    return R('**BookMark** es el marcapáginas digital de Limonada Web: apuntas por qué página vas en cada libro, tienes tu biblioteca siempre a mano y ves tu racha, ritmo y progreso de lectura. Puedes verlo en limonadaweb.com/bookmark.',[],['Ver todos los libros','¿Quién es Gustavo?']);
+  if(has(t,/\blimonada\b/))
+    return R('**Limonada Web** es el proyecto digital de Gustavo: diseña webs y herramientas para negocios, y también se encarga del diseño de esta web y de BookMark. Lo tienes en limonadaweb.com.',[],CH.start);
+  if(has(t,/\b(contacto|contactar|email|correo|telefono|whatsapp|hablar con gustavo|escribir a gustavo)\b/))
+    return R('Para contactar con Gustavo, lo más directo es a través de **Limonada Web** (limonadaweb.com). Y si es por un libro, en su ficha de Amazon también puedes dejar tu opinión, que siempre se agradece.',[],CH.start);
+  if(has(t,/\b(gustavo|autor|escritor|quien (los )?escribe|quien ha escrito)\b/)&&!book)
+    return R('**Gustavo Molina Zafra** es empresario malagueño con más de 25 años en el sector del reciclaje de vehículos, donde dirige un Centro Autorizado de Tratamiento. Es técnico en vehículos híbridos y eléctricos y fundador de Limonada Web; empezó en lo digital en 2005, de forma autodidacta y por pura necesidad.\nPor eso escribe desde la experiencia real: empresa, tecnología, salud y vida práctica, sin rodeos.',[],['Ver todos los libros','Recomiéndame un libro']);
+
+  if(has(t,/\b(precio|cuesta|cuanto vale|cuanto sale|euros|barato|caro|oferta|descuento)\b/)){
+    const ids=book?[book]:(ctx.focus?[ctx.focus]:BOOKS.map(b=>b.id));
+    return R('Los precios pueden cambiar, así que prefiero no inventarme ninguno: en la ficha de Amazon ves el **precio actualizado** y los formatos disponibles.',ids,['Recomiéndame un libro','Ver todos los libros']);
+  }
+  if(has(t,/\b(kindle|ebook|e book|papel|tapa blanda|formato|digital|audiolibro|pdf|epub)\b/)){
+    const ids=book?[book]:(ctx.focus?[ctx.focus]:[]);
+    return R('Los libros se publican en Amazon. En la ficha de cada uno verás qué formatos tiene disponibles (tapa blanda, Kindle…) y cuándo te llega.',ids,ids.length?['Otra opción','¿Para quién es?']:CH.start);
+  }
+  if(has(t,/\b(comprar|compro|consigo|conseguir|encuentro|pedirlo|pedir|envio|donde lo|donde se|amazon|tienda|libreria)\b/)){
+    const ids=book?[book]:(ctx.focus?[ctx.focus]:BOOKS.map(b=>b.id));
+    return R('Todos se venden en **Amazon**. Pulsa «Ver en Amazon» en el libro que quieras y te lleva directo a su ficha.',ids,['Otra opción','Ver todos los libros']);
+  }
+
+  if(has(t,/\b(que libros|cuales (son|tienes|hay)|todos los libros|catalogo|lista|ver libros|ver todos|cuantos libros|tus libros|sus libros)\b/))return listAll();
+
+  if(has(t,/\b(otro|otra|otra opcion|algo mas|alguno mas|mas opciones|siguiente|alternativa|diferente)\b/)&&!book)return another();
+
+  if(has(t,/\b(diferencia|comparar|compara|comparacion|cual es mejor|mejor entre|vs|versus)\b/)){
+    const sc=score(t).filter(x=>x[1]>=10).map(x=>x[0]);
+    if(sc.length>=2){ctx.last=sc.slice(0,2);return R(`Te los resumo para que compares:\n**${BY[sc[0]].title}**: ${BY[sc[0]].pitch}\n**${BY[sc[1]].title}**: ${BY[sc[1]].pitch}`,sc.slice(0,2),['¿Para quién es?','Recomiéndame un libro'])}
+  }
+
+  const personalHealth=has(t,/\b(tengo|padezco|me duele|me diagnosticaron|que tomo|que puedo tomar|medicamento|medicacion|pastilla|dosis|curar|cura)\b/)&&has(t,/\b(artritis|dolor|duele|fatiga|cansancio|inflamacion|reuma|enfermedad|salud|medicamento|medicacion|pastilla|dosis|curar|cura)\b/);
+
+  if(has(t,/\b(regalo|regalar|regalarle|cumpleanos|navidad|reyes|dia del padre|dia de la madre|detalle para)\b/)){
+    const sc=score(t);
+    if(sc[0][1]>=3)return recommend([sc[0][0]],'¡Qué buena idea regalar un libro!');
+    ctx.awaiting='gift';return R('¡Me encanta regalar libros! 🎁 ¿Para quién es?',[],CH.gift);
+  }
+
+  if(book){
+    if(has(t,/\b(para quien|a quien|publico|dirigido|me sirve|me vale)\b/))return describe(book,'para');
+    return describe(book);
+  }
+  if(ctx.focus&&has(t,/\b(para quien|a quien va|publico|dirigido|me sirve|me vale|es para mi)\b/))return describe(ctx.focus,'para');
+  if(ctx.focus&&has(t,/\b(cuentame mas|mas info|mas informacion|de que va|de que trata|resumen|sinopsis|detalles|explicame|que aprendo|y ese|y este)\b/))return describe(ctx.focus);
+
+  const sc=score(t);
+  if(sc[0][1]>=3){
+    ctx.miss=0;ctx.scores=sc;
+    const two=sc[1][1]>=Math.max(3,sc[0][1]*.75);
+    const intro=personalHealth?'No soy médico, así que para cualquier duda de salud lo mejor es tu médico o especialista. Lo que sí puedo es decirte qué lectura te puede acompañar:':(greet?`¡Hola${hi}!`:'');
+    return recommend(two?[sc[0][0],sc[1][0]]:[sc[0][0]],intro);
+  }
+
+  if(has(t,/\b(recomienda|recomiendame|recomendacion|que (me )?leo|no se que leer|sugerencia|sugiereme|aconsejas|aconsejame|cual (me )?(compro|elijo|leo)|por donde empiezo|cual es el mejor|el mas vendido|algun libro|busco un libro|quiero leer)\b/)){
+    ctx.awaiting='topic';return R(pick(['¡Vamos a encontrar tu libro! ¿Qué tema te interesa más?','Claro. Para acertar, dime: ¿qué te apetece?']),[],CH.topics);
+  }
+  if(greet)return R(pick([`¡Hola${hi}! 🐟 Soy Librín. Cuéntame qué te interesa o qué problema tienes entre manos y te digo qué libro de Gustavo encaja contigo.`,`¡Buenas${hi}! ¿Buscas algo para ti o es para regalar?`]),[],CH.start);
+
+  ctx.miss++;
+  if(ctx.miss>=2){ctx.miss=0;return R('Creo que no te estoy entendiendo bien, perdona. Te pongo los cinco libros y los temas que tratan, y eliges tú:',BOOKS.map(b=>b.id),CH.topics)}
+  return R(pick(['Mmm, de eso no sé mucho: soy especialista en los libros de Gustavo 🐟 ¿Me cuentas qué tema te interesa o para quién es el libro?','No estoy seguro de haberte entendido. ¿Buscas algo sobre empresa, jóvenes y redes, salud, artritis o IA para desguaces?']),[],CH.topics);
+}
+return {reply,BOOKS,BY,ctx};
+})();
+/* ---------- interfaz del chat ---------- */
+const chipsBox=document.getElementById('chatChips');
+const AMZ_LOGO='<img src="assets/amazon-logo.webp" alt="Amazon" width="237" height="72">';
+const STORE='librin-chat-v2';
+let history=[];
+function save(){try{sessionStorage.setItem(STORE,JSON.stringify({h:history.slice(-40),c:Librin.ctx}))}catch(e){}}
+function load(){try{const d=JSON.parse(sessionStorage.getItem(STORE)||'null');if(d&&Array.isArray(d.h)){history=d.h;Object.assign(Librin.ctx,d.c||{});return true}}catch(e){}return false}
+function richText(el,text){
+  text.split('\n').forEach(line=>{const p=document.createElement('p');
+    line.split(/(\*\*[^*]+\*\*)/).forEach(part=>{if(!part)return;if(part.startsWith('**')&&part.endsWith('**')){const b=document.createElement('strong');b.textContent=part.slice(2,-2);p.appendChild(b)}else p.appendChild(document.createTextNode(part))});
+    el.appendChild(p)});
+}
+function bookCard(id){
+  const B=Librin.BY[id],a=document.createElement('div');a.className='bcard';
+  const img=document.createElement('img');img.className='bc-cover';img.alt='';img.loading='lazy';img.src=`https://m.media-amazon.com/images/I/${B.img}._SL200_.jpg`;img.onerror=()=>{img.onerror=null;img.src=`assets/book-${B.local}.webp`};img.onload=()=>{body.scrollTop=body.scrollHeight};
+  const info=document.createElement('div');const t=document.createElement('b');t.textContent=B.title;const s=document.createElement('small');s.textContent=B.sub;
+  const link=document.createElement('a');link.href=`https://www.amazon.es/dp/${B.asin}`;link.target='_blank';link.rel='noopener';link.setAttribute('aria-label',`Ver ${B.title} en Amazon`);link.innerHTML='Ver en '+AMZ_LOGO;
+  info.append(t,s,link);a.append(img,info);return a;
+}
+function render(m,animate){
+  const d=document.createElement('div');d.className='msg '+m.who;
+  if(m.who==='bot')richText(d,m.text);else d.textContent=m.text;
+  body.appendChild(d);
+  (m.books||[]).forEach(id=>body.appendChild(bookCard(id)));
+  body.scrollTop=body.scrollHeight;
+}
+function setChips(list){
+  chipsBox.innerHTML='';(list||[]).forEach(q=>{const b=document.createElement('button');b.type='button';b.textContent=q;b.addEventListener('click',()=>ask(q));chipsBox.appendChild(b)});
+  chipsBox.hidden=!(list&&list.length);
+  body.scrollTop=body.scrollHeight;
+}
 function showTyping(){if(typingNode)return;const d=document.createElement('div');d.className='typing';d.innerHTML='<i></i><i></i><i></i>';body.appendChild(d);typingNode=d;body.scrollTop=body.scrollHeight}
 function stopTyping(){if(typingNode){typingNode.remove();typingNode=null}}
-function bot(text){const d=document.createElement('div');d.className='msg bot';d.textContent=text;body.appendChild(d);body.scrollTop=body.scrollHeight}
-function user(text){const d=document.createElement('div');d.className='msg user';d.textContent=text;body.appendChild(d);body.scrollTop=body.scrollHeight}
-function openChat(){chat.classList.add('open');floatBox.classList.add('hidden');if(!greeted){showTyping();setTimeout(()=>{stopTyping();bot('Hola. Soy Librín. Si me dices qué te interesa o qué problema tienes entre manos, te ayudo a elegir entre los libros de Gustavo.');greeted=true},650)}setTimeout(()=>input.focus(),100)}
+function push(m){history.push(m);render(m);save()}
+function botSay(r,delay){
+  setChips([]);showTyping();
+  setTimeout(()=>{stopTyping();push({who:'bot',text:r.text,books:r.books});setChips(r.chips)},delay??Math.min(1300,380+r.text.length*6));
+}
+function ask(q){q=(q||'').trim();if(!q)return;push({who:'user',text:q});botSay(Librin.reply(q))}
+function openChat(){
+  chat.classList.add('open');floatBox.classList.add('hidden');
+  if(!greeted){greeted=true;
+    if(load()&&history.length){history.forEach(m=>render(m));setChips(['Recomiéndame un libro','Ver todos los libros','Busco un regalo'])}
+    else botSay({text:'¡Hola! 🐟 Soy **Librín**, el asistente de lectura de El Boquerón Books.\nCuéntame qué te interesa, qué problema tienes entre manos o para quién buscas el libro, y te digo cuál encaja mejor.',books:[],chips:['Recomiéndame un libro','Busco un regalo','Ver todos los libros','¿Quién es Gustavo?']},650);
+  }
+  setTimeout(()=>input.focus(),100);
+}
 function closeChat(){chat.classList.remove('open');floatBox.classList.remove('hidden')}
 document.querySelectorAll('[data-open-chat]').forEach(b=>b.addEventListener('click',openChat));
 document.getElementById('searchBtn').addEventListener('click',openChat);
 hide.addEventListener('click',()=>{bubble.classList.add('gone');hide.classList.add('gone')});
 chatClose.addEventListener('click',closeChat);
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&chat.classList.contains('open'))closeChat()});
-
-function answer(q){const t=q.toLowerCase();
- if(t.includes('bookmark')) return 'BookMark es el marcapáginas digital de Limonada Web: guarda por qué página vas en cada libro, mantiene tu biblioteca sincronizada y te muestra progreso, racha y ritmo de lectura.';
- if(t.includes('empresa')||t.includes('trabajo')||t.includes('selección')) return 'Si buscas empresa, contratación o criterio profesional, empezaría por TITULITIS.';
- if(t.includes('ia')||t.includes('inteligencia')||t.includes('tecnolog')) return 'Para IA aplicada al trabajo, ChatGPT para gerentes de CAT es el más directo. Si te interesa la relación entre tecnología y vida cotidiana, El algoritmo no sabe vivir.';
- if(t.includes('salud')||t.includes('duele')||t.includes('cuerpo')) return 'Si buscas salud y bienestar, mira Sana tu cuerpo, recupera tu vida o No me pasa nada y aun así duele. El primero es más práctico; el segundo pone palabras a malestares que cuesta explicar.';
- if(t.includes('gustavo')||t.includes('quién')||t.includes('quien')) return 'Gustavo Molina Zafra escribe desde la experiencia empresarial, técnica y digital. Esta web reúne únicamente sus publicaciones.';
- if(t.includes('recom')) return 'Dime si lo buscas para empresa, tecnología, salud o vida práctica y te digo cuál encaja mejor.';
- return 'Cuéntame un poco más: ¿buscas algo de empresa, tecnología, salud o vida práctica?';
-}
-function ask(q){if(!q.trim())return;user(q);showTyping();setTimeout(()=>{stopTyping();bot(answer(q))},520)}
-form.addEventListener('submit',e=>{e.preventDefault();const q=input.value.trim();input.value='';ask(q)});
-document.querySelectorAll('.chat-chips button').forEach(b=>b.addEventListener('click',()=>ask(b.dataset.q)));
+form.addEventListener('submit',e=>{e.preventDefault();const q=input.value;input.value='';ask(q)});
 </script>
 
 </body>
