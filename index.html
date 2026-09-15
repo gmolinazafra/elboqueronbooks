@@ -1,1088 +1,362 @@
-﻿<!DOCTYPE html>
-<!-- VERSIÓN: 2026-05-07-FIX-AMAZON-LINK -->
+<!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="El Boquerón Books · Libros que transforman vidas.">
-    <title>El Boquerón Books · Libros que transforman vidas</title>
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Outfit:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'abyss': '#050d1a',
-                        'deep': '#0a1628',
-                        'navy': '#0f1e3d',
-                        'navy-light': '#1a2d4f',
-                        'wave': '#3ba0e0',
-                        'wave-soft': '#5fb3e8',
-                        'foam': '#e8eef5',
-                        'mist': '#a8b8cc',
-                    },
-                    fontFamily: {
-                        'display': ['"Cormorant Garamond"', 'Georgia', 'serif'],
-                        'body': ['"Outfit"', '-apple-system', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
-    
-    <style>
-        body {
-            background-color: #050d1a;
-            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
-            color: #e8eef5;
-            -webkit-font-smoothing: antialiased;
-        }
-        
-        /* === NAV === */
-        .nav-bar {
-            background: rgba(15, 30, 61, 0.95);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(59, 160, 224, 0.2);
-        }
-        
-        .nav-link {
-            transition: all 0.25s ease;
-            position: relative;
-            color: #e8eef5;
-            font-weight: 400;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.35rem;
-        }
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: -6px;
-            left: 50%;
-            transform: translateX(-50%) scaleX(0);
-            width: 70%;
-            height: 2px;
-            background: #3ba0e0;
-            transition: transform 0.25s ease;
-        }
-        .nav-link.active { color: #5fb3e8; font-weight: 500; }
-        .nav-link.active::after { transform: translateX(-50%) scaleX(1); }
-        .nav-link:hover { color: #5fb3e8; }
-        
-        /* === DESPLEGABLE CATEGORÍAS === */
-        .dropdown {
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            transform: translateX(-50%) translateY(-10px);
-            min-width: 280px;
-            background: rgba(10, 22, 40, 0.98);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(59, 160, 224, 0.25);
-            border-radius: 12px;
-            padding: 0.75rem;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
-            z-index: 50;
-        }
-        .dropdown-wrapper:hover .dropdown,
-        .dropdown.open {
-            opacity: 1;
-            visibility: visible;
-            transform: translateX(-50%) translateY(8px);
-        }
-        .dropdown-wrapper {
-            position: relative;
-        }
-        .dropdown-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0.55rem 0.85rem;
-            border-radius: 6px;
-            color: #e8eef5;
-            font-size: 0.875rem;
-            transition: all 0.2s ease;
-            cursor: pointer;
-            text-align: left;
-            width: 100%;
-        }
-        .dropdown-item:hover {
-            background: rgba(59, 160, 224, 0.12);
-            color: #5fb3e8;
-        }
-        .dropdown-item.active {
-            background: rgba(59, 160, 224, 0.15);
-            color: #5fb3e8;
-        }
-        .dropdown-item .count {
-            color: #a8b8cc;
-            font-size: 0.75rem;
-            opacity: 0.8;
-        }
-        
-        /* Flecha del desplegable */
-        .chevron {
-            transition: transform 0.25s ease;
-        }
-        .dropdown-wrapper:hover .chevron,
-        .chevron.open {
-            transform: rotate(180deg);
-        }
-        
-        /* === MENÚ MÓVIL === */
-        .mobile-menu {
-            transform: translateX(100%);
-            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .mobile-menu.open {
-            transform: translateX(0);
-        }
-        
-        /* === SEPARADOR LOGO === */
-        .divider-section {
-            background: 
-                radial-gradient(ellipse at center, rgba(59, 160, 224, 0.06) 0%, transparent 70%),
-                linear-gradient(180deg, #050d1a 0%, #0a1628 100%);
-        }
-        
-        /* === CARRUSEL === */
-        .carousel-track {
-            scroll-behavior: smooth;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-            scroll-snap-type: x mandatory;
-        }
-        .carousel-track::-webkit-scrollbar { display: none; }
-        .carousel-item {
-            scroll-snap-align: start;
-            flex-shrink: 0;
-        }
-        
-        .carousel-btn {
-            transition: all 0.25s ease;
-            background: rgba(15, 30, 61, 0.85);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(59, 160, 224, 0.3);
-        }
-        .carousel-btn:hover {
-            background: rgba(59, 160, 224, 0.9);
-            border-color: rgba(59, 160, 224, 0.8);
-            transform: translateY(-50%) scale(1.05);
-        }
-        .carousel-btn:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
-        }
-        
-        .ornament-line {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-        .ornament-line::before,
-        .ornament-line::after {
-            content: '';
-            height: 1px;
-            flex: 1;
-            background: linear-gradient(90deg, transparent, #3ba0e0, transparent);
-        }
-        
-        @keyframes shimmer {
-            0% { background-position: -1000px 0; }
-            100% { background-position: 1000px 0; }
-        }
-        .skeleton {
-            background: linear-gradient(90deg, #0f1e3d 0%, #1a2d4f 50%, #0f1e3d 100%);
-            background-size: 1000px 100%;
-            animation: shimmer 2s infinite linear;
-        }
-        
-        .book-card { transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
-        .book-card:hover { transform: translateY(-6px); }
-        .book-card:hover .book-cover {
-            box-shadow: 0 20px 50px rgba(59, 160, 224, 0.25), 0 0 0 1px rgba(59, 160, 224, 0.3);
-        }
-        .book-cover {
-            aspect-ratio: 2/3;
-            object-fit: cover;
-            background-color: #0f1e3d;
-            transition: box-shadow 0.4s ease;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
-        }
-        
-        .featured-card .book-cover {
-            box-shadow: 0 15px 40px rgba(59, 160, 224, 0.35), 0 0 0 2px rgba(59, 160, 224, 0.5);
-        }
-        
-        #scrollTopBtn {
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s, visibility 0.3s, transform 0.3s;
-        }
-        #scrollTopBtn.visible { opacity: 1; visibility: visible; }
-        #scrollTopBtn:hover { transform: translateY(-3px); }
-        
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .fade-up { animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; }
-        
-        ::-webkit-scrollbar { width: 10px; }
-        ::-webkit-scrollbar-track { background: #050d1a; }
-        ::-webkit-scrollbar-thumb { background: #1a2d4f; border-radius: 5px; }
-        ::-webkit-scrollbar-thumb:hover { background: #3ba0e0; }
-        
-        .line-clamp-2 {
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-        
-        /* Modal/secciones */
-        .page-section {
-            display: none;
-        }
-        .page-section.active {
-            display: block;
-        }
-    </style>
-<style>
-.cookie-banner{position:fixed;left:1rem;right:1rem;bottom:1rem;z-index:9999;display:none;align-items:center;justify-content:space-between;gap:1rem;max-width:960px;margin:auto;padding:1rem 1.1rem;border-radius:12px;background:#111827;color:#fff;box-shadow:0 18px 45px rgba(0,0,0,.22);font:14px/1.45 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.cookie-banner.is-visible{display:flex}.cookie-banner p{margin:0}.cookie-banner a{color:#bfdbfe;text-decoration:underline}.cookie-banner button{border:0;border-radius:999px;background:#fff;color:#111827;font-weight:700;padding:.65rem 1rem;cursor:pointer;white-space:nowrap}@media(max-width:640px){.cookie-banner{flex-direction:column;align-items:flex-start}.cookie-banner button{width:100%}}
-</style>
-<style>.limonada-link{color:inherit;text-decoration:none;font-weight:700}.limonada-link:hover{text-decoration:underline;text-underline-offset:3px}</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="El Boquerón Books · Selección editorial de libros y publicaciones de Gustavo Molina Zafra sobre empresa, criterio, tecnología, salud y vida práctica.">
+  <title>El Boquerón Books · Libros para pensar mejor</title>
+  <link rel="icon" href="favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --paper:#f6f2ea;
+      --paper-2:#fcfaf6;
+      --ink:#1e2420;
+      --muted:#666b65;
+      --line:#d8d1c4;
+      --green:#1f4d3b;
+      --green-2:#173a2d;
+      --sand:#b89b6d;
+      --white:#fff;
+      --shadow:0 18px 45px rgba(34,31,24,.10);
+      --serif:"Cormorant Garamond", Georgia, serif;
+      --sans:"Inter",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+    a{color:inherit}
+    img{max-width:100%;display:block}
+    button,input{font:inherit}
+    .wrap{width:min(1180px,calc(100% - 40px));margin:0 auto}
+    .topbar{position:sticky;top:0;z-index:40;background:rgba(246,242,234,.95);backdrop-filter:blur(12px);border-bottom:1px solid rgba(31,77,59,.12)}
+    .nav{height:76px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .brand{display:flex;align-items:center;gap:12px;text-decoration:none;min-width:0}
+    .brand img{height:42px;width:auto;object-fit:contain}
+    .brand-copy{display:flex;flex-direction:column;line-height:1}
+    .brand-copy strong{font-family:var(--serif);font-size:23px;font-weight:600;letter-spacing:.01em}
+    .brand-copy span{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-top:5px}
+    .nav-links{display:flex;align-items:center;gap:28px}
+    .nav-links a,.nav-links button{border:0;background:none;padding:0;text-decoration:none;color:var(--muted);font-size:14px;cursor:pointer;transition:.2s}
+    .nav-links a:hover,.nav-links button:hover{color:var(--green)}
+    .nav-cta{display:inline-flex!important;align-items:center;justify-content:center;padding:10px 16px!important;border:1px solid var(--green)!important;border-radius:999px!important;color:var(--green)!important;font-weight:600!important}
+    .nav-cta:hover{background:var(--green)!important;color:#fff!important}
+    .menu-btn{display:none;border:0;background:transparent;color:var(--ink);font-size:26px;cursor:pointer}
+    .hero{padding:92px 0 70px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,var(--paper-2),var(--paper))}
+    .hero-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(280px,.8fr);gap:70px;align-items:end}
+    .eyebrow{display:flex;align-items:center;gap:10px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--green);font-weight:600}
+    .eyebrow:before{content:"";width:28px;height:1px;background:var(--green)}
+    h1{font-family:var(--serif);font-size:clamp(58px,8vw,108px);line-height:.86;letter-spacing:-.035em;font-weight:500;margin:24px 0 26px;max-width:780px}
+    .hero-intro{font-family:var(--serif);font-size:clamp(23px,2.4vw,32px);line-height:1.25;color:#39423c;max-width:760px;margin:0}
+    .hero-side{border-left:1px solid var(--line);padding-left:34px}
+    .hero-side p{margin:0 0 26px;color:var(--muted);font-size:15px;line-height:1.75}
+    .actions{display:flex;flex-wrap:wrap;gap:12px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;border-radius:999px;padding:13px 20px;font-weight:600;font-size:13px;letter-spacing:.01em;transition:.2s;border:1px solid transparent;cursor:pointer}
+    .btn-primary{background:var(--green);color:#fff}.btn-primary:hover{background:var(--green-2);transform:translateY(-1px)}
+    .btn-secondary{border-color:var(--line);background:rgba(255,255,255,.35);color:var(--ink)}.btn-secondary:hover{border-color:var(--green);color:var(--green)}
+    .editorial-strip{padding:26px 0;border-bottom:1px solid var(--line)}
+    .editorial-strip .wrap{display:flex;align-items:center;justify-content:space-between;gap:30px;color:var(--muted);font-size:12px}
+    .editorial-strip strong{font-family:var(--serif);font-size:18px;color:var(--ink);font-weight:600}
+    .dot{width:4px;height:4px;border-radius:50%;background:var(--sand);display:inline-block;margin:0 12px;vertical-align:middle}
+    section{scroll-margin-top:95px}
+    .section{padding:80px 0}
+    .section-head{display:grid;grid-template-columns:1fr auto;align-items:end;gap:30px;margin-bottom:36px}
+    .section-head h2{font-family:var(--serif);font-size:clamp(40px,5vw,62px);font-weight:500;line-height:1;margin:0 0 8px}
+    .section-head p{margin:0;color:var(--muted);font-size:14px;line-height:1.65;max-width:640px}
+    .count{font-size:12px;color:var(--muted);white-space:nowrap;padding-bottom:5px}
+    .filters{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 36px}
+    .filter-btn{border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:999px;padding:8px 13px;font-size:12px;cursor:pointer;transition:.2s}
+    .filter-btn:hover,.filter-btn.active{border-color:var(--green);background:var(--green);color:#fff}
+    .books-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:42px 26px}
+    .book-card{min-width:0}
+    .book-card a{text-decoration:none;display:block}
+    .cover-wrap{aspect-ratio:2/3;background:#e7e1d7;border:1px solid rgba(30,36,32,.1);overflow:hidden;box-shadow:0 8px 22px rgba(40,34,25,.08);transition:.25s}
+    .book-card:hover .cover-wrap{transform:translateY(-4px);box-shadow:var(--shadow)}
+    .book-cover{width:100%;height:100%;object-fit:cover;transition:.35s}
+    .book-card:hover .book-cover{transform:scale(1.015)}
+    .book-meta{padding-top:15px}
+    .book-category{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--green);font-weight:600;min-height:12px}
+    .book-title{font-family:var(--serif);font-size:21px;line-height:1.05;font-weight:600;margin:7px 0 4px}
+    .book-author{font-size:11px;color:var(--muted);font-style:italic}
+    .book-desc{font-size:12px;color:var(--muted);line-height:1.55;margin-top:9px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+    .book-link{font-size:11px;color:var(--green);font-weight:600;margin-top:10px;display:inline-flex;gap:5px;align-items:center}
+    .state{text-align:center;padding:60px 20px;color:var(--muted);display:none}
+    .state strong{display:block;font-family:var(--serif);font-size:30px;color:var(--ink);margin-bottom:6px}
+    .author-section{background:var(--green);color:#fff;padding:90px 0}
+    .author-grid{display:grid;grid-template-columns:320px minmax(0,1fr);gap:64px;align-items:center}
+    .author-photo{aspect-ratio:4/5;object-fit:cover;width:100%;filter:saturate(.8);box-shadow:0 20px 60px rgba(0,0,0,.22)}
+    .author-section .eyebrow{color:#d9e8df}.author-section .eyebrow:before{background:#d9e8df}
+    .author-section h2{font-family:var(--serif);font-weight:500;font-size:clamp(48px,6vw,78px);line-height:.95;margin:20px 0 24px}
+    .author-section p{font-size:15px;line-height:1.8;color:#e3ece7;max-width:720px;margin:0 0 18px}
+    .author-quote{font-family:var(--serif);font-size:25px!important;line-height:1.35!important;color:#fff!important;border-top:1px solid rgba(255,255,255,.23);padding-top:22px;margin-top:26px!important}
+    .author-section .btn-secondary{border-color:rgba(255,255,255,.35);color:#fff;background:transparent}.author-section .btn-secondary:hover{border-color:#fff;color:#fff}
+    .contact{padding:78px 0;background:var(--paper-2);border-bottom:1px solid var(--line)}
+    .contact-box{display:grid;grid-template-columns:1fr auto;gap:30px;align-items:center}
+    .contact h2{font-family:var(--serif);font-size:46px;font-weight:500;margin:0 0 6px}
+    .contact p{margin:0;color:var(--muted)}
+    footer{padding:38px 0 34px;color:var(--muted);font-size:11px}
+    .footer-grid{display:grid;grid-template-columns:1fr auto;gap:28px;align-items:start}
+    .footer-brand{display:flex;align-items:center;gap:10px;color:var(--ink);font-family:var(--serif);font-size:18px}
+    .footer-brand img{height:32px;width:auto}
+    .footer-copy{max-width:670px;line-height:1.65;margin-top:12px}
+    .footer-links{display:flex;gap:18px;flex-wrap:wrap;justify-content:flex-end}
+    .footer-links a{text-decoration:none}.footer-links a:hover{color:var(--green)}
+    .credits{margin-top:26px;padding-top:18px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+    .credits a{font-weight:600;text-decoration:none;color:var(--green)}
+    .mobile-panel{display:none;position:fixed;inset:76px 0 auto 0;background:var(--paper-2);border-bottom:1px solid var(--line);z-index:35;padding:18px 20px 24px;box-shadow:0 15px 30px rgba(0,0,0,.08)}
+    .mobile-panel.open{display:block}
+    .mobile-panel a,.mobile-panel button{display:block;width:100%;padding:12px 0;text-align:left;border:0;border-bottom:1px solid var(--line);background:none;color:var(--ink);text-decoration:none;cursor:pointer}
+    .cookie-banner{position:fixed;left:20px;right:20px;bottom:20px;z-index:100;display:none;align-items:center;justify-content:space-between;gap:20px;max-width:900px;margin:auto;padding:14px 16px;background:#1f2622;color:#fff;box-shadow:0 18px 45px rgba(0,0,0,.2);font-size:12px;line-height:1.55}
+    .cookie-banner.is-visible{display:flex}.cookie-banner p{margin:0}.cookie-banner a{color:#d9e8df}.cookie-banner button{border:1px solid rgba(255,255,255,.5);background:transparent;color:#fff;border-radius:999px;padding:8px 14px;cursor:pointer;font-weight:600}
+    @media(max-width:980px){
+      .hero-grid{grid-template-columns:1fr;gap:45px}.hero-side{border-left:0;border-top:1px solid var(--line);padding:28px 0 0}
+      .books-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+      .author-grid{grid-template-columns:260px 1fr;gap:40px}
+    }
+    @media(max-width:760px){
+      .wrap{width:min(100% - 28px,1180px)}.nav{height:68px}.topbar .brand img{height:36px}.brand-copy span{display:none}.nav-links{display:none}.menu-btn{display:block}
+      .mobile-panel{inset:68px 0 auto 0}
+      .hero{padding:65px 0 50px}.hero-grid{gap:36px}h1{font-size:clamp(54px,18vw,80px)}.hero-intro{font-size:24px}
+      .editorial-strip .wrap{display:block;line-height:1.9}.editorial-strip .meta{margin-top:4px}
+      .section{padding:60px 0}.section-head{grid-template-columns:1fr}.count{padding:0}.books-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:34px 18px}.book-title{font-size:20px}
+      .author-section{padding:64px 0}.author-grid{grid-template-columns:1fr}.author-photo{width:min(300px,75vw);aspect-ratio:1/1;object-position:center 25%}.author-section h2{font-size:54px}
+      .contact-box,.footer-grid{grid-template-columns:1fr}.footer-links{justify-content:flex-start}.contact h2{font-size:40px}
+      .cookie-banner{flex-direction:column;align-items:flex-start}.cookie-banner button{width:100%}
+    }
+  </style>
 </head>
 <body>
-    
-    <!-- ============ NAVEGACIÓN ============ -->
-    <nav id="topNav" class="nav-bar sticky top-0 z-30">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
-            <div class="flex items-center justify-between gap-4">
-                
-                <!-- Logo y nombre -->
-                <a href="#" data-page="home" class="nav-trigger flex-shrink-0 flex items-center gap-2">
-                    <img src="logo.png" alt="El Boquerón Books" class="h-10 sm:h-11 object-contain"
-                         onerror="this.style.display='none'">
-                    <span class="hidden sm:block font-display text-xl text-foam tracking-wide">
-                        El Boquerón
-                    </span>
-                </a>
-                
-                <!-- Menú escritorio -->
-                <div class="hidden md:flex items-center gap-8">
-                    <a href="#" data-page="home" class="nav-trigger nav-link active text-sm">
-                        Inicio
-                    </a>
-                    
-                    <!-- Desplegable Categorías -->
-                    <div class="dropdown-wrapper">
-                        <button class="nav-link text-sm" id="categoriesTrigger" aria-haspopup="true" aria-expanded="false">
-                            Categorías
-                            <svg class="chevron w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
-                            </svg>
-                        </button>
-                        <div id="categoriesDropdown" class="dropdown" role="menu">
-                            <div class="skeleton h-9 rounded mb-1"></div>
-                            <div class="skeleton h-9 rounded mb-1"></div>
-                            <div class="skeleton h-9 rounded mb-1"></div>
-                            <div class="skeleton h-9 rounded"></div>
-                        </div>
-                    </div>
-                    
-                    <a href="#" data-page="about" class="nav-trigger nav-link text-sm">
-                        Sobre el autor
-                    </a>
-                    
-                    <a href="#" data-page="contact" class="nav-trigger nav-link text-sm">
-                        Contacto
-                    </a>
-                </div>
-                
-                <!-- Botón hamburguesa móvil -->
-                <button id="mobileMenuBtn" class="md:hidden p-2 text-foam">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
-                    </svg>
-                </button>
-            </div>
+  <header class="topbar">
+    <div class="wrap nav">
+      <a class="brand" href="#inicio" aria-label="El Boquerón Books, inicio">
+        <img src="logo.png" alt="El Boquerón Books">
+        <span class="brand-copy"><strong>El Boquerón Books</strong><span>Selección editorial independiente</span></span>
+      </a>
+      <nav class="nav-links" aria-label="Navegación principal">
+        <a href="#libros">Libros</a>
+        <a href="#autor">Sobre el autor</a>
+        <a href="#contacto">Contacto</a>
+        <a class="nav-cta" href="https://www.amazon.es/stores/author/B0H1TQJPHN/allbooks" target="_blank" rel="noopener">Gustavo en Amazon ↗</a>
+      </nav>
+      <button id="menuBtn" class="menu-btn" aria-label="Abrir menú" aria-expanded="false">☰</button>
+    </div>
+  </header>
+  <div id="mobilePanel" class="mobile-panel">
+    <a href="#libros">Libros</a>
+    <a href="#autor">Sobre el autor</a>
+    <a href="#contacto">Contacto</a>
+    <a href="https://www.amazon.es/stores/author/B0H1TQJPHN/allbooks" target="_blank" rel="noopener">Gustavo en Amazon ↗</a>
+  </div>
+
+  <main id="inicio">
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <div class="eyebrow">El Boquerón Books</div>
+          <h1>Libros para<br>pensar mejor.</h1>
+          <p class="hero-intro">Una selección personal de lecturas que dejan algo después de cerrar la última página.</p>
         </div>
-    </nav>
-
-    <!-- ============ MENÚ MÓVIL (DRAWER) ============ -->
-    <div id="mobileMenu" class="mobile-menu fixed top-0 right-0 h-full w-full sm:w-80 bg-deep z-50 shadow-2xl overflow-y-auto md:hidden">
-        <div class="p-6">
-            <div class="flex items-center justify-between mb-8">
-                <span class="font-display text-xl text-foam">Menú</span>
-                <button id="closeMobileMenu" class="text-mist hover:text-foam p-2">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
-                    </svg>
-                </button>
-            </div>
-            
-            <nav class="space-y-2">
-                <a href="#" data-page="home" class="nav-trigger block py-3 px-4 rounded text-foam hover:bg-navy-light hover:text-wave transition-colors text-base">
-                    Inicio
-                </a>
-                
-                <!-- Categorías móvil (acordeón) -->
-                <div>
-                    <button id="mobileCategoriesToggle" class="w-full flex items-center justify-between py-3 px-4 rounded text-foam hover:bg-navy-light hover:text-wave transition-colors text-base">
-                        <span>Categorías</span>
-                        <svg id="mobileCategoriesChevron" class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
-                        </svg>
-                    </button>
-                    <div id="mobileCategoriesList" class="hidden ml-4 mt-2 space-y-1 max-h-80 overflow-y-auto">
-                        <!-- Se rellena dinámicamente -->
-                    </div>
-                </div>
-                
-                <a href="#" data-page="about" class="nav-trigger block py-3 px-4 rounded text-foam hover:bg-navy-light hover:text-wave transition-colors text-base">
-                    Sobre el autor
-                </a>
-                
-                <a href="#" data-page="contact" class="nav-trigger block py-3 px-4 rounded text-foam hover:bg-navy-light hover:text-wave transition-colors text-base">
-                    Contacto
-                </a>
-            </nav>
+        <div class="hero-side">
+          <p>Empresa, criterio, tecnología, salud y vida práctica. Sin listas interminables ni recomendaciones por rellenar: cada libro entra aquí por una razón.</p>
+          <div class="actions">
+            <a class="btn btn-primary" href="#libros">Explorar libros ↓</a>
+            <a class="btn btn-secondary" href="https://www.amazon.es/stores/author/B0H1TQJPHN/allbooks" target="_blank" rel="noopener">Publicaciones de Gustavo ↗</a>
+          </div>
         </div>
-    </div>
-    <div id="mobileMenuOverlay" class="fixed inset-0 bg-black/60 z-40 hidden md:hidden"></div>
+      </div>
+    </section>
 
-    <!-- ============ PÁGINA: INICIO ============ -->
-    <div id="page-home" class="page-section active">
-        
-        <!-- Logo separador -->
-        <section class="divider-section py-6 sm:py-8 px-4">
-            <div class="max-w-3xl mx-auto text-center fade-up">
-                <img src="logo.png" alt="El Boquerón Books" 
-                     class="h-14 sm:h-16 mx-auto object-contain drop-shadow-xl mb-3"
-                     onerror="this.style.display='none'">
-                <div class="ornament-line max-w-xs mx-auto">
-                    <span class="font-display italic text-mist text-sm tracking-wide">
-                        Libros que transforman vidas
-                    </span>
-                </div>
-            </div>
-        </section>
-
-        <!-- Carrusel destacados -->
-        <section id="featuredSection" class="hidden relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-16">
-            <div class="flex items-center gap-4 mb-6">
-                <div class="h-px flex-1 bg-gradient-to-r from-transparent via-wave to-wave"></div>
-                <h2 class="font-display text-2xl sm:text-3xl md:text-4xl text-foam font-light italic px-4 whitespace-nowrap">
-                    Favoritos del Boquerón
-                </h2>
-                <div class="h-px flex-1 bg-gradient-to-l from-transparent via-wave to-wave"></div>
-            </div>
-            
-            <div class="relative group">
-                <button id="carouselPrev" 
-                        aria-label="Anterior"
-                        class="carousel-btn hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full items-center justify-center text-foam shadow-xl -ml-5 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
-                    </svg>
-                </button>
-                
-                <button id="carouselNext" 
-                        aria-label="Siguiente"
-                        class="carousel-btn hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full items-center justify-center text-foam shadow-xl -mr-5 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
-                    </svg>
-                </button>
-                
-                <div id="carouselTrack" class="carousel-track flex gap-5 sm:gap-7 overflow-x-auto pb-4">
-                </div>
-            </div>
-            
-            <p class="text-center text-mist/60 text-xs mt-4 md:hidden">
-                ← desliza para ver más →
-            </p>
-        </section>
-
-        <!-- Biblioteca -->
-        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
-            <div class="flex items-end justify-between mb-8 flex-wrap gap-4">
-                <div>
-                    <h2 id="catalogTitle" class="font-display text-3xl sm:text-4xl text-foam font-light">
-                        Toda la biblioteca
-                    </h2>
-                    <p id="resultsCount" class="text-mist text-sm mt-1">Cargando libros...</p>
-                </div>
-            </div>
-            
-            <div id="booksGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5 sm:gap-7">
-                <div><div class="skeleton book-cover rounded-lg"></div><div class="skeleton h-4 mt-3 rounded w-3/4"></div><div class="skeleton h-3 mt-2 rounded w-1/2"></div></div>
-                <div><div class="skeleton book-cover rounded-lg"></div><div class="skeleton h-4 mt-3 rounded w-3/4"></div><div class="skeleton h-3 mt-2 rounded w-1/2"></div></div>
-                <div><div class="skeleton book-cover rounded-lg"></div><div class="skeleton h-4 mt-3 rounded w-3/4"></div><div class="skeleton h-3 mt-2 rounded w-1/2"></div></div>
-                <div class="hidden sm:block"><div class="skeleton book-cover rounded-lg"></div><div class="skeleton h-4 mt-3 rounded w-3/4"></div><div class="skeleton h-3 mt-2 rounded w-1/2"></div></div>
-                <div class="hidden md:block"><div class="skeleton book-cover rounded-lg"></div><div class="skeleton h-4 mt-3 rounded w-3/4"></div><div class="skeleton h-3 mt-2 rounded w-1/2"></div></div>
-                <div class="hidden lg:block"><div class="skeleton book-cover rounded-lg"></div><div class="skeleton h-4 mt-3 rounded w-3/4"></div><div class="skeleton h-3 mt-2 rounded w-1/2"></div></div>
-                <div class="hidden lg:block"><div class="skeleton book-cover rounded-lg"></div><div class="skeleton h-4 mt-3 rounded w-3/4"></div><div class="skeleton h-3 mt-2 rounded w-1/2"></div></div>
-                <div class="hidden lg:block"><div class="skeleton book-cover rounded-lg"></div><div class="skeleton h-4 mt-3 rounded w-3/4"></div><div class="skeleton h-3 mt-2 rounded w-1/2"></div></div>
-            </div>
-            
-            <div id="noResults" class="hidden text-center py-20">
-                <p class="font-display text-3xl text-foam italic mb-2">Sin capturas en esta red.</p>
-                <p class="text-mist text-sm">Prueba con otra categoría.</p>
-            </div>
-            
-            <div id="errorMessage" class="hidden text-center py-20">
-                <p class="font-display text-2xl text-foam mb-2">No hemos podido cargar la biblioteca.</p>
-                <p class="text-mist text-sm">Recarga la página o vuelve en unos minutos.</p>
-            </div>
-        </section>
+    <div class="editorial-strip">
+      <div class="wrap">
+        <strong>Selección editorial independiente</strong>
+        <div class="meta">Lecturas con criterio <span class="dot"></span> Recomendaciones personales <span class="dot"></span> Publicaciones propias</div>
+      </div>
     </div>
 
-    <!-- ============ PÁGINA: SOBRE EL AUTOR ============ -->
-    <div id="page-about" class="page-section">
-        <section class="divider-section py-12 sm:py-20 px-4">
-            <div class="max-w-5xl mx-auto fade-up">
-                
-                <!-- Encabezado -->
-                <div class="text-center mb-12">
-                    <div class="ornament-line max-w-xs mx-auto mb-3">
-                        <span class="font-body text-wave tracking-[0.3em] text-xs uppercase">
-                            Quién hay detrás
-                        </span>
-                    </div>
-                    <h1 class="font-display text-4xl sm:text-5xl md:text-6xl text-foam font-light italic">
-                        Sobre el autor
-                    </h1>
-                </div>
-                
-                <!-- Contenido: foto + texto -->
-                <div class="grid md:grid-cols-[280px_1fr] lg:grid-cols-[320px_1fr] gap-8 md:gap-12 items-start">
-                    
-                    <!-- Foto del autor -->
-                    <div class="flex justify-center md:justify-start">
-                        <div class="relative">
-                            <!-- ⚠️ Reemplaza esta URL con la tuya, o sube "autor.jpg" al repo y cambia src="autor.jpg" -->
-                            <img src="autor.jpg" 
-                                 alt="Foto del autor" 
-                                 class="w-56 sm:w-64 md:w-full aspect-square object-cover rounded-full shadow-2xl border-4 border-navy-light"
-                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                            <!-- Placeholder si no hay foto -->
-                            <div class="hidden w-56 sm:w-64 md:w-full aspect-square rounded-full bg-navy border-4 border-navy-light items-center justify-center shadow-2xl">
-                                <svg class="w-24 h-24 text-mist/40" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                                </svg>
-                            </div>
-                            <!-- Decoración -->
-                            <div class="absolute -bottom-3 -right-3 w-12 h-12 rounded-full bg-wave/20 backdrop-blur-sm border border-wave/40 flex items-center justify-center">
-                                <svg class="w-6 h-6 text-wave" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Texto biográfico -->
-                    <div class="space-y-5 text-mist leading-relaxed">
-                        <!-- ⚠️ EDITA ESTE TEXTO DE EJEMPLO con tu propia historia -->
-                        <p class="font-display text-2xl sm:text-3xl text-foam italic font-light">
-                            "La lectura es el viaje de los que no pueden tomar el tren."
-                        </p>
-                        
-                        <p>
-                            Bienvenido a <strong class="text-foam">El Boquerón Books</strong>. Soy un apasionado lector que lleva años escogiendo, leyendo y subrayando libros que de un modo u otro <span class="text-wave">han transformado mi vida</span>.
-                        </p>
-                        
-                        <p>
-                            Este proyecto nació con una idea sencilla: compartir esas lecturas que me han marcado, las que han cambiado mi forma de pensar, las que me han acompañado en momentos difíciles y las que me han abierto puertas que no sabía que existían.
-                        </p>
-                        
-                        <p>
-                            Aquí no encontrarás listas interminables ni recomendaciones genéricas. Cada libro de esta biblioteca está aquí <em class="text-foam">por una razón</em>: porque ha aportado algo real, porque ha despertado preguntas, porque vale la pena el tiempo que pides al lector.
-                        </p>
-                        
-                        <p>
-                            Si te llevas aunque sea uno de estos libros y consigue marcar la diferencia para ti como lo hizo para mí, este pequeño espacio habrá cumplido su propósito.
-                        </p>
-                        
-                        <!-- Cita o firma -->
-                        <div class="pt-6 border-t border-navy-light">
-                            <p class="font-display italic text-foam text-lg">
-                                — Gustavo Molina Zafra
-                            </p>
-                            <p class="text-mist text-sm mt-1">Curador de El Boquerón Books</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- CTA -->
-                <div class="text-center mt-16">
-                    <button data-page="home" class="nav-trigger inline-flex items-center gap-2 px-6 py-3 bg-wave hover:bg-wave-soft text-abyss font-semibold rounded-full transition-all hover:scale-105 shadow-xl">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
-                        </svg>
-                        Explorar la biblioteca
-                    </button>
-                </div>
-            </div>
-        </section>
-    </div>
-
-    <!-- ============ PÁGINA: CONTACTO ============ -->
-    <div id="page-contact" class="page-section">
-        <section class="divider-section py-16 sm:py-24 px-4 min-h-[70vh] flex items-center">
-            <div class="max-w-2xl mx-auto text-center fade-up w-full">
-                
-                <div class="ornament-line max-w-xs mx-auto mb-3">
-                    <span class="font-body text-wave tracking-[0.3em] text-xs uppercase">
-                        Hablemos
-                    </span>
-                </div>
-                <h1 class="font-display text-4xl sm:text-5xl md:text-6xl text-foam font-light italic mb-6">
-                    Contacto
-                </h1>
-                
-                <p class="text-mist text-lg mb-12 max-w-md mx-auto">
-                    ¿Una recomendación, una pregunta, una idea? Escríbeme.
-                </p>
-                
-                <!-- Tarjeta de email -->
-                <a href="mailto:hola@elboqueronbooks.com" 
-                   class="inline-flex items-center gap-4 px-8 py-5 bg-navy hover:bg-navy-light border border-wave/30 hover:border-wave rounded-2xl transition-all group shadow-xl">
-                    <div class="w-12 h-12 rounded-full bg-wave/20 flex items-center justify-center group-hover:bg-wave/30 transition-colors">
-                        <svg class="w-6 h-6 text-wave" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                        </svg>
-                    </div>
-                    <div class="text-left">
-                        <p class="text-xs text-mist uppercase tracking-widest mb-0.5">Escríbeme a</p>
-                        <p class="font-display text-xl sm:text-2xl text-foam group-hover:text-wave transition-colors">
-                            hola@elboqueronbooks.com
-                        </p>
-                    </div>
-                </a>
-                
-                <p class="text-mist/60 text-xs mt-8">
-                    Suelo responder en menos de 48 horas.
-                </p>
-                
-            </div>
-        </section>
-    </div>
-
-    <!-- Botón subir -->
-    <button id="scrollTopBtn" 
-            aria-label="Subir al inicio"
-            class="fixed bottom-6 right-6 bg-wave hover:bg-wave-soft text-abyss rounded-full p-4 shadow-2xl z-40">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18"/>
-        </svg>
-    </button>
-
-    <!-- ============ FOOTER ============ -->
-    <footer class="bg-deep border-t border-navy mt-20">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <div class="text-center space-y-6">
-                <img src="logo.png" alt="El Boquerón Books" 
-                     class="h-12 mx-auto object-contain opacity-80"
-                     onerror="this.style.display='none'">
-                
-                <div class="ornament-line max-w-xs mx-auto">
-                    <span class="font-display italic text-mist text-sm">elboqueronbooks.com</span>
-                </div>
-                
-                <p class="text-xs text-mist/80 max-w-2xl mx-auto leading-relaxed px-4">
-                    Como afiliado de Amazon, 
-                    <a href="http://elboqueronbooks.com" class="text-wave hover:underline">elboqueronbooks.com</a> 
-                    percibe dinero con las compras elegibles.
-                </p>
-                
-                <div class="flex items-center justify-center gap-4 text-mist">
-                    <a href="#" aria-label="Facebook" class="hover:text-wave transition-colors">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-                    </a>
-                    <a href="#" aria-label="Instagram" class="hover:text-wave transition-colors">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-                    </a>
-                    <a href="#" aria-label="YouTube" class="hover:text-wave transition-colors">
-                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-                    </a>
-                </div>
-                
-                <p class="text-xs text-mist/50 pt-4 border-t border-navy/50">
-                    © <span id="currentYear"></span> El Boquerón Books · Todos los derechos reservados · Desarrollado por <a class="limonada-link" href="https://www.limonadaweb.com/" target="_blank" rel="noopener">Limonada Web</a>
-                </p>
-            </div>
+    <section id="libros" class="section">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow">Biblioteca</div>
+            <h2>La selección</h2>
+            <p>Libros escogidos por lo que aportan, no por la cantidad. Puedes filtrar por tema o recorrerlos todos.</p>
+          </div>
+          <div id="resultsCount" class="count">Cargando libros…</div>
         </div>
-    </footer>
+        <div id="categoryFilters" class="filters" aria-label="Filtrar libros por categoría"></div>
+        <div id="booksGrid" class="books-grid" aria-live="polite"></div>
+        <div id="noResults" class="state"><strong>No hay libros aquí todavía.</strong>Prueba con otra categoría.</div>
+        <div id="errorMessage" class="state"><strong>No hemos podido cargar la selección.</strong>Recarga la página o vuelve en unos minutos.</div>
+      </div>
+    </section>
 
-    <script>
-        console.log('%c[Boquerón] Versión 2026-05-07-FIX cargada ✓', 'color: #10b981; font-weight: bold; font-size: 14px;');
-        // ====================================================================
-        // ⚠️  URL DE GOOGLE SHEETS (publicada como CSV)
-        // Columnas: titulo | autor | portada | enlace_amazon | descripcion | categoria | destacado
-        // Para destacar un libro: escribe "si" en la columna "destacado".
-        // ====================================================================
-        const GOOGLE_SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQg6ccizy_zr8T-lASuKegNsXkvJLUQ2mciHxBt2HU2v4v-iY3YAYioR7suQUKWl3DxkFykCglay0kV/pub?output=csv';
-        
-        let allBooks = [];
-        let activeCategory = 'todos';
-        
-        const booksGrid = document.getElementById('booksGrid');
-        const featuredSection = document.getElementById('featuredSection');
-        const carouselTrack = document.getElementById('carouselTrack');
-        const carouselPrev = document.getElementById('carouselPrev');
-        const carouselNext = document.getElementById('carouselNext');
-        const noResults = document.getElementById('noResults');
-        const errorMessage = document.getElementById('errorMessage');
-        const resultsCount = document.getElementById('resultsCount');
-        const catalogTitle = document.getElementById('catalogTitle');
-        const categoriesDropdown = document.getElementById('categoriesDropdown');
-        const mobileCategoriesList = document.getElementById('mobileCategoriesList');
-        const scrollTopBtn = document.getElementById('scrollTopBtn');
-        
-        document.getElementById('currentYear').textContent = new Date().getFullYear();
-        
-        // ====================================================================
-        // SISTEMA DE NAVEGACIÓN ENTRE PÁGINAS (sin recargar)
-        // ====================================================================
-        function showPage(pageName) {
-            document.querySelectorAll('.page-section').forEach(section => {
-                section.classList.remove('active');
-            });
-            const target = document.getElementById('page-' + pageName);
-            if (target) {
-                target.classList.add('active');
-            }
-            
-            // Actualizar enlace activo en nav
-            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
-            const activeNav = document.querySelector(`.nav-link[data-page="${pageName}"]`);
-            if (activeNav) activeNav.classList.add('active');
-            
-            // Volver arriba al cambiar de página
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            
-            // Cerrar menú móvil si está abierto
-            closeMobileMenu();
-        }
-        
-        // Listener delegado para todos los nav-trigger
-        document.addEventListener('click', (e) => {
-            const trigger = e.target.closest('.nav-trigger');
-            if (trigger && trigger.dataset.page) {
-                e.preventDefault();
-                showPage(trigger.dataset.page);
-            }
-        });
-        
-        // ====================================================================
-        // MENÚ MÓVIL
-        // ====================================================================
-        const mobileMenu = document.getElementById('mobileMenu');
-        const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
-        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-        const closeMobileMenuBtn = document.getElementById('closeMobileMenu');
-        const mobileCategoriesToggle = document.getElementById('mobileCategoriesToggle');
-        const mobileCategoriesChevron = document.getElementById('mobileCategoriesChevron');
-        
-        function openMobileMenu() {
-            mobileMenu.classList.add('open');
-            mobileMenuOverlay.classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-        }
-        function closeMobileMenu() {
-            mobileMenu.classList.remove('open');
-            mobileMenuOverlay.classList.add('hidden');
-            document.body.style.overflow = '';
-        }
-        mobileMenuBtn.addEventListener('click', openMobileMenu);
-        closeMobileMenuBtn.addEventListener('click', closeMobileMenu);
-        mobileMenuOverlay.addEventListener('click', closeMobileMenu);
-        
-        mobileCategoriesToggle.addEventListener('click', () => {
-            mobileCategoriesList.classList.toggle('hidden');
-            mobileCategoriesChevron.classList.toggle('rotate-180');
-        });
-        
-        // ====================================================================
-        // PARSER CSV
-        // ====================================================================
-        function parseCSV(text) {
-            const rows = [];
-            let currentRow = [];
-            let currentField = '';
-            let inQuotes = false;
-            
-            for (let i = 0; i < text.length; i++) {
-                const char = text[i];
-                const nextChar = text[i + 1];
-                
-                if (inQuotes) {
-                    if (char === '"' && nextChar === '"') { currentField += '"'; i++; }
-                    else if (char === '"') { inQuotes = false; }
-                    else { currentField += char; }
-                } else {
-                    if (char === '"') inQuotes = true;
-                    else if (char === ',') { currentRow.push(currentField.trim()); currentField = ''; }
-                    else if (char === '\n' || char === '\r') {
-                        if (currentField || currentRow.length > 0) {
-                            currentRow.push(currentField.trim());
-                            rows.push(currentRow);
-                            currentRow = [];
-                            currentField = '';
-                        }
-                        if (char === '\r' && nextChar === '\n') i++;
-                    } else { currentField += char; }
-                }
-            }
-            if (currentField || currentRow.length > 0) {
-                currentRow.push(currentField.trim());
-                rows.push(currentRow);
-            }
-            return rows;
-        }
-        
-        // Normaliza un nombre de cabecera: minúsculas, sin acentos, sin espacios extra
-        function normalizeHeader(h) {
-            return (h || '')
-                .toLowerCase()
-                .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // quita acentos
-                .replace(/\s+/g, '_')
-                .trim();
-        }
+    <section id="autor" class="author-section">
+      <div class="wrap author-grid">
+        <img class="author-photo" src="autor.jpg" alt="Gustavo Molina Zafra" onerror="this.style.display='none'">
+        <div>
+          <div class="eyebrow">Quién hay detrás</div>
+          <h2>Gustavo Molina Zafra</h2>
+          <p>El Boquerón Books reúne dos cosas: una selección personal de lecturas que merecen la pena y las publicaciones de Gustavo Molina Zafra.</p>
+          <p>Su trabajo combina experiencia empresarial, visión técnica y proyectos digitales. Esa mezcla también aparece en sus libros: criterio, empresa, inteligencia artificial, salud y aprendizaje desde la experiencia real.</p>
+          <p class="author-quote">“No me interesa recomendar muchos libros. Me interesa que el que elijas te deje una idea útil cuando lo cierres.”</p>
+          <div class="actions" style="margin-top:28px">
+            <a class="btn btn-secondary" href="https://www.amazon.es/stores/author/B0H1TQJPHN/allbooks" target="_blank" rel="noopener">Ver todos sus libros en Amazon ↗</a>
+          </div>
+        </div>
+      </div>
+    </section>
 
-        // Aliases admitidos para cada campo lógico que usa la web
-        const FIELD_ALIASES = {
-            titulo:         ['titulo', 'title', 'nombre', 'libro'],
-            autor:          ['autor', 'author', 'autores'],
-            portada:        ['portada', 'imagen', 'image', 'cover', 'img', 'foto'],
-            enlace_amazon:  ['enlace_amazon', 'amazon_link', 'enlace', 'link', 'url', 'amazon', 'amazon_url', 'enlace_compra', 'comprar', 'compra'],
-            descripcion:    ['descripcion', 'description', 'desc', 'sinopsis'],
-            categoria:      ['categoria', 'category', 'genero', 'tema'],
-            destacado:      ['destacado', 'featured', 'favorito', 'top']
-        };
+    <section id="contacto" class="contact">
+      <div class="wrap contact-box">
+        <div>
+          <div class="eyebrow">Contacto</div>
+          <h2>¿Una recomendación, una pregunta, una idea?</h2>
+          <p>Escríbeme. El Boquerón Books sigue creciendo libro a libro.</p>
+        </div>
+        <a class="btn btn-primary" href="mailto:hola@elboqueronbooks.com">hola@elboqueronbooks.com</a>
+      </div>
+    </section>
+  </main>
 
-        // Construye un mapa { campo_logico -> indice_de_columna } a partir de las cabeceras reales
-        function buildHeaderMap(headerRow) {
-            const normalized = headerRow.map(normalizeHeader);
-            const map = {};
-            for (const field in FIELD_ALIASES) {
-                const aliases = FIELD_ALIASES[field];
-                const idx = normalized.findIndex(h => aliases.includes(h));
-                if (idx !== -1) map[field] = idx;
-            }
-            // FALLBACK ULTRA-PERMISIVO para el enlace de Amazon: si no se encontró,
-            // busca CUALQUIER columna cuyo nombre contenga "amazon", "link" o "url"
-            if (map.enlace_amazon === undefined) {
-                const idx = normalized.findIndex(h => 
-                    h.includes('amazon') || h.includes('link') || h.includes('url')
-                );
-                if (idx !== -1) {
-                    map.enlace_amazon = idx;
-                    console.log('[Boquerón] Columna de enlace detectada por fallback en posición:', idx, '(nombre:', normalized[idx], ')');
-                }
-            }
-            return { map, normalized };
+  <footer>
+    <div class="wrap">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand"><img src="logo.png" alt=""><span>El Boquerón Books</span></div>
+          <p class="footer-copy">Como afiliado de Amazon, elboqueronbooks.com puede percibir una comisión por compras elegibles realizadas desde algunos enlaces. Esto no modifica el precio para el lector.</p>
+        </div>
+        <div class="footer-links">
+          <a href="#libros">Libros</a>
+          <a href="#autor">Autor</a>
+          <a href="https://www.amazon.es/stores/author/B0H1TQJPHN/allbooks" target="_blank" rel="noopener">Amazon</a>
+        </div>
+      </div>
+      <div class="credits">
+        <span>© <span id="currentYear"></span> El Boquerón Books</span>
+        <span>Diseño y desarrollo · <a href="https://www.limonadaweb.com/" target="_blank" rel="noopener">Limonada Web</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <div id="cookieBanner" class="cookie-banner" role="dialog" aria-label="Aviso de cookies">
+    <p>Esta web utiliza únicamente el almacenamiento local necesario para recordar este aviso. Los enlaces externos pueden llevarte a servicios de terceros. <a href="#">Más información</a>.</p>
+    <button id="acceptCookies">Entendido</button>
+  </div>
+
+  <script>
+    const GOOGLE_SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQg6ccizy_zr8T-lASuKegNsXkvJLUQ2mciHxBt2HU2v4v-iY3YAYioR7suQUKWl3DxkFykCglay0kV/pub?output=csv';
+    const AMAZON_AUTHOR_URL = 'https://www.amazon.es/stores/author/B0H1TQJPHN/allbooks';
+    let allBooks = [];
+    let activeCategory = 'todos';
+
+    const grid = document.getElementById('booksGrid');
+    const filters = document.getElementById('categoryFilters');
+    const resultsCount = document.getElementById('resultsCount');
+    const noResults = document.getElementById('noResults');
+    const errorMessage = document.getElementById('errorMessage');
+
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+    const menuBtn = document.getElementById('menuBtn');
+    const mobilePanel = document.getElementById('mobilePanel');
+    menuBtn.addEventListener('click', () => {
+      const open = mobilePanel.classList.toggle('open');
+      menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      menuBtn.textContent = open ? '×' : '☰';
+    });
+    mobilePanel.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+      mobilePanel.classList.remove('open'); menuBtn.setAttribute('aria-expanded','false'); menuBtn.textContent='☰';
+    }));
+
+    function parseCSV(text){
+      const rows=[]; let row=[],field='',quoted=false;
+      for(let i=0;i<text.length;i++){
+        const c=text[i],n=text[i+1];
+        if(quoted){
+          if(c==='"'&&n==='"'){field+='"';i++;}
+          else if(c==='"'){quoted=false;} else field+=c;
+        }else{
+          if(c==='"') quoted=true;
+          else if(c===','){row.push(field.trim());field='';}
+          else if(c==='\n'||c==='\r'){
+            if(field||row.length){row.push(field.trim());rows.push(row);row=[];field='';}
+            if(c==='\r'&&n==='\n') i++;
+          }else field+=c;
         }
+      }
+      if(field||row.length){row.push(field.trim());rows.push(row);}
+      return rows;
+    }
 
-        async function loadBooks() {
-            try {
-                const response = await fetch(GOOGLE_SHEET_CSV_URL, { cache: 'no-store' });
-                if (!response.ok) throw new Error('Error de red (HTTP ' + response.status + ')');
-                
-                // Forzar UTF-8 explícitamente para que los acentos y la ñ no se rompan
-                const buffer = await response.arrayBuffer();
-                const csvText = new TextDecoder('utf-8').decode(buffer);
+    async function loadBooks(){
+      try{
+        const response=await fetch(GOOGLE_SHEET_CSV_URL,{cache:'no-store'});
+        if(!response.ok) throw new Error('No se pudo cargar la hoja');
+        const rows=parseCSV(await response.text());
+        if(rows.length<2) throw new Error('Hoja vacía');
+        const headers=rows[0].map(v=>v.toLowerCase().trim());
+        allBooks=rows.slice(1).filter(r=>r.some(Boolean)).map(r=>{
+          const b={}; headers.forEach((h,i)=>b[h]=(r[i]||'').trim()); return b;
+        }).filter(b=>b.titulo);
+        buildFilters(); renderBooks();
+      }catch(err){
+        console.error(err); resultsCount.textContent=''; errorMessage.style.display='block';
+      }
+    }
 
-                const rows = parseCSV(csvText);
-                if (rows.length < 2) throw new Error('La hoja está vacía');
+    function buildFilters(){
+      const categories=[...new Set(allBooks.map(b=>b.categoria).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es'));
+      const items=['Todos',...categories];
+      filters.innerHTML='';
+      items.forEach(cat=>{
+        const btn=document.createElement('button');
+        btn.className='filter-btn'+(cat.toLowerCase()===activeCategory?' active':'');
+        btn.textContent=cat;
+        btn.addEventListener('click',()=>{activeCategory=cat.toLowerCase();buildFilters();renderBooks();});
+        filters.appendChild(btn);
+      });
+    }
 
-                const { map: headerMap, normalized } = buildHeaderMap(rows[0]);
-                console.log('[Boquerón] Cabeceras detectadas:', normalized);
-                console.log('[Boquerón] Mapeo de columnas:', headerMap);
+    function safeText(value){return String(value||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));}
 
-                if (headerMap.titulo === undefined) {
-                    throw new Error('No encuentro la columna "titulo" en el Sheets. Cabeceras: ' + normalized.join(' | '));
-                }
-                if (headerMap.enlace_amazon === undefined) {
-                    console.warn('[Boquerón] Aviso: no se ha encontrado columna de enlace de Amazon. Los libros no enlazarán.');
-                }
+    function createBookCard(book){
+      const article=document.createElement('article'); article.className='book-card';
+      const title=safeText(book.titulo||'Sin título');
+      const author=safeText(book.autor||'');
+      const category=safeText(book.categoria||'');
+      const desc=safeText(book.descripcion||'');
+      const link=book.enlace_amazon||'#';
+      const cover=book.portada||'';
+      const placeholder='data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 300"%3E%3Crect width="200" height="300" fill="%23e7e1d7"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" fill="%23666b65" font-family="Georgia" font-size="15"%3ESin portada%3C/text%3E%3C/svg%3E';
+      article.innerHTML=`<a href="${safeText(link)}" target="_blank" rel="noopener nofollow sponsored">
+        <div class="cover-wrap"><img class="book-cover" loading="lazy" src="${safeText(cover)}" alt="Portada de ${title}" onerror="this.onerror=null;this.src='${placeholder}'"></div>
+        <div class="book-meta">
+          <div class="book-category">${category||'Lectura recomendada'}</div>
+          <h3 class="book-title">${title}</h3>
+          ${author?`<div class="book-author">${author}</div>`:''}
+          ${desc?`<div class="book-desc">${desc}</div>`:''}
+          <span class="book-link">Ver libro <span aria-hidden="true">↗</span></span>
+        </div></a>`;
+      return article;
+    }
 
-                allBooks = rows.slice(1)
-                    .filter(row => row.some(c => c))
-                    .map(row => {
-                        const book = {};
-                        for (const field in headerMap) {
-                            book[field] = (row[headerMap[field]] || '').trim();
-                        }
-                        return book;
-                    })
-                    .filter(b => b.titulo);
+    function renderBooks(){
+      const books=activeCategory==='todos'?allBooks:allBooks.filter(b=>(b.categoria||'').toLowerCase()===activeCategory);
+      grid.innerHTML=''; noResults.style.display='none'; errorMessage.style.display='none';
+      resultsCount.textContent=`${books.length} ${books.length===1?'libro':'libros'}`;
+      if(!books.length){noResults.style.display='block';return;}
+      books.forEach(book=>grid.appendChild(createBookCard(book)));
+    }
 
-                console.log('[Boquerón] Libros cargados:', allBooks.length);
-                if (allBooks[0]) console.log('[Boquerón] Ejemplo de primer libro:', allBooks[0]);
+    const cookieBanner=document.getElementById('cookieBanner');
+    if(!localStorage.getItem('boqueron_cookie_notice')) cookieBanner.classList.add('is-visible');
+    document.getElementById('acceptCookies').addEventListener('click',()=>{
+      localStorage.setItem('boqueron_cookie_notice','1'); cookieBanner.classList.remove('is-visible');
+    });
 
-                buildCategoriesDropdown();
-                renderFeaturedCarousel();
-                applyFilters();
-                
-            } catch (error) {
-                console.error('[Boquerón] Error cargando libros:', error);
-                booksGrid.classList.add('hidden');
-                featuredSection.classList.add('hidden');
-                errorMessage.classList.remove('hidden');
-                resultsCount.textContent = '';
-            }
-        }
-        
-        // ====================================================================
-        // CONSTRUIR DESPLEGABLE DE CATEGORÍAS
-        // ====================================================================
-        function buildCategoriesDropdown() {
-            const categoriesSet = new Set();
-            allBooks.forEach(b => {
-                if (b.categoria) categoriesSet.add(b.categoria);
-            });
-            const categories = ['Todos', ...Array.from(categoriesSet).sort()];
-            
-            // Desplegable escritorio
-            categoriesDropdown.innerHTML = '';
-            // Móvil
-            mobileCategoriesList.innerHTML = '';
-            
-            categories.forEach(cat => {
-                const count = cat === 'Todos' 
-                    ? allBooks.length 
-                    : allBooks.filter(b => (b.categoria || '').toLowerCase() === cat.toLowerCase()).length;
-                
-                // Item desktop
-                const desktopItem = document.createElement('button');
-                desktopItem.className = 'dropdown-item';
-                desktopItem.dataset.category = cat.toLowerCase();
-                if (cat.toLowerCase() === activeCategory) desktopItem.classList.add('active');
-                desktopItem.innerHTML = `<span>${cat}</span><span class="count">${count}</span>`;
-                desktopItem.addEventListener('click', () => selectCategory(cat));
-                categoriesDropdown.appendChild(desktopItem);
-                
-                // Item móvil
-                const mobileItem = document.createElement('button');
-                mobileItem.className = 'w-full flex items-center justify-between py-2 px-3 rounded text-mist hover:bg-navy-light hover:text-wave transition-colors text-sm text-left';
-                mobileItem.dataset.category = cat.toLowerCase();
-                mobileItem.innerHTML = `<span>${cat}</span><span class="text-xs opacity-70">${count}</span>`;
-                mobileItem.addEventListener('click', () => selectCategory(cat));
-                mobileCategoriesList.appendChild(mobileItem);
-            });
-        }
-        
-        function selectCategory(cat) {
-            activeCategory = cat.toLowerCase();
-            
-            // Cambiar a la página de inicio si no está activa
-            const homeActive = document.getElementById('page-home').classList.contains('active');
-            if (!homeActive) showPage('home');
-            
-            // Marcar activo
-            document.querySelectorAll('.dropdown-item').forEach(b => b.classList.remove('active'));
-            document.querySelectorAll(`.dropdown-item[data-category="${activeCategory}"]`).forEach(b => b.classList.add('active'));
-            
-            applyFilters();
-            closeMobileMenu();
-            
-            // Cerrar dropdown desktop
-            categoriesDropdown.style.opacity = '0';
-            categoriesDropdown.style.visibility = 'hidden';
-            setTimeout(() => {
-                categoriesDropdown.style.opacity = '';
-                categoriesDropdown.style.visibility = '';
-            }, 300);
-            
-            // Scroll al catálogo
-            setTimeout(() => {
-                catalogTitle.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }, 100);
-        }
-        
-        // ====================================================================
-        // CARRUSEL DESTACADOS
-        // ====================================================================
-        function renderFeaturedCarousel() {
-            const featured = allBooks.filter(b => 
-                ['si', 'sí', 'yes', 'true', '1', 'x'].includes((b.destacado || '').toLowerCase())
-            );
-            
-            if (featured.length === 0) {
-                featuredSection.classList.add('hidden');
-                return;
-            }
-            
-            featuredSection.classList.remove('hidden');
-            carouselTrack.innerHTML = '';
-            
-            featured.forEach(book => {
-                const item = createBookCard(book, true);
-                item.classList.add('carousel-item', 'w-[45%]', 'sm:w-[30%]', 'md:w-[22%]', 'lg:w-[18%]');
-                carouselTrack.appendChild(item);
-            });
-            
-            updateCarouselButtons();
-        }
-        
-        function updateCarouselButtons() {
-            const maxScroll = carouselTrack.scrollWidth - carouselTrack.clientWidth;
-            carouselPrev.disabled = carouselTrack.scrollLeft <= 5;
-            carouselNext.disabled = carouselTrack.scrollLeft >= maxScroll - 5;
-        }
-        
-        carouselPrev.addEventListener('click', () => {
-            carouselTrack.scrollBy({ left: -carouselTrack.clientWidth * 0.8, behavior: 'smooth' });
-        });
-        carouselNext.addEventListener('click', () => {
-            carouselTrack.scrollBy({ left: carouselTrack.clientWidth * 0.8, behavior: 'smooth' });
-        });
-        carouselTrack.addEventListener('scroll', updateCarouselButtons);
-        window.addEventListener('resize', updateCarouselButtons);
-        
-        // ====================================================================
-        // TARJETA DE LIBRO
-        // ====================================================================
-        function createBookCard(book, isFeatured = false) {
-            const card = document.createElement('article');
-            card.className = `book-card group ${isFeatured ? 'featured-card' : ''}`;
-            
-            // Sanear el enlace: eliminar espacios, añadir https:// si falta
-            let link = (book.enlace_amazon || '').trim();
-            if (link && !/^https?:\/\//i.test(link)) {
-                link = 'https://' + link;
-            }
-            if (!link) link = '#';
-
-            const cover = book.portada || '';
-            const title = book.titulo || 'Sin título';
-            const author = book.autor || '';
-            const category = book.categoria || '';
-            
-            const placeholderSVG = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 300%22%3E%3Crect width=%22200%22 height=%22300%22 fill=%22%230f1e3d%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 fill=%22%23a8b8cc%22 font-family=%22serif%22 font-style=%22italic%22 font-size=%2214%22%3ESin portada%3C/text%3E%3C/svg%3E';
-            
-            card.innerHTML = `
-                <a href="${link}" target="_blank" rel="noopener nofollow sponsored" class="block">
-                    <div class="overflow-hidden rounded-lg bg-navy">
-                        <img 
-                            src="${cover}" 
-                            alt="Portada de ${title}" 
-                            class="book-cover w-full group-hover:scale-105 transition-transform duration-700"
-                            loading="lazy"
-                            onerror="this.src='${placeholderSVG}'">
-                    </div>
-                    <div class="mt-4 px-1">
-                        ${category ? `<p class="text-[10px] tracking-[0.15em] uppercase text-wave/80 mb-1">${category}</p>` : ''}
-                        <h3 class="font-display text-base sm:text-lg text-foam line-clamp-2 leading-tight">
-                            ${title}
-                        </h3>
-                        ${author ? `<p class="text-xs sm:text-sm text-mist mt-1 italic">${author}</p>` : ''}
-                    </div>
-                </a>
-            `;
-            return card;
-        }
-        
-        function applyFilters() {
-            let filtered = allBooks;
-            
-            if (activeCategory !== 'todos') {
-                filtered = filtered.filter(b => 
-                    (b.categoria || '').toLowerCase() === activeCategory
-                );
-            }
-            
-            renderBooks(filtered);
-        }
-        
-        function renderBooks(books) {
-            booksGrid.innerHTML = '';
-            
-            if (activeCategory !== 'todos') {
-                const catName = activeCategory.charAt(0).toUpperCase() + activeCategory.slice(1);
-                catalogTitle.textContent = catName;
-            } else {
-                catalogTitle.textContent = 'Toda la biblioteca';
-            }
-            
-            if (books.length === 0) {
-                resultsCount.textContent = '';
-                booksGrid.classList.add('hidden');
-                noResults.classList.remove('hidden');
-                return;
-            }
-            
-            booksGrid.classList.remove('hidden');
-            noResults.classList.add('hidden');
-            resultsCount.textContent = `${books.length} ${books.length === 1 ? 'libro' : 'libros'}`;
-            
-            books.forEach(book => booksGrid.appendChild(createBookCard(book, false)));
-        }
-        
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 600) {
-                scrollTopBtn.classList.add('visible');
-            } else {
-                scrollTopBtn.classList.remove('visible');
-            }
-        });
-        scrollTopBtn.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-        
-        loadBooks();
-    </script>
-
-    <!-- ========================================================================
-         📦 NOTAS PARA EL DUEÑO DEL REPO
-         ========================================================================
-         📸 FOTO DEL AUTOR:
-         - Sube una foto cuadrada (recomendado 600x600px) llamada "autor.jpg"
-           a la raíz del repositorio. Se mostrará en la sección "Sobre el autor".
-         - Si no la subes, se mostrará un placeholder con un icono de persona.
-         
-         ✏️ TEXTO "SOBRE EL AUTOR":
-         - Edita los párrafos dentro de #page-about para personalizar tu historia.
-         - El texto actual es solo de ejemplo.
-         
-         📧 EMAIL DE CONTACTO:
-         - Cambia "hola@elboqueronbooks.com" por tu email real (búscalo en el HTML).
-         
-         🌐 REDES SOCIALES:
-         - Los enlaces "#" del footer apuntan a placeholders.
-         - Sustitúyelos por tus URLs de Facebook, Instagram y YouTube.
-         ======================================================================== -->
-<div class="cookie-banner" id="cookie-banner" role="region" aria-label="Aviso de cookies">
-  <p>Utilizamos cookies técnicas y almacenamiento local para recordar tus preferencias y mejorar la navegación. </p>
-  <button type="button" id="cookie-accept">Aceptar</button>
-</div>
-<script>
-(function(){
-  var key = 'limonada_cookie_ok_elboqueronbooks';
-  var banner = document.getElementById('cookie-banner');
-  var button = document.getElementById('cookie-accept');
-  if (!banner || !button) return;
-  try { if (localStorage.getItem(key) === '1') return; } catch (e) {}
-  banner.classList.add('is-visible');
-  button.addEventListener('click', function(){
-    try { localStorage.setItem(key, '1'); } catch (e) {}
-    banner.classList.remove('is-visible');
-  });
-})();
-</script>
+    loadBooks();
+  </script>
 </body>
 </html>
