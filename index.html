@@ -216,6 +216,21 @@ footer{padding:20px 0 28px}
 .buy .amz-logo{height:17px;margin-top:5px}
 .benefits .all{gap:8px}.benefits .all .amz-logo{height:18px;margin-top:5px}
 
+/* ---------- escritorio: fondo ajustado a la altura de pantalla (mesa y libros visibles sin scroll) ---------- */
+@media(min-width:1121px){
+ .stage{--bgH:clamp(600px,calc(100vh + 30px),1080px);background:var(--paper)}
+ .stage:before{content:"";position:absolute;top:0;right:0;z-index:0;height:var(--bgH);aspect-ratio:1536/1024;
+  background:url("assets/fondo-hero.webp") right top/cover no-repeat;
+  -webkit-mask-image:linear-gradient(to right,transparent 0,#000 24%),linear-gradient(to bottom,#000 78%,transparent 100%);
+  -webkit-mask-composite:source-in;
+  mask-image:linear-gradient(to right,transparent 0,#000 24%),linear-gradient(to bottom,#000 78%,transparent 100%);
+  mask-composite:intersect;pointer-events:none}
+ .stage:after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:linear-gradient(90deg,rgba(247,242,234,.93) 0%,rgba(247,242,234,.84) 38%,rgba(247,242,234,.5) 60%,rgba(247,242,234,0) 80%)}
+ .stage-inner{z-index:2}
+ .pile{z-index:1;top:calc(var(--bgH) * .585);right:-16px;width:calc(var(--bgH) * .3);height:auto}
+}
+
 /* ---------- responsive ---------- */
 @media(min-width:1440px){.bookmark{margin-left:-56px}}
 @media(max-width:1280px){
@@ -290,6 +305,7 @@ footer{padding:20px 0 28px}
 
 <main id="inicio">
 <div class="stage">
+ <img class="pile" src="assets/libros-pila.webp" alt="" width="640" height="479">
  <div class="wrap stage-inner">
 
   <section class="hero" aria-labelledby="heroTitle">
@@ -324,7 +340,6 @@ footer{padding:20px 0 28px}
     <article class="book"><div class="cover"><img src="https://m.media-amazon.com/images/I/71lDSspk7pL._SL600_.jpg" onerror="this.onerror=null;this.src='assets/book-sana.webp'" alt="Portada de Sana tu cuerpo, recupera tu vida: La guía antiinflamatoria definitiva" width="600" height="833" loading="lazy" decoding="async"></div><h3>Sana tu cuerpo, recupera tu vida</h3><p>Guía antiinflamatoria: 55 recetas y el método MediBitácora Pro.</p><a class="buy" href="https://www.amazon.es/dp/B0GZDC1GPP" target="_blank" rel="noopener" aria-label="Ver Sana tu cuerpo, recupera tu vida en Amazon">Ver en <img class="amz-logo" src="assets/amazon-logo.webp" alt="Amazon" width="237" height="72"><span aria-hidden="true">→</span></a></article>
     <article class="book"><div class="cover"><img src="https://m.media-amazon.com/images/I/71XMz-PXojL._SL600_.jpg" onerror="this.onerror=null;this.src='assets/book-chatgpt-cat.webp'" alt="Portada de ChatGPT para Gerentes de CAT: Cómo aumentar productividad, ventas, control interno y ventaja competitiva usando Inteligencia Artificial" width="600" height="833" loading="lazy" decoding="async"></div><h3>ChatGPT para gerentes de CAT</h3><p>Productividad, ventas y control interno con IA en tu CAT.</p><a class="buy" href="https://www.amazon.es/dp/B0GZLP5GJP" target="_blank" rel="noopener" aria-label="Ver ChatGPT para gerentes de CAT en Amazon">Ver en <img class="amz-logo" src="assets/amazon-logo.webp" alt="Amazon" width="237" height="72"><span aria-hidden="true">→</span></a></article>
    </div>
-   <img class="pile" src="assets/libros-pila.webp" alt="" width="640" height="479">
   </section>
 
   <section class="bookmark" id="bookmark" aria-label="BookMark de Limonada Web">
