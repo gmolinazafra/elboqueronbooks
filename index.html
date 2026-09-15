@@ -1,383 +1,66 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="El Boquerón Books · Selección editorial de libros y publicaciones de Gustavo Molina Zafra sobre empresa, criterio, tecnología, salud y vida práctica.">
-  <title>El Boquerón Books · Libros para pensar mejor</title>
-  <link rel="icon" href="favicon.ico">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      --paper:#f6f2ea;
-      --paper-2:#fcfaf6;
-      --ink:#1e2420;
-      --muted:#666b65;
-      --line:#d8d1c4;
-      --green:#1f4d3b;
-      --green-2:#173a2d;
-      --sand:#b89b6d;
-      --white:#fff;
-      --shadow:0 18px 45px rgba(34,31,24,.10);
-      --serif:"Cormorant Garamond", Georgia, serif;
-      --sans:"Inter",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-    }
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}
-    a{color:inherit}
-    img{max-width:100%;display:block}
-    button,input{font:inherit}
-    .wrap{width:min(1180px,calc(100% - 40px));margin:0 auto}
-
-    /* Header */
-    .topbar{position:sticky;top:0;z-index:40;background:rgba(246,242,234,.95);backdrop-filter:blur(12px);border-bottom:1px solid rgba(31,77,59,.12)}
-    .nav{height:76px;display:flex;align-items:center;justify-content:space-between;gap:24px}
-    .brand{display:flex;align-items:center;gap:12px;text-decoration:none;min-width:0}
-    .brand img{height:42px;width:auto;object-fit:contain}
-    .brand-copy{display:flex;flex-direction:column;line-height:1}
-    .brand-copy strong{font-family:var(--serif);font-size:23px;font-weight:600;letter-spacing:.01em}
-    .brand-copy span{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-top:5px}
-    .nav-links{display:flex;align-items:center;gap:28px}
-    .nav-links a,.nav-links button{border:0;background:none;padding:0;text-decoration:none;color:var(--muted);font-size:14px;cursor:pointer;transition:.2s}
-    .nav-links a:hover,.nav-links button:hover{color:var(--green)}
-    .nav-cta{display:inline-flex!important;align-items:center;justify-content:center;padding:10px 16px!important;border:1px solid var(--green)!important;border-radius:999px!important;color:var(--green)!important;font-weight:600!important}
-    .nav-cta:hover{background:var(--green)!important;color:#fff!important}
-    .menu-btn{display:none;border:0;background:transparent;color:var(--ink);font-size:26px;cursor:pointer}
-
-    /* Hero */
-    .hero{padding:92px 0 70px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,var(--paper-2),var(--paper))}
-    .hero-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(280px,.8fr);gap:70px;align-items:end}
-    .eyebrow{display:flex;align-items:center;gap:10px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--green);font-weight:600}
-    .eyebrow:before{content:"";width:28px;height:1px;background:var(--green)}
-    h1{font-family:var(--serif);font-size:clamp(58px,8vw,108px);line-height:.86;letter-spacing:-.035em;font-weight:500;margin:24px 0 26px;max-width:780px}
-    .hero-intro{font-family:var(--serif);font-size:clamp(23px,2.4vw,32px);line-height:1.25;color:#39423c;max-width:760px;margin:0}
-    .hero-side{border-left:1px solid var(--line);padding-left:34px}
-    .hero-side p{margin:0 0 26px;color:var(--muted);font-size:15px;line-height:1.75}
-    .actions{display:flex;flex-wrap:wrap;gap:12px}
-    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;border-radius:999px;padding:13px 20px;font-weight:600;font-size:13px;letter-spacing:.01em;transition:.2s;border:1px solid transparent;cursor:pointer}
-    .btn-primary{background:var(--green);color:#fff}.btn-primary:hover{background:var(--green-2);transform:translateY(-1px)}
-    .btn-secondary{border-color:var(--line);background:rgba(255,255,255,.35);color:var(--ink)}.btn-secondary:hover{border-color:var(--green);color:var(--green)}
-
-    /* Editorial strip */
-    .editorial-strip{padding:26px 0;border-bottom:1px solid var(--line)}
-    .editorial-strip .wrap{display:flex;align-items:center;justify-content:space-between;gap:30px;color:var(--muted);font-size:12px}
-    .editorial-strip strong{font-family:var(--serif);font-size:18px;color:var(--ink);font-weight:600}
-    .dot{width:4px;height:4px;border-radius:50%;background:var(--sand);display:inline-block;margin:0 12px;vertical-align:middle}
-
-    /* Sections */
-    section{scroll-margin-top:95px}
-    .section{padding:80px 0}
-    .section-head{display:grid;grid-template-columns:1fr auto;align-items:end;gap:30px;margin-bottom:36px}
-    .section-head h2{font-family:var(--serif);font-size:clamp(40px,5vw,62px);font-weight:500;line-height:1;margin:0 0 8px}
-    .section-head p{margin:0;color:var(--muted);font-size:14px;line-height:1.65;max-width:640px}
-    .count{font-size:12px;color:var(--muted);white-space:nowrap;padding-bottom:5px}
-
-    /* Category filters */
-    .filters{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 36px}
-    .filter-btn{border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:999px;padding:8px 13px;font-size:12px;cursor:pointer;transition:.2s}
-    .filter-btn:hover,.filter-btn.active{border-color:var(--green);background:var(--green);color:#fff}
-
-    /* Books */
-    .books-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:42px 26px}
-    .book-card{min-width:0}
-    .book-card a{text-decoration:none;display:block}
-    .cover-wrap{aspect-ratio:2/3;background:#e7e1d7;border:1px solid rgba(30,36,32,.1);overflow:hidden;box-shadow:0 8px 22px rgba(40,34,25,.08);transition:.25s}
-    .book-card:hover .cover-wrap{transform:translateY(-4px);box-shadow:var(--shadow)}
-    .book-cover{width:100%;height:100%;object-fit:cover;transition:.35s}
-    .book-card:hover .book-cover{transform:scale(1.015)}
-    .book-meta{padding-top:15px}
-    .book-category{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--green);font-weight:600;min-height:12px}
-    .book-title{font-family:var(--serif);font-size:21px;line-height:1.05;font-weight:600;margin:7px 0 4px}
-    .book-author{font-size:11px;color:var(--muted);font-style:italic}
-    .book-desc{font-size:12px;color:var(--muted);line-height:1.55;margin-top:9px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-    .book-link{font-size:11px;color:var(--green);font-weight:600;margin-top:10px;display:inline-flex;gap:5px;align-items:center}
-    .state{text-align:center;padding:60px 20px;color:var(--muted);display:none}
-    .state strong{display:block;font-family:var(--serif);font-size:30px;color:var(--ink);margin-bottom:6px}
-
-    /* Author */
-    .author-section{background:var(--green);color:#fff;padding:90px 0}
-    .author-grid{display:grid;grid-template-columns:320px minmax(0,1fr);gap:64px;align-items:center}
-    .author-photo{aspect-ratio:4/5;object-fit:cover;width:100%;filter:saturate(.8);box-shadow:0 20px 60px rgba(0,0,0,.22)}
-    .author-section .eyebrow{color:#d9e8df}.author-section .eyebrow:before{background:#d9e8df}
-    .author-section h2{font-family:var(--serif);font-weight:500;font-size:clamp(48px,6vw,78px);line-height:.95;margin:20px 0 24px}
-    .author-section p{font-size:15px;line-height:1.8;color:#e3ece7;max-width:720px;margin:0 0 18px}
-    .author-quote{font-family:var(--serif);font-size:25px!important;line-height:1.35!important;color:#fff!important;border-top:1px solid rgba(255,255,255,.23);padding-top:22px;margin-top:26px!important}
-    .author-section .btn-secondary{border-color:rgba(255,255,255,.35);color:#fff;background:transparent}.author-section .btn-secondary:hover{border-color:#fff;color:#fff}
-
-    /* Contact/footer */
-    .contact{padding:78px 0;background:var(--paper-2);border-bottom:1px solid var(--line)}
-    .contact-box{display:grid;grid-template-columns:1fr auto;gap:30px;align-items:center}
-    .contact h2{font-family:var(--serif);font-size:46px;font-weight:500;margin:0 0 6px}
-    .contact p{margin:0;color:var(--muted)}
-    footer{padding:38px 0 34px;color:var(--muted);font-size:11px}
-    .footer-grid{display:grid;grid-template-columns:1fr auto;gap:28px;align-items:start}
-    .footer-brand{display:flex;align-items:center;gap:10px;color:var(--ink);font-family:var(--serif);font-size:18px}
-    .footer-brand img{height:32px;width:auto}
-    .footer-copy{max-width:670px;line-height:1.65;margin-top:12px}
-    .footer-links{display:flex;gap:18px;flex-wrap:wrap;justify-content:flex-end}
-    .footer-links a{text-decoration:none}.footer-links a:hover{color:var(--green)}
-    .credits{margin-top:26px;padding-top:18px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
-    .credits a{font-weight:600;text-decoration:none;color:var(--green)}
-
-    /* mobile menu */
-    .mobile-panel{display:none;position:fixed;inset:76px 0 auto 0;background:var(--paper-2);border-bottom:1px solid var(--line);z-index:35;padding:18px 20px 24px;box-shadow:0 15px 30px rgba(0,0,0,.08)}
-    .mobile-panel.open{display:block}
-    .mobile-panel a,.mobile-panel button{display:block;width:100%;padding:12px 0;text-align:left;border:0;border-bottom:1px solid var(--line);background:none;color:var(--ink);text-decoration:none;cursor:pointer}
-
-    /* cookie */
-    .cookie-banner{position:fixed;left:20px;right:20px;bottom:20px;z-index:100;display:none;align-items:center;justify-content:space-between;gap:20px;max-width:900px;margin:auto;padding:14px 16px;background:#1f2622;color:#fff;box-shadow:0 18px 45px rgba(0,0,0,.2);font-size:12px;line-height:1.55}
-    .cookie-banner.is-visible{display:flex}.cookie-banner p{margin:0}.cookie-banner a{color:#d9e8df}.cookie-banner button{border:1px solid rgba(255,255,255,.5);background:transparent;color:#fff;border-radius:999px;padding:8px 14px;cursor:pointer;font-weight:600}
-
-    @media(max-width:980px){
-      .hero-grid{grid-template-columns:1fr;gap:45px}.hero-side{border-left:0;border-top:1px solid var(--line);padding:28px 0 0}
-      .books-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
-      .author-grid{grid-template-columns:260px 1fr;gap:40px}
-    }
-    @media(max-width:760px){
-      .wrap{width:min(100% - 28px,1180px)}.nav{height:68px}.topbar .brand img{height:36px}.brand-copy span{display:none}.nav-links{display:none}.menu-btn{display:block}
-      .mobile-panel{inset:68px 0 auto 0}
-      .hero{padding:65px 0 50px}.hero-grid{gap:36px}h1{font-size:clamp(54px,18vw,80px)}.hero-intro{font-size:24px}
-      .editorial-strip .wrap{display:block;line-height:1.9}.editorial-strip .meta{margin-top:4px}
-      .section{padding:60px 0}.section-head{grid-template-columns:1fr}.count{padding:0}.books-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:34px 18px}.book-title{font-size:20px}
-      .author-section{padding:64px 0}.author-grid{grid-template-columns:1fr}.author-photo{width:min(300px,75vw);aspect-ratio:1/1;object-position:center 25%}.author-section h2{font-size:54px}
-      .contact-box,.footer-grid{grid-template-columns:1fr}.footer-links{justify-content:flex-start}.contact h2{font-size:40px}
-      .cookie-banner{flex-direction:column;align-items:flex-start}.cookie-banner button{width:100%}
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="El Boquerón Books · Publicaciones de Gustavo Molina Zafra sobre empresa, criterio, tecnología, salud y aprendizaje.">
+<title>El Boquerón Books · Gustavo Molina Zafra</title>
+<link rel="icon" href="favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#f6f2ea;--paper2:#fcfaf6;--ink:#1e2420;--muted:#666b65;--line:#d8d1c4;--green:#1f4d3b;--green2:#173a2d;--sand:#b89b6d;--white:#fff;--shadow:0 18px 45px rgba(34,31,24,.12);--serif:"Cormorant Garamond",Georgia,serif;--sans:"Inter",system-ui,sans-serif}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}a{color:inherit}img{max-width:100%;display:block}button,input{font:inherit}.wrap{width:min(1180px,calc(100% - 40px));margin:auto}
+.topbar{position:sticky;top:0;z-index:40;background:rgba(246,242,234,.96);backdrop-filter:blur(12px);border-bottom:1px solid rgba(31,77,59,.12)}.nav{height:76px;display:flex;align-items:center;justify-content:space-between;gap:24px}.brand{display:flex;align-items:center;gap:12px;text-decoration:none}.brand img{height:42px}.brand-copy{display:flex;flex-direction:column;line-height:1}.brand-copy strong{font-family:var(--serif);font-size:23px;font-weight:600}.brand-copy span{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-top:5px}.nav-links{display:flex;align-items:center;gap:28px}.nav-links a{text-decoration:none;color:var(--muted);font-size:14px}.nav-links a:hover{color:var(--green)}.nav-cta{padding:10px 16px!important;border:1px solid var(--green);border-radius:999px;color:var(--green)!important;font-weight:600}.nav-cta:hover{background:var(--green);color:#fff!important}.menu-btn{display:none;border:0;background:none;font-size:26px}.mobile-panel{display:none;position:fixed;inset:76px 0 auto;background:var(--paper2);z-index:35;padding:18px 20px 24px;border-bottom:1px solid var(--line);box-shadow:0 15px 30px rgba(0,0,0,.08)}.mobile-panel.open{display:block}.mobile-panel a{display:block;padding:12px 0;border-bottom:1px solid var(--line);text-decoration:none}
+.hero{padding:92px 0 70px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,var(--paper2),var(--paper))}.hero-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(280px,.8fr);gap:70px;align-items:end}.eyebrow{display:flex;align-items:center;gap:10px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--green);font-weight:600}.eyebrow:before{content:"";width:28px;height:1px;background:var(--green)}h1{font-family:var(--serif);font-size:clamp(58px,8vw,108px);line-height:.86;letter-spacing:-.035em;font-weight:500;margin:24px 0 26px}.hero-intro{font-family:var(--serif);font-size:clamp(23px,2.4vw,32px);line-height:1.25;color:#39423c;margin:0}.hero-side{border-left:1px solid var(--line);padding-left:34px}.hero-side p{margin:0 0 26px;color:var(--muted);font-size:15px;line-height:1.75}.actions{display:flex;flex-wrap:wrap;gap:12px}.btn{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;border-radius:999px;padding:13px 20px;font-weight:600;font-size:13px;border:1px solid transparent;cursor:pointer}.btn-primary{background:var(--green);color:#fff}.btn-primary:hover{background:var(--green2)}.btn-secondary{border-color:var(--line);background:rgba(255,255,255,.35)}
+.strip{padding:26px 0;border-bottom:1px solid var(--line)}.strip .wrap{display:flex;justify-content:space-between;gap:30px;color:var(--muted);font-size:12px}.strip strong{font-family:var(--serif);font-size:18px;color:var(--ink);font-weight:600}.dot{width:4px;height:4px;border-radius:50%;background:var(--sand);display:inline-block;margin:0 12px;vertical-align:middle}
+.section{padding:80px 0}.section-head{display:grid;grid-template-columns:1fr auto;align-items:end;gap:30px;margin-bottom:36px}.section-head h2{font-family:var(--serif);font-size:clamp(40px,5vw,62px);font-weight:500;line-height:1;margin:0 0 8px}.section-head p{margin:0;color:var(--muted);font-size:14px;line-height:1.65;max-width:650px}.count{font-size:12px;color:var(--muted)}.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:36px}.filter-btn{border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:999px;padding:8px 13px;font-size:12px;cursor:pointer}.filter-btn.active,.filter-btn:hover{border-color:var(--green);background:var(--green);color:#fff}.books-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:42px 26px}.book-card a{text-decoration:none;display:block}.cover-wrap{aspect-ratio:2/3;background:#e7e1d7;border:1px solid rgba(30,36,32,.1);overflow:hidden;box-shadow:0 8px 22px rgba(40,34,25,.08);transition:.25s}.book-card:hover .cover-wrap{transform:translateY(-4px);box-shadow:var(--shadow)}.book-cover{width:100%;height:100%;object-fit:cover}.book-meta{padding-top:15px}.book-category{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--green);font-weight:600}.book-title{font-family:var(--serif);font-size:21px;line-height:1.05;font-weight:600;margin:7px 0 4px}.book-author{font-size:11px;color:var(--muted);font-style:italic}.book-desc{font-size:12px;color:var(--muted);line-height:1.55;margin-top:9px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}.book-link{font-size:11px;color:var(--green);font-weight:600;margin-top:10px;display:inline-flex}.state{text-align:center;padding:60px 20px;color:var(--muted);display:none}.state strong{display:block;font-family:var(--serif);font-size:30px;color:var(--ink);margin-bottom:6px}
+.author-section{background:var(--green);color:#fff;padding:90px 0}.author-grid{display:grid;grid-template-columns:320px minmax(0,1fr);gap:64px;align-items:center}.author-photo{aspect-ratio:4/5;object-fit:cover;width:100%;filter:saturate(.8);box-shadow:0 20px 60px rgba(0,0,0,.22)}.author-section .eyebrow{color:#d9e8df}.author-section .eyebrow:before{background:#d9e8df}.author-section h2{font-family:var(--serif);font-weight:500;font-size:clamp(48px,6vw,78px);line-height:.95;margin:20px 0 24px}.author-section p{font-size:15px;line-height:1.8;color:#e3ece7;max-width:720px}.author-quote{font-family:var(--serif);font-size:25px!important;color:#fff!important;border-top:1px solid rgba(255,255,255,.23);padding-top:22px;margin-top:26px!important}.author-section .btn-secondary{border-color:rgba(255,255,255,.35);color:#fff;background:transparent}
+.contact{padding:78px 0;background:var(--paper2);border-bottom:1px solid var(--line)}.contact-box{display:grid;grid-template-columns:1fr auto;gap:30px;align-items:center}.contact h2{font-family:var(--serif);font-size:46px;font-weight:500;margin:0 0 6px}.contact p{margin:0;color:var(--muted)}footer{padding:38px 0 34px;color:var(--muted);font-size:11px}.footer-grid{display:grid;grid-template-columns:1fr auto;gap:28px}.footer-brand{display:flex;align-items:center;gap:10px;color:var(--ink);font-family:var(--serif);font-size:18px}.footer-brand img{height:32px}.footer-copy{max-width:670px;line-height:1.65;margin-top:12px}.footer-links{display:flex;gap:18px;flex-wrap:wrap}.footer-links a{text-decoration:none}.credits{margin-top:26px;padding-top:18px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}.credits a{font-weight:600;text-decoration:none;color:var(--green)}
+/* Librín */
+.librin-launch{position:fixed;right:22px;bottom:22px;z-index:90;border:0;background:var(--green);color:#fff;border-radius:999px;padding:12px 17px;box-shadow:0 12px 30px rgba(0,0,0,.2);font-weight:700;cursor:pointer;display:flex;align-items:center;gap:9px}.librin-dot{width:9px;height:9px;border-radius:50%;background:#b9e7ca;box-shadow:0 0 0 4px rgba(185,231,202,.15)}.librin-panel{position:fixed;right:22px;bottom:78px;width:min(370px,calc(100vw - 28px));height:540px;max-height:calc(100vh - 105px);z-index:95;background:var(--paper2);border:1px solid var(--line);box-shadow:0 24px 70px rgba(0,0,0,.22);display:none;flex-direction:column;border-radius:18px;overflow:hidden}.librin-panel.open{display:flex}.librin-head{background:var(--green);color:#fff;padding:15px 16px;display:flex;align-items:center;justify-content:space-between}.librin-id{display:flex;align-items:center;gap:10px}.librin-avatar{width:38px;height:38px;border-radius:50%;background:#f6f2ea;color:var(--green);display:grid;place-items:center;font-family:var(--serif);font-weight:700;font-size:20px}.librin-name strong{display:block;font-family:var(--serif);font-size:20px}.librin-name span{font-size:10px;opacity:.8}.librin-close{border:0;background:none;color:#fff;font-size:24px;cursor:pointer}.librin-chat{flex:1;overflow:auto;padding:16px;background:#f8f5ef}.msg{max-width:84%;padding:10px 12px;margin:0 0 10px;border-radius:14px;font-size:13px;line-height:1.5}.msg.bot{background:#fff;border:1px solid #e3ddd2;border-bottom-left-radius:4px}.msg.user{background:var(--green);color:#fff;margin-left:auto;border-bottom-right-radius:4px}.typing{font-size:11px;color:var(--muted);margin:0 0 10px 4px}.librin-chips{display:flex;gap:7px;overflow:auto;padding:0 12px 10px;background:#f8f5ef}.chip{white-space:nowrap;border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 10px;font-size:11px;cursor:pointer}.librin-form{display:grid;grid-template-columns:1fr auto;gap:8px;padding:12px;border-top:1px solid var(--line);background:#fff}.librin-input{border:1px solid var(--line);border-radius:999px;padding:10px 13px;outline:none}.librin-send{border:0;border-radius:999px;background:var(--green);color:#fff;padding:0 14px;cursor:pointer}.librin-note{font-size:9px;color:var(--muted);padding:0 14px 10px;background:#fff;text-align:center}
+.cookie-banner{position:fixed;left:20px;right:20px;bottom:20px;z-index:100;display:none;align-items:center;justify-content:space-between;gap:20px;max-width:900px;margin:auto;padding:14px 16px;background:#1f2622;color:#fff;box-shadow:0 18px 45px rgba(0,0,0,.2);font-size:12px}.cookie-banner.is-visible{display:flex}.cookie-banner button{border:1px solid rgba(255,255,255,.5);background:none;color:#fff;border-radius:999px;padding:8px 14px}
+@media(max-width:980px){.hero-grid{grid-template-columns:1fr;gap:45px}.hero-side{border-left:0;border-top:1px solid var(--line);padding:28px 0 0}.books-grid{grid-template-columns:repeat(3,1fr)}.author-grid{grid-template-columns:260px 1fr}}
+@media(max-width:760px){.wrap{width:min(100% - 28px,1180px)}.nav{height:68px}.brand img{height:36px}.brand-copy span,.nav-links{display:none}.menu-btn{display:block}.mobile-panel{inset:68px 0 auto}.hero{padding:65px 0 50px}.books-grid{grid-template-columns:repeat(2,1fr);gap:34px 18px}.section{padding:60px 0}.section-head{grid-template-columns:1fr}.author-section{padding:64px 0}.author-grid{grid-template-columns:1fr}.author-photo{width:min(300px,75vw);aspect-ratio:1/1;object-position:center 25%}.contact-box,.footer-grid{grid-template-columns:1fr}.librin-launch{right:14px;bottom:14px}.librin-panel{right:14px;bottom:67px;height:70vh}.cookie-banner{flex-direction:column;align-items:flex-start}}
+</style>
 </head>
 <body>
-  <header class="topbar">
-    <div class="wrap nav">
-      <a class="brand" href="#inicio" aria-label="El Boquerón Books, inicio">
-        <img src="logo.png" alt="El Boquerón Books">
-        <span class="brand-copy"><strong>El Boquerón Books</strong><span>Selección editorial independiente</span></span>
-      </a>
-      <nav class="nav-links" aria-label="Navegación principal">
-        <a href="#libros">Libros</a>
-        <a href="#autor">Sobre el autor</a>
-        <a href="#contacto">Contacto</a>
-        <a class="nav-cta" href="https://www.amazon.es/stores/author/B0H1TQJPHN/allbooks" target="_blank" rel="noopener">Gustavo en Amazon ↗</a>
-      </nav>
-      <button id="menuBtn" class="menu-btn" aria-label="Abrir menú" aria-expanded="false">☰</button>
-    </div>
-  </header>
-  <div id="mobilePanel" class="mobile-panel">
-    <a href="#libros">Libros</a>
-    <a href="#autor">Sobre el autor</a>
-    <a href="#contacto">Contacto</a>
-    <a href="https://www.amazon.es/stores/author/B0H1TQJPHN/allbooks" target="_blank" rel="noopener">Gustavo en Amazon ↗</a>
-  </div>
-
-  <main id="inicio">
-    <section class="hero">
-      <div class="wrap hero-grid">
-        <div>
-          <div class="eyebrow">El Boquerón Books</div>
-          <h1>Libros para<br>pensar mejor.</h1>
-          <p class="hero-intro">Una selección personal de lecturas que dejan algo después de cerrar la última página.</p>
-        </div>
-        <div class="hero-side">
-          <p>Empresa, criterio, tecnología, salud y vida práctica. Sin listas interminables ni recomendaciones por rellenar: cada libro entra aquí por una razón.</p>
-          <div class="actions">
-            <a class="btn btn-primary" href="#libros">Explorar libros ↓</a>
-            <a class="btn btn-secondary" href="https://www.amazon.es/stores/author/B0H1TQJPHN/allbooks" target="_blank" rel="noopener">Publicaciones de Gustavo ↗</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <div class="editorial-strip">
-      <div class="wrap">
-        <strong>Selección editorial independiente</strong>
-        <div class="meta">Lecturas con criterio <span class="dot"></span> Recomendaciones personales <span class="dot"></span> Publicaciones propias</div>
-      </div>
-    </div>
-
-    <section id="libros" class="section">
-      <div class="wrap">
-        <div class="section-head">
-          <div>
-            <div class="eyebrow">Biblioteca</div>
-            <h2>La selección</h2>
-            <p>Libros escogidos por lo que aportan, no por la cantidad. Puedes filtrar por tema o recorrerlos todos.</p>
-          </div>
-          <div id="resultsCount" class="count">Cargando libros…</div>
-        </div>
-        <div id="categoryFilters" class="filters" aria-label="Filtrar libros por categoría"></div>
-        <div id="booksGrid" class="books-grid" aria-live="polite"></div>
-        <div id="noResults" class="state"><strong>No hay libros aquí todavía.</strong>Prueba con otra categoría.</div>
-        <div id="errorMessage" class="state"><strong>No hemos podido cargar la selección.</strong>Recarga la página o vuelve en unos minutos.</div>
-      </div>
-    </section>
-
-    <section id="autor" class="author-section">
-      <div class="wrap author-grid">
-        <img class="author-photo" src="autor.jpg" alt="Gustavo Molina Zafra" onerror="this.style.display='none'">
-        <div>
-          <div class="eyebrow">Quién hay detrás</div>
-          <h2>Gustavo Molina Zafra</h2>
-          <p>El Boquerón Books reúne dos cosas: una selección personal de lecturas que merecen la pena y las publicaciones de Gustavo Molina Zafra.</p>
-          <p>Su trabajo combina experiencia empresarial, visión técnica y proyectos digitales. Esa mezcla también aparece en sus libros: criterio, empresa, inteligencia artificial, salud y aprendizaje desde la experiencia real.</p>
-          <p class="author-quote">“No me interesa recomendar muchos libros. Me interesa que el que elijas te deje una idea útil cuando lo cierres.”</p>
-          <div class="actions" style="margin-top:28px">
-            <a class="btn btn-secondary" href="https://www.amazon.es/stores/author/B0H1TQJPHN/allbooks" target="_blank" rel="noopener">Ver todos sus libros en Amazon ↗</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="contacto" class="contact">
-      <div class="wrap contact-box">
-        <div>
-          <div class="eyebrow">Contacto</div>
-          <h2>¿Una recomendación, una pregunta, una idea?</h2>
-          <p>Escríbeme. El Boquerón Books sigue creciendo libro a libro.</p>
-        </div>
-        <a class="btn btn-primary" href="mailto:hola@elboqueronbooks.com">hola@elboqueronbooks.com</a>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <div class="wrap">
-      <div class="footer-grid">
-        <div>
-          <div class="footer-brand"><img src="logo.png" alt=""><span>El Boquerón Books</span></div>
-          <p class="footer-copy">Los enlaces a Amazon se incluyen únicamente para facilitar el acceso a los libros y no modifican el precio para el lector.</p>
-        </div>
-        <div class="footer-links">
-          <a href="#libros">Libros</a>
-          <a href="#autor">Autor</a>
-          <a href="https://www.amazon.es/stores/author/B0H1TQJPHN/allbooks" target="_blank" rel="noopener">Amazon</a>
-        </div>
-      </div>
-      <div class="credits">
-        <span>© <span id="currentYear"></span> El Boquerón Books</span>
-        <span>Diseño y desarrollo · <a href="https://www.limonadaweb.com/" target="_blank" rel="noopener">Limonada Web</a></span>
-      </div>
-    </div>
-  </footer>
-
-  <div id="cookieBanner" class="cookie-banner" role="dialog" aria-label="Aviso de cookies">
-    <p>Esta web utiliza únicamente el almacenamiento local necesario para recordar este aviso. Los enlaces externos pueden llevarte a servicios de terceros. <a href="#">Más información</a>.</p>
-    <button id="acceptCookies">Entendido</button>
-  </div>
-
-  <script>
-    const GOOGLE_SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQg6ccizy_zr8T-lASuKegNsXkvJLUQ2mciHxBt2HU2v4v-iY3YAYioR7suQUKWl3DxkFykCglay0kV/pub?output=csv';
-    const AMAZON_AUTHOR_URL = 'https://www.amazon.es/stores/author/B0H1TQJPHN/allbooks';
-    let allBooks = [];
-    let activeCategory = 'todos';
-
-    const grid = document.getElementById('booksGrid');
-    const filters = document.getElementById('categoryFilters');
-    const resultsCount = document.getElementById('resultsCount');
-    const noResults = document.getElementById('noResults');
-    const errorMessage = document.getElementById('errorMessage');
-
-    document.getElementById('currentYear').textContent = new Date().getFullYear();
-
-    const menuBtn = document.getElementById('menuBtn');
-    const mobilePanel = document.getElementById('mobilePanel');
-    menuBtn.addEventListener('click', () => {
-      const open = mobilePanel.classList.toggle('open');
-      menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
-      menuBtn.textContent = open ? '×' : '☰';
-    });
-    mobilePanel.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-      mobilePanel.classList.remove('open'); menuBtn.setAttribute('aria-expanded','false'); menuBtn.textContent='☰';
-    }));
-
-    function parseCSV(text){
-      const rows=[]; let row=[],field='',quoted=false;
-      for(let i=0;i<text.length;i++){
-        const c=text[i],n=text[i+1];
-        if(quoted){
-          if(c==='"'&&n==='"'){field+='"';i++;}
-          else if(c==='"'){quoted=false;} else field+=c;
-        }else{
-          if(c==='"') quoted=true;
-          else if(c===','){row.push(field.trim());field='';}
-          else if(c==='\n'||c==='\r'){
-            if(field||row.length){row.push(field.trim());rows.push(row);row=[];field='';}
-            if(c==='\r'&&n==='\n') i++;
-          }else field+=c;
-        }
-      }
-      if(field||row.length){row.push(field.trim());rows.push(row);}
-      return rows;
-    }
-
-    async function loadBooks(){
-      try{
-        const response=await fetch(GOOGLE_SHEET_CSV_URL,{cache:'no-store'});
-        if(!response.ok) throw new Error('No se pudo cargar la hoja');
-        const rows=parseCSV(await response.text());
-        if(rows.length<2) throw new Error('Hoja vacía');
-        const headers=rows[0].map(v=>v.toLowerCase().trim());
-        allBooks=rows.slice(1).filter(r=>r.some(Boolean)).map(r=>{
-          const b={}; headers.forEach((h,i)=>b[h]=(r[i]||'').trim()); return b;
-        }).filter(b=>b.titulo);
-        buildFilters(); renderBooks();
-      }catch(err){
-        console.error(err); resultsCount.textContent=''; errorMessage.style.display='block';
-      }
-    }
-
-    function buildFilters(){
-      const categories=[...new Set(allBooks.map(b=>b.categoria).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es'));
-      const items=['Todos',...categories];
-      filters.innerHTML='';
-      items.forEach(cat=>{
-        const btn=document.createElement('button');
-        btn.className='filter-btn'+(cat.toLowerCase()===activeCategory?' active':'');
-        btn.textContent=cat;
-        btn.addEventListener('click',()=>{activeCategory=cat.toLowerCase();buildFilters();renderBooks();});
-        filters.appendChild(btn);
-      });
-    }
-
-    function safeText(value){return String(value||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));}
-
-    function createBookCard(book){
-      const article=document.createElement('article'); article.className='book-card';
-      const title=safeText(book.titulo||'Sin título');
-      const author=safeText(book.autor||'');
-      const category=safeText(book.categoria||'');
-      const desc=safeText(book.descripcion||'');
-      const link=book.enlace_amazon||'#';
-      const cover=book.portada||'';
-      const placeholder='data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 300"%3E%3Crect width="200" height="300" fill="%23e7e1d7"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" fill="%23666b65" font-family="Georgia" font-size="15"%3ESin portada%3C/text%3E%3C/svg%3E';
-      article.innerHTML=`<a href="${safeText(link)}" target="_blank" rel="noopener nofollow sponsored">
-        <div class="cover-wrap"><img class="book-cover" loading="lazy" src="${safeText(cover)}" alt="Portada de ${title}" onerror="this.onerror=null;this.src='${placeholder}'"></div>
-        <div class="book-meta">
-          <div class="book-category">${category||'Lectura recomendada'}</div>
-          <h3 class="book-title">${title}</h3>
-          ${author?`<div class="book-author">${author}</div>`:''}
-          ${desc?`<div class="book-desc">${desc}</div>`:''}
-          <span class="book-link">Ver libro <span aria-hidden="true">↗</span></span>
-        </div></a>`;
-      return article;
-    }
-
-    function renderBooks(){
-      const books=activeCategory==='todos'?allBooks:allBooks.filter(b=>(b.categoria||'').toLowerCase()===activeCategory);
-      grid.innerHTML=''; noResults.style.display='none'; errorMessage.style.display='none';
-      resultsCount.textContent=`${books.length} ${books.length===1?'libro':'libros'}`;
-      if(!books.length){noResults.style.display='block';return;}
-      books.forEach(book=>grid.appendChild(createBookCard(book)));
-    }
-
-    const cookieBanner=document.getElementById('cookieBanner');
-    if(!localStorage.getItem('boqueron_cookie_notice')) cookieBanner.classList.add('is-visible');
-    document.getElementById('acceptCookies').addEventListener('click',()=>{
-      localStorage.setItem('boqueron_cookie_notice','1'); cookieBanner.classList.remove('is-visible');
-    });
-
-    loadBooks();
-  </script>
-</body>
-</html>
+<header class="topbar"><div class="wrap nav"><a class="brand" href="#inicio"><img src="logo.png" alt="El Boquerón Books"><span class="brand-copy"><strong>El Boquerón Books</strong><span>Publicaciones de Gustavo Molina Zafra</span></span></a><nav class="nav-links"><a href="#libros">Libros</a><a href="#autor">Autor</a><a href="#contacto">Contacto</a><a class="nav-cta" href="https://www.amazon.es/stores/author/B0H1TQJPHN/allbooks" target="_blank" rel="noopener">Gustavo en Amazon ↗</a></nav><button id="menuBtn" class="menu-btn" aria-label="Abrir menú">☰</button></div></header>
+<div id="mobilePanel" class="mobile-panel"><a href="#libros">Libros</a><a href="#autor">Sobre el autor</a><a href="#contacto">Contacto</a><a href="https://www.amazon.es/stores/author/B0H1TQJPHN/allbooks" target="_blank" rel="noopener">Gustavo en Amazon ↗</a></div>
+<main id="inicio">
+<section class="hero"><div class="wrap hero-grid"><div><div class="eyebrow">El Boquerón Books</div><h1>Libros para<br>pensar mejor.</h1><p class="hero-intro">Empresa, criterio, tecnología, salud y aprendizaje desde la experiencia real.</p></div><div class="hero-side"><p>Esta biblioteca reúne únicamente los libros publicados por Gustavo Molina Zafra. Distintos temas, una misma intención: contar cosas útiles sin adornarlas más de la cuenta.</p><div class="actions"><a class="btn btn-primary" href="#libros">Ver los libros ↓</a><button class="btn btn-secondary" type="button" onclick="openLibrin()">Preguntar a Librín</button></div></div></div></section>
+<div class="strip"><div class="wrap"><strong>Publicaciones propias</strong><div>Experiencia <span class="dot"></span> Criterio <span class="dot"></span> Empresa <span class="dot"></span> Tecnología</div></div></div>
+<section id="libros" class="section"><div class="wrap"><div class="section-head"><div><div class="eyebrow">Biblioteca</div><h2>Los libros de Gustavo</h2><p>Solo publicaciones de Gustavo Molina Zafra. Puedes filtrarlas por tema o preguntarle a Librín cuál encaja mejor contigo.</p></div><div id="resultsCount" class="count">Cargando…</div></div><div id="categoryFilters" class="filters"></div><div id="booksGrid" class="books-grid"></div><div id="noResults" class="state"><strong>No hay libros en esta categoría.</strong>Prueba con otra.</div><div id="errorMessage" class="state"><strong>No hemos podido cargar los libros.</strong>Vuelve a intentarlo en unos minutos.</div></div></section>
+<section id="autor" class="author-section"><div class="wrap author-grid"><img class="author-photo" src="autor.jpg" alt="Gustavo Molina Zafra" onerror="this.style.display='none'"><div><div class="eyebrow">Quién escribe</div><h2>Gustavo Molina Zafra</h2><p>Más de veinticinco años ligados a la automoción, la gestión y la dirección empresarial, junto a proyectos digitales desarrollados desde la necesidad de resolver problemas reales.</p><p>Los libros de El Boquerón Books nacen de esa mezcla: experiencia, curiosidad, tecnología y ganas de poner por escrito ideas que puedan servir a otros.</p><p class="author-quote">“Me interesa que el lector cierre el libro con una idea que pueda utilizar al día siguiente.”</p><div class="actions" style="margin-top:28px"><a class="btn btn-secondary" href="https://www.amazon.es/stores/author/B0H1TQJPHN/allbooks" target="_blank" rel="noopener">Ver perfil de autor en Amazon ↗</a></div></div></div></section>
+<section id="contacto" class="contact"><div class="wrap contact-box"><div><div class="eyebrow">Contacto</div><h2>¿Una pregunta o una idea?</h2><p>Puedes hablar primero con Librín o escribir directamente.</p></div><a class="btn btn-primary" href="mailto:hola@elboqueronbooks.com">hola@elboqueronbooks.com</a></div></section>
+</main>
+<footer><div class="wrap"><div class="footer-grid"><div><div class="footer-brand"><img src="logo.png" alt=""><span>El Boquerón Books</span></div><p class="footer-copy">Los enlaces a Amazon se incluyen únicamente para facilitar el acceso a los libros y no modifican el precio para el lector.</p></div><div class="footer-links"><a href="#libros">Libros</a><a href="#autor">Autor</a><a href="https://www.amazon.es/stores/author/B0H1TQJPHN/allbooks" target="_blank" rel="noopener">Amazon</a></div></div><div class="credits"><span>© <span id="currentYear"></span> El Boquerón Books</span><span>Diseño y desarrollo · <a href="https://www.limonadaweb.com/" target="_blank" rel="noopener">Limonada Web</a></span></div></div></footer>
+<button class="librin-launch" id="librinLaunch" onclick="openLibrin()"><span class="librin-dot"></span>Habla con Librín</button>
+<section class="librin-panel" id="librinPanel" aria-label="Librín, ayudante virtual"><div class="librin-head"><div class="librin-id"><div class="librin-avatar">L</div><div class="librin-name"><strong>Librín</strong><span>Ayudante virtual de El Boquerón Books</span></div></div><button class="librin-close" onclick="closeLibrin()" aria-label="Cerrar">×</button></div><div class="librin-chat" id="librinChat"></div><div class="librin-chips" id="librinChips"><button class="chip" data-q="¿Qué libro me recomiendas?">Recomiéndame uno</button><button class="chip" data-q="Quiero algo sobre empresa">Empresa</button><button class="chip" data-q="Quiero algo sobre tecnología e IA">IA y tecnología</button><button class="chip" data-q="Quiero conocerte">¿Quién eres?</button></div><form class="librin-form" id="librinForm"><input class="librin-input" id="librinInput" autocomplete="off" placeholder="Escribe como si hablaras conmigo…"><button class="librin-send" aria-label="Enviar">→</button></form><div class="librin-note">Librín es un asistente virtual. Si no sabe algo, te lo dirá.</div></section>
+<div id="cookieBanner" class="cookie-banner"><p>Esta web utiliza únicamente almacenamiento local para recordar este aviso y la conversación con Librín durante tu visita.</p><button id="acceptCookies">Entendido</button></div>
+<script>
+const GOOGLE_SHEET_CSV_URL='https://docs.google.com/spreadsheets/d/e/2PACX-1vQg6ccizy_zr8T-lASuKegNsXkvJLUQ2mciHxBt2HU2v4v-iY3YAYioR7suQUKWl3DxkFykCglay0kV/pub?output=csv';
+const AUTHOR='gustavo molina zafra';let allBooks=[],activeCategory='todos';
+const grid=document.getElementById('booksGrid'),filters=document.getElementById('categoryFilters'),resultsCount=document.getElementById('resultsCount'),noResults=document.getElementById('noResults'),errorMessage=document.getElementById('errorMessage');
+document.getElementById('currentYear').textContent=new Date().getFullYear();
+const menuBtn=document.getElementById('menuBtn'),mobilePanel=document.getElementById('mobilePanel');menuBtn.onclick=()=>{mobilePanel.classList.toggle('open');menuBtn.textContent=mobilePanel.classList.contains('open')?'×':'☰'};mobilePanel.querySelectorAll('a').forEach(a=>a.onclick=()=>mobilePanel.classList.remove('open'));
+function norm(s){return String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim()}
+function parseCSV(text){const rows=[];let row=[],field='',q=false;for(let i=0;i<text.length;i++){const c=text[i],n=text[i+1];if(q){if(c==='"'&&n==='"'){field+='"';i++}else if(c==='"')q=false;else field+=c}else{if(c==='"')q=true;else if(c===','){row.push(field.trim());field=''}else if(c==='\n'||c==='\r'){if(field||row.length){row.push(field.trim());rows.push(row);row=[];field=''}if(c==='\r'&&n==='\n')i++}else field+=c}}if(field||row.length){row.push(field.trim());rows.push(row)}return rows}
+async function loadBooks(){try{const r=await fetch(GOOGLE_SHEET_CSV_URL,{cache:'no-store'});if(!r.ok)throw Error();const rows=parseCSV(await r.text()),headers=rows[0].map(v=>v.toLowerCase().trim());allBooks=rows.slice(1).filter(r=>r.some(Boolean)).map(r=>{const b={};headers.forEach((h,i)=>b[h]=(r[i]||'').trim());return b}).filter(b=>b.titulo&&norm(b.autor)===AUTHOR);buildFilters();renderBooks();librinWelcome()}catch(e){resultsCount.textContent='';errorMessage.style.display='block';librinWelcome()}}
+function buildFilters(){const cats=[...new Set(allBooks.map(b=>b.categoria).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es'));filters.innerHTML='';['Todos',...cats].forEach(cat=>{const b=document.createElement('button');b.className='filter-btn'+(norm(cat)===activeCategory?' active':'');b.textContent=cat;b.onclick=()=>{activeCategory=norm(cat);buildFilters();renderBooks()};filters.appendChild(b)})}
+function esc(v){return String(v||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+function createBookCard(book){const a=document.createElement('article');a.className='book-card';const title=esc(book.titulo),author=esc(book.autor),cat=esc(book.categoria),desc=esc(book.descripcion),link=book.enlace_amazon||'#',cover=book.portada||'';a.innerHTML=`<a href="${esc(link)}" target="_blank" rel="noopener"><div class="cover-wrap"><img class="book-cover" loading="lazy" src="${esc(cover)}" alt="Portada de ${title}" onerror="this.style.opacity='.15'"></div><div class="book-meta"><div class="book-category">${cat||'Libro'}</div><h3 class="book-title">${title}</h3><div class="book-author">${author}</div>${desc?`<div class="book-desc">${desc}</div>`:''}<span class="book-link">Ver libro ↗</span></div></a>`;return a}
+function renderBooks(){const books=activeCategory==='todos'?allBooks:allBooks.filter(b=>norm(b.categoria)===activeCategory);grid.innerHTML='';noResults.style.display='none';errorMessage.style.display='none';resultsCount.textContent=`${books.length} ${books.length===1?'libro':'libros'}`;if(!books.length){noResults.style.display='block';return}books.forEach(b=>grid.appendChild(createBookCard(b)))}
+const panel=document.getElementById('librinPanel'),chat=document.getElementById('librinChat'),input=document.getElementById('librinInput');let welcomed=false;
+function openLibrin(){panel.classList.add('open');document.getElementById('librinLaunch').style.display='none';librinWelcome();setTimeout(()=>input.focus(),200)}function closeLibrin(){panel.classList.remove('open');document.getElementById('librinLaunch').style.display='flex'}
+function addMsg(text,who='bot'){const d=document.createElement('div');d.className='msg '+who;d.innerHTML=text;chat.appendChild(d);chat.scrollTop=chat.scrollHeight}
+function botSay(text){const t=document.createElement('div');t.className='typing';t.textContent='Librín está escribiendo…';chat.appendChild(t);chat.scrollTop=chat.scrollHeight;setTimeout(()=>{t.remove();addMsg(text,'bot')},450+Math.random()*500)}
+function librinWelcome(){if(welcomed)return;welcomed=true;const h=new Date().getHours();const sal=h<14?'Buenos días':h<21?'Buenas tardes':'Buenas noches';addMsg(`${sal}. Soy <strong>Librín</strong>. Llevo la estantería de Gustavo bastante controlada. Si me dices qué te apetece leer o qué problema tienes entre manos, intento orientarte sin venderte la moto.`)}
+function bookMatch(words){let best=null,score=0;allBooks.forEach(b=>{const hay=norm([b.titulo,b.descripcion,b.categoria].join(' '));let s=0;words.forEach(w=>{if(hay.includes(w))s+=2});if(s>score){score=s;best=b}});return best}
+function reply(q){const n=norm(q);if(!n)return;addMsg(esc(q),'user');let ans='';if(/quien eres|eres humano|persona|bot/.test(n))ans='Soy <strong>Librín</strong>, el ayudante virtual de El Boquerón Books. No hay una persona contestando cada mensaje, aunque intento hablar como hablamos por aquí: claro, sin frases de robot y sin inventarme lo que no sé.';else if(/recomienda|recomiendame|que libro|por donde empiezo/.test(n)){const b=allBooks[0];ans=b?`Para no recomendar a ciegas, dime una cosa: ¿te interesa más <strong>empresa y trabajo</strong>, <strong>IA y tecnología</strong>, <strong>salud</strong> o <strong>criterio y vida adulta</strong>? Si quieres que me moje ya, empezaría mirando <em>${esc(b.titulo)}</em>.`:'Dime qué tema te interesa y te oriento. La biblioteca todavía se está cargando.'}else if(/empresa|trabajo|contratar|talento|titulo|curriculum|rrhh/.test(n)){const b=bookMatch(['empresa','talento','trabajo','titulo','curriculum','seleccion']);ans=b?`Yo miraría <strong>${esc(b.titulo)}</strong>. Por lo que me cuentas, es el que más se acerca a empresa, trabajo y cómo valoramos la capacidad real. <a href="${esc(b.enlace_amazon||'#')}" target="_blank" rel="noopener">Verlo en Amazon ↗</a>`:'En esa línea, el libro que mejor encaja es <strong>Titulitis</strong>: empresa, selección y talento más allá del papel.'}else if(/ia|inteligencia artificial|chatgpt|claude|tecnologia/.test(n)){const b=bookMatch(['chatgpt','inteligencia artificial','ia','tecnologia']);ans=b?`Para tecnología e IA, te llevaría a <strong>${esc(b.titulo)}</strong>. <a href="${esc(b.enlace_amazon||'#')}" target="_blank" rel="noopener">Verlo ↗</a>`:'Aquí hay títulos sobre IA aplicada y tecnología. Si me dices si lo quieres para empresa, aprender o uso práctico, afino.'}else if(/salud|dolor|cuerpo/.test(n)){const b=bookMatch(['salud','dolor','cuerpo']);ans=b?`Por ese tema, el que te señalaría es <strong>${esc(b.titulo)}</strong>. <a href="${esc(b.enlace_amazon||'#')}" target="_blank" rel="noopener">Verlo ↗</a>`:'Hay varios títulos relacionados con salud. Dime si buscas algo más centrado en dolor, cuerpo o bienestar y te digo cuál.'}else if(/algoritmo|joven|vida adulta|redes|criterio/.test(n)){const b=bookMatch(['algoritmo','joven','vida adulta','criterio','redes']);ans=b?`Creo que encajas con <strong>${esc(b.titulo)}</strong>. Es de los que van más a criterio, decisiones y ruido de alrededor. <a href="${esc(b.enlace_amazon||'#')}" target="_blank" rel="noopener">Verlo ↗</a>`:'Para criterio y entrada en la vida adulta, miraría <strong>El algoritmo no sabe vivir</strong>.'}else if(/precio|comprar|amazon|papel|kindle/.test(n))ans='Los precios y formatos pueden cambiar en Amazon, así que prefiero no inventármelos. En cada ficha de libro tienes el enlace directo para ver la opción actual.';else if(/gustavo|autor/.test(n))ans='Gustavo Molina Zafra escribe desde su experiencia en empresa, automoción, gestión y proyectos digitales. Si quieres, también puedo decirte por qué escribió un título concreto.';else{const b=bookMatch(n.split(/\s+/).filter(w=>w.length>4));ans=b?`Por lo que has escrito, el título que más me encaja es <strong>${esc(b.titulo)}</strong>. ${b.descripcion?esc(b.descripcion):''} <a href="${esc(b.enlace_amazon||'#')}" target="_blank" rel="noopener">Echarle un vistazo ↗</a>`:'Eso se me sale un poco de la estantería. Puedo ayudarte a elegir entre los libros de Gustavo, contarte de qué va cada uno o llevarte al enlace correcto. Si necesitas algo más concreto, escríbenos a hola@elboqueronbooks.com.'}botSay(ans)}
+document.getElementById('librinForm').onsubmit=e=>{e.preventDefault();const q=input.value.trim();if(q){input.value='';reply(q)}};document.querySelectorAll('.chip').forEach(c=>c.onclick=()=>reply(c.dataset.q));
+const cookieBanner=document.getElementById('cookieBanner');if(!localStorage.getItem('boqueron_cookie_notice'))cookieBanner.classList.add('is-visible');document.getElementById('acceptCookies').onclick=()=>{localStorage.setItem('boqueron_cookie_notice','1');cookieBanner.classList.remove('is-visible')};
+loadBooks();
+</script>
+</body></html>
