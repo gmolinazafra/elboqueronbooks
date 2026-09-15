@@ -31,6 +31,8 @@
     img{max-width:100%;display:block}
     button,input{font:inherit}
     .wrap{width:min(1180px,calc(100% - 40px));margin:0 auto}
+
+    /* Header */
     .topbar{position:sticky;top:0;z-index:40;background:rgba(246,242,234,.95);backdrop-filter:blur(12px);border-bottom:1px solid rgba(31,77,59,.12)}
     .nav{height:76px;display:flex;align-items:center;justify-content:space-between;gap:24px}
     .brand{display:flex;align-items:center;gap:12px;text-decoration:none;min-width:0}
@@ -44,6 +46,8 @@
     .nav-cta{display:inline-flex!important;align-items:center;justify-content:center;padding:10px 16px!important;border:1px solid var(--green)!important;border-radius:999px!important;color:var(--green)!important;font-weight:600!important}
     .nav-cta:hover{background:var(--green)!important;color:#fff!important}
     .menu-btn{display:none;border:0;background:transparent;color:var(--ink);font-size:26px;cursor:pointer}
+
+    /* Hero */
     .hero{padding:92px 0 70px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,var(--paper-2),var(--paper))}
     .hero-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(280px,.8fr);gap:70px;align-items:end}
     .eyebrow{display:flex;align-items:center;gap:10px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--green);font-weight:600}
@@ -56,19 +60,27 @@
     .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;border-radius:999px;padding:13px 20px;font-weight:600;font-size:13px;letter-spacing:.01em;transition:.2s;border:1px solid transparent;cursor:pointer}
     .btn-primary{background:var(--green);color:#fff}.btn-primary:hover{background:var(--green-2);transform:translateY(-1px)}
     .btn-secondary{border-color:var(--line);background:rgba(255,255,255,.35);color:var(--ink)}.btn-secondary:hover{border-color:var(--green);color:var(--green)}
+
+    /* Editorial strip */
     .editorial-strip{padding:26px 0;border-bottom:1px solid var(--line)}
     .editorial-strip .wrap{display:flex;align-items:center;justify-content:space-between;gap:30px;color:var(--muted);font-size:12px}
     .editorial-strip strong{font-family:var(--serif);font-size:18px;color:var(--ink);font-weight:600}
     .dot{width:4px;height:4px;border-radius:50%;background:var(--sand);display:inline-block;margin:0 12px;vertical-align:middle}
+
+    /* Sections */
     section{scroll-margin-top:95px}
     .section{padding:80px 0}
     .section-head{display:grid;grid-template-columns:1fr auto;align-items:end;gap:30px;margin-bottom:36px}
     .section-head h2{font-family:var(--serif);font-size:clamp(40px,5vw,62px);font-weight:500;line-height:1;margin:0 0 8px}
     .section-head p{margin:0;color:var(--muted);font-size:14px;line-height:1.65;max-width:640px}
     .count{font-size:12px;color:var(--muted);white-space:nowrap;padding-bottom:5px}
+
+    /* Category filters */
     .filters{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 36px}
     .filter-btn{border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:999px;padding:8px 13px;font-size:12px;cursor:pointer;transition:.2s}
     .filter-btn:hover,.filter-btn.active{border-color:var(--green);background:var(--green);color:#fff}
+
+    /* Books */
     .books-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:42px 26px}
     .book-card{min-width:0}
     .book-card a{text-decoration:none;display:block}
@@ -84,6 +96,8 @@
     .book-link{font-size:11px;color:var(--green);font-weight:600;margin-top:10px;display:inline-flex;gap:5px;align-items:center}
     .state{text-align:center;padding:60px 20px;color:var(--muted);display:none}
     .state strong{display:block;font-family:var(--serif);font-size:30px;color:var(--ink);margin-bottom:6px}
+
+    /* Author */
     .author-section{background:var(--green);color:#fff;padding:90px 0}
     .author-grid{display:grid;grid-template-columns:320px minmax(0,1fr);gap:64px;align-items:center}
     .author-photo{aspect-ratio:4/5;object-fit:cover;width:100%;filter:saturate(.8);box-shadow:0 20px 60px rgba(0,0,0,.22)}
@@ -92,6 +106,8 @@
     .author-section p{font-size:15px;line-height:1.8;color:#e3ece7;max-width:720px;margin:0 0 18px}
     .author-quote{font-family:var(--serif);font-size:25px!important;line-height:1.35!important;color:#fff!important;border-top:1px solid rgba(255,255,255,.23);padding-top:22px;margin-top:26px!important}
     .author-section .btn-secondary{border-color:rgba(255,255,255,.35);color:#fff;background:transparent}.author-section .btn-secondary:hover{border-color:#fff;color:#fff}
+
+    /* Contact/footer */
     .contact{padding:78px 0;background:var(--paper-2);border-bottom:1px solid var(--line)}
     .contact-box{display:grid;grid-template-columns:1fr auto;gap:30px;align-items:center}
     .contact h2{font-family:var(--serif);font-size:46px;font-weight:500;margin:0 0 6px}
@@ -105,11 +121,16 @@
     .footer-links a{text-decoration:none}.footer-links a:hover{color:var(--green)}
     .credits{margin-top:26px;padding-top:18px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
     .credits a{font-weight:600;text-decoration:none;color:var(--green)}
+
+    /* mobile menu */
     .mobile-panel{display:none;position:fixed;inset:76px 0 auto 0;background:var(--paper-2);border-bottom:1px solid var(--line);z-index:35;padding:18px 20px 24px;box-shadow:0 15px 30px rgba(0,0,0,.08)}
     .mobile-panel.open{display:block}
     .mobile-panel a,.mobile-panel button{display:block;width:100%;padding:12px 0;text-align:left;border:0;border-bottom:1px solid var(--line);background:none;color:var(--ink);text-decoration:none;cursor:pointer}
+
+    /* cookie */
     .cookie-banner{position:fixed;left:20px;right:20px;bottom:20px;z-index:100;display:none;align-items:center;justify-content:space-between;gap:20px;max-width:900px;margin:auto;padding:14px 16px;background:#1f2622;color:#fff;box-shadow:0 18px 45px rgba(0,0,0,.2);font-size:12px;line-height:1.55}
     .cookie-banner.is-visible{display:flex}.cookie-banner p{margin:0}.cookie-banner a{color:#d9e8df}.cookie-banner button{border:1px solid rgba(255,255,255,.5);background:transparent;color:#fff;border-radius:999px;padding:8px 14px;cursor:pointer;font-weight:600}
+
     @media(max-width:980px){
       .hero-grid{grid-template-columns:1fr;gap:45px}.hero-side{border-left:0;border-top:1px solid var(--line);padding:28px 0 0}
       .books-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
@@ -225,7 +246,7 @@
       <div class="footer-grid">
         <div>
           <div class="footer-brand"><img src="logo.png" alt=""><span>El Boquerón Books</span></div>
-          <p class="footer-copy">Como afiliado de Amazon, elboqueronbooks.com puede percibir una comisión por compras elegibles realizadas desde algunos enlaces. Esto no modifica el precio para el lector.</p>
+          <p class="footer-copy">Los enlaces a Amazon se incluyen únicamente para facilitar el acceso a los libros y no modifican el precio para el lector.</p>
         </div>
         <div class="footer-links">
           <a href="#libros">Libros</a>
