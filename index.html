@@ -860,12 +860,8 @@ form.addEventListener('submit',e=>{e.preventDefault();const q=input.value;input.
   bx.addEventListener('mouseup',function(){
     clearTimeout(bx._rt);bx._rt=setTimeout(function(){running=false;start()},RESUME);
   });
-  bx.addEventListener('mouseenter',stop);
   bx.addEventListener('syn-open',function(){clearTimeout(bx._rt);stop()});
   bx.addEventListener('syn-close',function(){clearTimeout(bx._rt);bx._rt=setTimeout(function(){running=false;start()},1500)});
-  bx.addEventListener('mouseleave',function(){
-    clearTimeout(bx._rt);bx._rt=setTimeout(function(){running=false;start()},900);
-  });
 
   setDot(0);
   setTimeout(start,1200);
