@@ -90,13 +90,13 @@ button,input{font:inherit}
 .hero-fish:hover img{animation-play-state:paused}
 
 /* libros */
-.books-area{position:relative;padding-top:22px}
+.books-area{position:relative;padding-top:22px;overflow:hidden}
 .section-head{margin:0 0 18px}
 .section-head h2{font-family:"DM Serif Display",serif;font-weight:400;font-size:clamp(32px,2.6vw,40px);line-height:1;margin:0 0 6px;display:flex;align-items:center;gap:18px}
 .section-head h2:after{content:"";width:46px;height:3px;background:var(--gold);border-radius:99px}
 .section-head p{margin:0;color:var(--muted);font-size:16px}
-.books{display:flex;overflow-x:auto;gap:18px;max-width:min(1010px,78%);scroll-snap-type:x mandatory;padding-bottom:6px;scrollbar-width:none;-ms-overflow-style:none}.books::-webkit-scrollbar{display:none}
-.book{display:flex;flex-direction:column;flex:0 0 calc((min(1010px,78vw) - 5*18px)/5.4);scroll-snap-align:start;min-width:100px}
+.books{display:flex;overflow-x:auto;gap:18px;max-width:min(1010px,78%);scroll-snap-type:x mandatory;padding-bottom:6px;scrollbar-width:none;-ms-overflow-style:none;touch-action:pan-x}.books::-webkit-scrollbar{display:none}
+.book{display:flex;flex-direction:column;flex:0 0 calc((min(1010px,78vw) - 5*18px)/5.4);scroll-snap-align:start;min-width:100px;touch-action:pan-x}
 .cover{position:relative;aspect-ratio:.68/1}
 .cover img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 10px 14px rgba(0,0,0,.18))}
 .book h3{font-size:15px;line-height:1.18;margin:12px 0 5px;font-weight:600}
@@ -719,32 +719,98 @@ hide.addEventListener('click',()=>{bubble.classList.add('gone');hide.classList.a
 chatClose.addEventListener('click',closeChat);
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&chat.classList.contains('open'))closeChat()});
 form.addEventListener('submit',e=>{e.preventDefault();const q=input.value;input.value='';ask(q)});
-/* carrusel automático con bucle infinito y puntos de navegación */
+/* carrusel — bucle infinito real */
 (function(){
-  var bx=document.querySelector('.books');if(!bx)return;
-  var DELAY=3400,RESUME=2000,idx=0,timer=null,running=false;
+  var bx=document.querySelector('.books');
+  if(!bx||!bx.querySelector('.book'))return;
+
+  /* --- bloquear scroll vertical mientras el dedo/rueda va horizontal --- */
+  bx.addEventListener('wheel',function(e){
+    if(Math.abs(e.deltaX)>Math.abs(e.deltaY)){e.preventDefault()}
+    else{bx.scrollLeft+=e.deltaY;e.preventDefault()}
+  },{passive:false});
+
+  /* --- clonar libros para el bucle infinito --- */
+  var orig=Array.from(bx.querySelectorAll('.book')),N=orig.length;
+  orig.forEach(function(c){bx.appendChild(c.cloneNode(true))});
+  orig.slice().reverse().forEach(function(c){bx.insertBefore(c.cloneNode(true),bx.firstChild)});
+
+  /* ancho de 1 tarjeta, calculado en caliente */
+  function cardW(){
+    var all=bx.querySelectorAll('.book');
+    return all.length>1?all[1].offsetLeft-all[0].offsetLeft:all[0].offsetWidth+18;
+  }
+
+  /* saltar al grupo central sin animación */
+  function center(){bx.scrollLeft=N*cardW()}
+  setTimeout(center,0);
+
+  /* reposicionar silencioso al salir de los clones */
+  var repositioning=false;
+  function reposition(){
+    if(repositioning)return;
+    var w=cardW(),off=bx.scrollLeft;
+    if(off>=w*N*2){repositioning=true;bx.scrollLeft=off-w*N;setTimeout(function(){repositioning=false},50)}
+    else if(off<w){repositioning=true;bx.scrollLeft=off+w*N;setTimeout(function(){repositioning=false},50)}
+  }
+
+  /* --- puntos de navegación --- */
   var dotsWrap=document.createElement('div');dotsWrap.className='car-dots';
-  var books=bx.querySelectorAll('.book');
-  books.forEach(function(_,i){
+  orig.forEach(function(_,i){
     var d=document.createElement('button');d.type='button';d.setAttribute('aria-label','Libro '+(i+1));
-    d.addEventListener('click',function(){stop();goTo(i);clearTimeout(bx._rt);bx._rt=setTimeout(function(){running=false;start()},RESUME)});
+    d.addEventListener('click',function(){
+      stop();goTo(N+i);
+      clearTimeout(bx._rt);bx._rt=setTimeout(function(){running=false;start()},2000);
+    });
     dotsWrap.appendChild(d);
   });
   bx.parentElement.insertBefore(dotsWrap,bx.nextSibling);
-  function setDot(i){Array.from(dotsWrap.children).forEach(function(d,j){d.classList.toggle('active',j===i)})}
-  function cards(){return Array.from(bx.querySelectorAll('.book'))}
-  function snapIdx(){var cl=bx.scrollLeft,best=0,bd=Infinity;cards().forEach(function(c,i){var d=Math.abs(c.offsetLeft-bx.offsetLeft-cl);if(d<bd){bd=d;best=i}});return best}
-  function goTo(i){var c=cards();if(!c.length)return;i=((i%c.length)+c.length)%c.length;idx=i;bx.scrollTo({left:c[i].offsetLeft-bx.offsetLeft,behavior:'smooth'});setDot(i)}
+
+  function setDot(i){
+    var norm=((i%N)+N)%N;
+    Array.from(dotsWrap.children).forEach(function(d,j){d.classList.toggle('active',j===norm)});
+  }
+  function currentDot(){return Math.round(bx.scrollLeft/cardW())%N}
+
+  function goTo(absIdx){
+    var all=bx.querySelectorAll('.book');
+    if(absIdx<0||absIdx>=all.length)return;
+    bx.scrollTo({left:all[absIdx].offsetLeft-bx.offsetLeft,behavior:'smooth'});
+    setDot(absIdx);
+  }
+
+  bx.addEventListener('scroll',function(){
+    reposition();
+    setDot(currentDot());
+  },{passive:true});
+
+  /* --- motor del carrusel --- */
+  var timer=null,running=false,DELAY=3400,RESUME=2200;
+
   function stop(){clearInterval(timer);timer=null;running=false}
-  function start(){if(running)return;running=true;timer=setInterval(function(){var n=snapIdx()+1;if(n>=cards().length)n=0;goTo(n)},DELAY)}
-  bx.addEventListener('scroll',function(){setDot(snapIdx())},{passive:true});
-  bx.addEventListener('touchstart',stop,{passive:true});
+  function start(){
+    if(running)return;running=true;
+    timer=setInterval(function(){
+      bx.scrollBy({left:cardW(),behavior:'smooth'});
+      setTimeout(function(){reposition();setDot(currentDot())},500);
+    },DELAY);
+  }
+
+  bx.addEventListener('touchstart',function(){stop()},{passive:true});
+  bx.addEventListener('touchend',function(){
+    clearTimeout(bx._rt);bx._rt=setTimeout(function(){running=false;start()},RESUME);
+  },{passive:true});
   bx.addEventListener('mousedown',stop);
-  bx.addEventListener('touchend',function(){clearTimeout(bx._rt);bx._rt=setTimeout(function(){idx=snapIdx();running=false;start()},RESUME)},{passive:true});
-  bx.addEventListener('mouseup',function(){clearTimeout(bx._rt);bx._rt=setTimeout(function(){idx=snapIdx();running=false;start()},RESUME)});
+  bx.addEventListener('mouseup',function(){
+    clearTimeout(bx._rt);bx._rt=setTimeout(function(){running=false;start()},RESUME);
+  });
   bx.addEventListener('mouseenter',stop);
-  bx.addEventListener('mouseleave',function(){clearTimeout(bx._rt);bx._rt=setTimeout(function(){running=false;start()},800)});
-  setDot(0);setTimeout(start,1000);
+  bx.addEventListener('mouseleave',function(){
+    clearTimeout(bx._rt);bx._rt=setTimeout(function(){running=false;start()},900);
+  });
+
+  setDot(0);
+  setTimeout(start,1200);
 })();
 </script>
 
