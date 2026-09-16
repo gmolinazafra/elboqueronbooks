@@ -712,20 +712,24 @@ hide.addEventListener('click',()=>{bubble.classList.add('gone');hide.classList.a
 chatClose.addEventListener('click',closeChat);
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&chat.classList.contains('open'))closeChat()});
 form.addEventListener('submit',e=>{e.preventDefault();const q=input.value;input.value='';ask(q)});
-/* carrusel automático (móvil) */
+/* carrusel automático (todos los tamaños) */
 (function(){
   var bx=document.querySelector('.books');if(!bx)return;
-  var idx=0,timer=null,running=false;
+  var idx=0,timer=null,running=false,DELAY=3400,RESUME=2500;
   function cards(){return Array.from(bx.querySelectorAll('.book'))}
-  function isMobile(){return window.innerWidth<=720}
   function snapIdx(){var cl=bx.scrollLeft,best=0,bd=Infinity;cards().forEach(function(c,i){var d=Math.abs(c.offsetLeft-bx.offsetLeft-cl);if(d<bd){bd=d;best=i}});return best}
   function goTo(i){var c=cards();if(!c.length)return;i=((i%c.length)+c.length)%c.length;idx=i;bx.scrollTo({left:c[i].offsetLeft-bx.offsetLeft,behavior:'smooth'})}
   function stop(){clearInterval(timer);timer=null;running=false}
-  function start(){if(running||!isMobile())return;running=true;timer=setInterval(function(){idx=snapIdx();goTo(idx+1)},3400)}
+  function start(){if(running)return;running=true;timer=setInterval(function(){idx=snapIdx();goTo(idx+1)},DELAY)}
+  // pausa al tocar o arrastrar con el ratón, reanuda tras RESUME ms
   bx.addEventListener('touchstart',stop,{passive:true});
-  bx.addEventListener('touchend',function(){if(!isMobile())return;setTimeout(function(){idx=snapIdx();running=false;start()},2500)},{passive:true});
-  window.addEventListener('resize',function(){stop();idx=0;bx.scrollLeft=0;if(isMobile())setTimeout(start,600)});
-  if(isMobile())setTimeout(start,1200);
+  bx.addEventListener('mousedown',stop);
+  bx.addEventListener('touchend',function(){clearTimeout(bx._rt);bx._rt=setTimeout(function(){idx=snapIdx();running=false;start()},RESUME)},{passive:true});
+  bx.addEventListener('mouseup',function(){clearTimeout(bx._rt);bx._rt=setTimeout(function(){idx=snapIdx();running=false;start()},RESUME)});
+  // pausa al pasar el ratón por encima (sinopsis hover) y reanuda al salir
+  bx.addEventListener('mouseenter',stop);
+  bx.addEventListener('mouseleave',function(){clearTimeout(bx._rt);bx._rt=setTimeout(function(){running=false;start()},800)});
+  setTimeout(start,1000);
 })();
 </script>
 
