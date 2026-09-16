@@ -267,7 +267,7 @@ footer{padding:20px 0 28px}
 .synopsis.syn-visible{opacity:1;visibility:visible;transform:none;pointer-events:auto}
 .cover:focus-visible img{outline:3px solid var(--gold);outline-offset:3px}
 @media(hover:none){.cover{cursor:pointer}.cover:hover .synopsis{opacity:0;visibility:hidden}.book.syn-open .synopsis{opacity:1;visibility:visible;transform:none}}
-@media(max-width:720px){.synopsis{width:min(290px,80vw);font-size:11.5px}.book .synopsis .syn-hook{font-size:14.5px}}
+@media(max-width:720px){.synopsis{width:min(260px,76vw);font-size:11px;max-height:130px;padding:12px 14px 14px}.book .synopsis .syn-hook{font-size:13px;margin-bottom:7px}}
 @media(prefers-reduced-motion:reduce){.synopsis{transition:none}}
 
 /* puntos de navegación del carrusel */
@@ -836,6 +836,7 @@ form.addEventListener('submit',e=>{e.preventDefault();const q=input.value;input.
     if(left<10)left=10;
     if(left+synW>sw-10)left=sw-synW-10;
     syn.style.width=synW+'px';syn.style.left=left+'px';syn.style.top='-9999px';
+    syn.style.maxHeight=(window.innerWidth<=720?130:185)+'px';
     syn.classList.add('syn-visible');
     var synH=syn.offsetHeight;
     var top=cr.top-synH-10;
