@@ -874,12 +874,6 @@ form.addEventListener('submit',e=>{e.preventDefault();const q=input.value;input.
   function bindBtn(btn){
     if(btn._synBound)return;btn._synBound=true;
     btn.addEventListener('click',function(e){e.stopPropagation();toggle(btn)});
-    if(matchMedia('(hover:hover)').matches){
-      btn.addEventListener('mouseenter',function(){if(!btn.classList.contains('open'))toggle(btn)});
-      btn.addEventListener('mouseleave',function(){
-        clearTimeout(btn._t);btn._t=setTimeout(function(){closeAll();bx.dispatchEvent(new Event('syn-close'))},350);
-      });
-    }
   }
   function bindAll(){document.querySelectorAll('.syn-btn').forEach(bindBtn)}
   setTimeout(bindAll,50);
