@@ -256,18 +256,18 @@ footer{padding:20px 0 28px}
 
 /* ---------- sinopsis al pasar el ratón por la portada ---------- */
 .cover{cursor:help;outline:none}
-.synopsis{position:absolute;z-index:30;bottom:calc(100% + 8px);left:50%;width:300px;margin-left:-150px;padding:16px 18px 18px;border-radius:14px;
+.synopsis{position:absolute;z-index:30;top:calc(100% + 8px);left:50%;width:300px;margin-left:-150px;padding:16px 18px 18px;border-radius:14px;
  background:rgba(12,52,42,.97);color:#e8f0ec;box-shadow:0 22px 50px rgba(0,0,0,.32);font-size:12.5px;line-height:1.5;
- opacity:0;visibility:hidden;transform:translateY(4px);transition:opacity .2s,transform .2s,visibility .2s;pointer-events:none}
+ opacity:0;visibility:hidden;transform:translateY(-4px);transition:opacity .2s,transform .2s,visibility .2s;pointer-events:none}
 .book .synopsis p{margin:0 0 8px;color:#dde9e3;font-size:12.5px;line-height:1.5}.book .synopsis p:last-child{margin:0}
 .book .synopsis .syn-hook{font-family:"DM Serif Display",serif;font-size:17px;line-height:1.25;color:#fff;margin-bottom:10px}
 .synopsis:before{content:"";display:block;width:34px;height:3px;border-radius:9px;background:var(--gold);margin-bottom:10px}
-.book:first-child .synopsis{left:0;margin-left:0}
-.book:last-child .synopsis{left:auto;right:0;margin-left:0;margin-right:0}
+.book:first-child .synopsis{left:0;margin-left:0;transform-origin:left top}
+.book:last-child .synopsis{left:auto;right:0;margin-left:0;margin-right:0;transform-origin:right top}
 .cover:hover .synopsis,.cover:focus-visible .synopsis,.book.syn-open .synopsis{opacity:1;visibility:visible;transform:none}
 .cover:focus-visible img{outline:3px solid var(--gold);outline-offset:3px}
 @media(hover:none){.cover{cursor:pointer}.cover:hover .synopsis{opacity:0;visibility:hidden}.book.syn-open .synopsis{opacity:1;visibility:visible;transform:none}}
-@media(max-width:720px){.synopsis,.book:first-child .synopsis,.book:last-child .synopsis{left:auto;right:auto;bottom:calc(100% + 6px);top:auto;width:min(290px,80vw);margin:0 auto;width:auto;margin:0;overflow-y:auto;padding:12px 12px 14px;font-size:11.5px;pointer-events:auto}.book .synopsis p{font-size:11.5px}.book .synopsis .syn-hook{font-size:14.5px}}
+@media(max-width:720px){.synopsis,.book:first-child .synopsis,.book:last-child .synopsis{left:auto;right:auto;top:calc(100% + 6px);bottom:auto;width:min(290px,80vw);margin:0 auto;width:auto;margin:0;overflow-y:auto;padding:12px 12px 14px;font-size:11.5px;pointer-events:auto}.book .synopsis p{font-size:11.5px}.book .synopsis .syn-hook{font-size:14.5px}}
 @media(prefers-reduced-motion:reduce){.synopsis{transition:none}}
 
 /* puntos de navegación del carrusel */
