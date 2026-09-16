@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="El Boquerón Books · Libros de Gustavo Molina Zafra sobre empresa, criterio, tecnología, salud y vida práctica.">
+<meta name="description" content="El Boquerón Books · Libros de Gustavo Molina Zafra sobre empresa, aprendizaje, tecnología, salud, vida práctica y novela.">
 <meta name="theme-color" content="#0d5c47">
 <link rel="canonical" href="https://elboqueronbooks.com/">
 <meta property="og:type" content="website">
@@ -249,11 +249,32 @@ footer{padding:20px 0 28px}
 .bcard a:hover{border-color:var(--green)}
 .bcard a img{height:13px;width:auto;margin-top:4px}
 
+/* ---------- siete libros en una fila ---------- */
+.books{grid-template-columns:repeat(7,minmax(0,1fr));gap:18px;max-width:min(1010px,78%)}
+.book h3{font-size:12.5px;line-height:1.25}
+.buy{padding:7px 4px;gap:4px}.buy .buy-txt{display:none}.buy .amz-logo{height:16px}
+
+/* ---------- sinopsis al pasar el ratón por la portada ---------- */
+.cover{cursor:help;outline:none}
+.synopsis{position:absolute;z-index:30;top:-12px;left:50%;width:300px;margin-left:-150px;padding:16px 18px 18px;border-radius:14px;
+ background:rgba(12,52,42,.97);color:#e8f0ec;box-shadow:0 22px 50px rgba(0,0,0,.32);font-size:12.5px;line-height:1.5;
+ opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity .2s,transform .2s,visibility .2s;pointer-events:none}
+.book .synopsis p{margin:0 0 8px;color:#dde9e3;font-size:12.5px;line-height:1.5}.book .synopsis p:last-child{margin:0}
+.book .synopsis .syn-hook{font-family:"DM Serif Display",serif;font-size:17px;line-height:1.25;color:#fff;margin-bottom:10px}
+.synopsis:before{content:"";display:block;width:34px;height:3px;border-radius:9px;background:var(--gold);margin-bottom:10px}
+.book:first-child .synopsis{left:0;margin-left:-12px}
+.book:last-child .synopsis{left:auto;right:0;margin-left:0;margin-right:-12px}
+.cover:hover .synopsis,.cover:focus-visible .synopsis,.book.syn-open .synopsis{opacity:1;visibility:visible;transform:none}
+.cover:focus-visible img{outline:3px solid var(--gold);outline-offset:3px}
+@media(hover:none){.cover{cursor:pointer}.cover:hover .synopsis{opacity:0;visibility:hidden}.book.syn-open .synopsis{opacity:1;visibility:visible;transform:none}}
+@media(max-width:720px){.synopsis,.book:first-child .synopsis,.book:last-child .synopsis{left:-6px;right:-6px;top:-6px;bottom:-6px;width:auto;margin:0;overflow-y:auto;padding:12px 12px 14px;font-size:11.5px;pointer-events:auto}.book .synopsis p{font-size:11.5px}.book .synopsis .syn-hook{font-size:14.5px}}
+@media(prefers-reduced-motion:reduce){.synopsis{transition:none}}
+
 /* ---------- responsive ---------- */
 @media(min-width:1440px){.bookmark{margin-left:-56px}}
 @media(max-width:1280px){
  .brand-name{font-size:28px}.brand-tag{font-size:8px}.nav{gap:22px;font-size:14px}.search-btn{margin-left:6px}
- .books{gap:26px}.quote{left:49%}
+ .books{gap:16px}.quote{left:49%}
  .bookmark{margin-left:0;gap:32px;padding:18px 30px}
  .benefits{gap:30px}
 }
@@ -266,7 +287,7 @@ footer{padding:20px 0 28px}
     url("assets/fondo-hero.webp") 80% top/auto 780px no-repeat,var(--paper)}
  .hero{min-height:0;padding-bottom:22px}
  .quote,.hero-librin,.pile{display:none}
- .books{max-width:none;grid-template-columns:repeat(3,minmax(0,1fr));gap:26px}
+ .books{max-width:none;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px}.book h3{font-size:13.5px}.buy .buy-txt{display:inline}
  .bookmark{max-width:none;grid-template-columns:1fr;gap:18px;padding:22px}
  .benefits{flex-wrap:wrap;gap:18px 30px}.benefits .all{margin-left:0}
  .librin-bubble{display:block}.librin-x{display:grid}
@@ -344,13 +365,15 @@ footer{padding:20px 0 28px}
   </section>
 
   <section class="books-area" id="libros" aria-labelledby="librosTitle">
-   <div class="section-head"><h2 id="librosTitle">Mis libros</h2><p>Cinco libros. Una misma forma de ver el mundo: con criterio y sin rodeos.</p></div>
+   <div class="section-head"><h2 id="librosTitle">Mis libros</h2><p>Siete libros, del ensayo práctico a la novela. Una misma forma de ver el mundo: con criterio y sin rodeos.</p></div>
    <div class="books">
-    <article class="book"><div class="cover"><img src="https://m.media-amazon.com/images/I/71uw7EAj21L._SL600_.jpg" onerror="this.onerror=null;this.src='assets/book-titulitis.webp'" alt="Portada de TITULITIS" width="600" height="833" loading="lazy" decoding="async"></div><h3>TITULITIS</h3><a class="buy" href="https://www.amazon.es/dp/B0HJXDSBFT" target="_blank" rel="noopener" aria-label="Ver TITULITIS en Amazon">Ver en <img class="amz-logo" src="assets/amazon-logo.webp" alt="Amazon" width="237" height="72"><span aria-hidden="true">→</span></a></article>
-    <article class="book"><div class="cover"><img src="https://m.media-amazon.com/images/I/71YWhQ50+YL._SL600_.jpg" onerror="this.onerror=null;this.src='assets/book-algoritmo.webp'" alt="Portada de El algoritmo no sabe vivir" width="600" height="833" loading="lazy" decoding="async"></div><h3>El algoritmo no sabe vivir</h3><a class="buy" href="https://www.amazon.es/dp/B0HJX61794" target="_blank" rel="noopener" aria-label="Ver El algoritmo no sabe vivir en Amazon">Ver en <img class="amz-logo" src="assets/amazon-logo.webp" alt="Amazon" width="237" height="72"><span aria-hidden="true">→</span></a></article>
-    <article class="book"><div class="cover"><img src="https://m.media-amazon.com/images/I/61vo00Y1LKL._SL600_.jpg" onerror="this.onerror=null;this.src='assets/book-no-me-pasa.webp'" alt="Portada de No me pasa nada y aun así duele: Lo que la artritis no deja ver y cómo acompañar sin hacer daño" width="600" height="833" loading="lazy" decoding="async"></div><h3>No me pasa nada y aun así duele</h3><a class="buy" href="https://www.amazon.es/dp/B0H21Q1QQ1" target="_blank" rel="noopener" aria-label="Ver No me pasa nada y aun así duele en Amazon">Ver en <img class="amz-logo" src="assets/amazon-logo.webp" alt="Amazon" width="237" height="72"><span aria-hidden="true">→</span></a></article>
-    <article class="book"><div class="cover"><img src="https://m.media-amazon.com/images/I/71lDSspk7pL._SL600_.jpg" onerror="this.onerror=null;this.src='assets/book-sana.webp'" alt="Portada de Sana tu cuerpo, recupera tu vida: La guía antiinflamatoria definitiva" width="600" height="833" loading="lazy" decoding="async"></div><h3>Sana tu cuerpo, recupera tu vida</h3><a class="buy" href="https://www.amazon.es/dp/B0GZDC1GPP" target="_blank" rel="noopener" aria-label="Ver Sana tu cuerpo, recupera tu vida en Amazon">Ver en <img class="amz-logo" src="assets/amazon-logo.webp" alt="Amazon" width="237" height="72"><span aria-hidden="true">→</span></a></article>
-    <article class="book"><div class="cover"><img src="https://m.media-amazon.com/images/I/71XMz-PXojL._SL600_.jpg" onerror="this.onerror=null;this.src='assets/book-chatgpt-cat.webp'" alt="Portada de ChatGPT para Gerentes de CAT: Cómo aumentar productividad, ventas, control interno y ventaja competitiva usando Inteligencia Artificial" width="600" height="833" loading="lazy" decoding="async"></div><h3>ChatGPT para gerentes de CAT</h3><a class="buy" href="https://www.amazon.es/dp/B0GZLP5GJP" target="_blank" rel="noopener" aria-label="Ver ChatGPT para gerentes de CAT en Amazon">Ver en <img class="amz-logo" src="assets/amazon-logo.webp" alt="Amazon" width="237" height="72"><span aria-hidden="true">→</span></a></article>
+    <article class="book"><div class="cover" tabindex="0" aria-describedby="syn-titulitis" aria-label="Sinopsis de TITULITIS"><img src="https://m.media-amazon.com/images/I/71uw7EAj21L._SL600_.jpg" onerror="this.onerror=null;this.src='assets/book-titulitis.webp'" alt="Portada de TITULITIS" width="600" height="833" loading="lazy" decoding="async"><div class="synopsis" id="syn-titulitis" role="tooltip"><p class="syn-hook">La formación importa. Pero un título no siempre cuenta toda la historia.</p><p>TITULITIS analiza cómo muchas empresas confunden credenciales con capacidad, dejando en segundo plano la experiencia, el talento, la Formación Profesional y el aprendizaje autodidacta.</p><p>No es un libro contra estudiar. Es una invitación a mirar más allá del currículum y preguntarnos qué sabemos hacer realmente. Porque acumular títulos puede abrir puertas, pero demostrar capacidad es lo que permite avanzar.</p></div></div><h3>TITULITIS</h3><a class="buy" href="https://www.amazon.es/dp/B0HJXDSBFT" target="_blank" rel="noopener" aria-label="Ver TITULITIS en Amazon"><span class="buy-txt">Ver en </span><img class="amz-logo" src="assets/amazon-logo.webp" alt="Amazon" width="237" height="72"><span aria-hidden="true">→</span></a></article>
+    <article class="book"><div class="cover" tabindex="0" aria-describedby="syn-aprender" aria-label="Sinopsis de Aprender haciendo"><img src="https://m.media-amazon.com/images/I/71CIjCt-tpL._SL600_.jpg" alt="Portada de Aprender haciendo" width="600" height="900" loading="lazy" decoding="async"><div class="synopsis" id="syn-aprender" role="tooltip"><p class="syn-hook">¿Cuánto tiempo llevas preparándote para algo que solo aprenderás cuando empieces?</p><p>Cursos. Vídeos. Tutoriales. Apuntes. Planes. Hay personas que pasan meses, incluso años, aprendiendo antes de atreverse a hacer. Hasta que descubren algo incómodo: la parte que faltaba solo podía aprenderse haciendo.</p><p>Aprender haciendo explica cómo se convierte un problema real en una habilidad, un error en información útil y un proyecto pequeño en capacidad. Sin promesas vacías y sin despreciar la formación, porque la teoría te da el mapa, pero el terreno solo se aprende caminando.</p></div></div><h3>Aprender haciendo</h3><a class="buy" href="https://www.amazon.es/dp/B0HK16QS67" target="_blank" rel="noopener" aria-label="Ver Aprender haciendo en Amazon"><span class="buy-txt">Ver en </span><img class="amz-logo" src="assets/amazon-logo.webp" alt="Amazon" width="237" height="72"><span aria-hidden="true">→</span></a></article>
+    <article class="book"><div class="cover" tabindex="0" aria-describedby="syn-algoritmo" aria-label="Sinopsis de El algoritmo no sabe vivir"><img src="https://m.media-amazon.com/images/I/71YWhQ50+YL._SL600_.jpg" onerror="this.onerror=null;this.src='assets/book-algoritmo.webp'" alt="Portada de El algoritmo no sabe vivir" width="600" height="833" loading="lazy" decoding="async"><div class="synopsis" id="syn-algoritmo" role="tooltip"><p class="syn-hook">Vivimos rodeados de pantallas que aprenden qué nos gusta, qué compramos y qué consigue mantener nuestra atención. Pero hay algo que ningún algoritmo puede hacer por nosotros: vivir.</p><p>El algoritmo no sabe vivir habla de crecer y tomar decisiones en un mundo dominado por redes sociales, comparación, tecnología y ruido constante.</p><p>No pretende que renuncies a la tecnología, sino ayudarte a utilizarla sin permitir que ella termine decidiendo quién eres.</p></div></div><h3>El algoritmo no sabe vivir</h3><a class="buy" href="https://www.amazon.es/dp/B0HJX61794" target="_blank" rel="noopener" aria-label="Ver El algoritmo no sabe vivir en Amazon"><span class="buy-txt">Ver en </span><img class="amz-logo" src="assets/amazon-logo.webp" alt="Amazon" width="237" height="72"><span aria-hidden="true">→</span></a></article>
+    <article class="book"><div class="cover" tabindex="0" aria-describedby="syn-nomepasa" aria-label="Sinopsis de No me pasa nada y aun así duele"><img src="https://m.media-amazon.com/images/I/61vo00Y1LKL._SL600_.jpg" onerror="this.onerror=null;this.src='assets/book-no-me-pasa.webp'" alt="Portada de No me pasa nada y aun así duele: Lo que la artritis no deja ver y cómo acompañar sin hacer daño" width="600" height="833" loading="lazy" decoding="async"><div class="synopsis" id="syn-nomepasa" role="tooltip"><p class="syn-hook">¿Qué ocurre cuando las pruebas dicen que todo parece estar bien, pero tú sigues sintiendo dolor?</p><p>No me pasa nada… y aun así duele se acerca a esa frustrante distancia entre lo que aparece en un informe médico y lo que una persona siente cada día.</p><p>Un libro sobre dolor, incertidumbre, búsqueda de respuestas y, sobre todo, sobre aprender a convivir con aquello que todavía no tiene una explicación sencilla. Porque que algo no aparezca claramente en una prueba no hace que deje de doler.</p></div></div><h3>No me pasa nada y aun así duele</h3><a class="buy" href="https://www.amazon.es/dp/B0H21Q1QQ1" target="_blank" rel="noopener" aria-label="Ver No me pasa nada y aun así duele en Amazon"><span class="buy-txt">Ver en </span><img class="amz-logo" src="assets/amazon-logo.webp" alt="Amazon" width="237" height="72"><span aria-hidden="true">→</span></a></article>
+    <article class="book"><div class="cover" tabindex="0" aria-describedby="syn-sana" aria-label="Sinopsis de Sana tu cuerpo, recupera tu vida"><img src="https://m.media-amazon.com/images/I/71lDSspk7pL._SL600_.jpg" onerror="this.onerror=null;this.src='assets/book-sana.webp'" alt="Portada de Sana tu cuerpo, recupera tu vida: La guía antiinflamatoria definitiva" width="600" height="833" loading="lazy" decoding="async"><div class="synopsis" id="syn-sana" role="tooltip"><p class="syn-hook">Cuidarse no debería significar vivir contando calorías ni siguiendo dietas imposibles.</p><p>Sana tu cuerpo, recupera tu vida propone volver a algo mucho más sencillo: entender cómo nuestra alimentación y nuestros hábitos cotidianos pueden influir en cómo nos sentimos.</p><p>Un recorrido práctico por nutrición antiinflamatoria, recetas y decisiones diarias pensado para convertir el cuidado personal en algo sostenible. No se trata de comer perfecto, sino de aprender a comer mejor y recuperar poco a poco el control sobre nuestros hábitos.</p></div></div><h3>Sana tu cuerpo, recupera tu vida</h3><a class="buy" href="https://www.amazon.es/dp/B0GZDC1GPP" target="_blank" rel="noopener" aria-label="Ver Sana tu cuerpo, recupera tu vida en Amazon"><span class="buy-txt">Ver en </span><img class="amz-logo" src="assets/amazon-logo.webp" alt="Amazon" width="237" height="72"><span aria-hidden="true">→</span></a></article>
+    <article class="book"><div class="cover" tabindex="0" aria-describedby="syn-chatgpt" aria-label="Sinopsis de ChatGPT para gerentes de CAT"><img src="https://m.media-amazon.com/images/I/71XMz-PXojL._SL600_.jpg" onerror="this.onerror=null;this.src='assets/book-chatgpt-cat.webp'" alt="Portada de ChatGPT para Gerentes de CAT: Cómo aumentar productividad, ventas, control interno y ventaja competitiva usando Inteligencia Artificial" width="600" height="833" loading="lazy" decoding="async"><div class="synopsis" id="syn-chatgpt" role="tooltip"><p class="syn-hook">La inteligencia artificial no tiene que sustituir la experiencia de quien conoce un desguace. Puede ayudarle a aprovecharla mucho mejor.</p><p>ChatGPT para Gerentes de CAT lleva la IA al funcionamiento real de un Centro Autorizado de Tratamiento: administración, venta de recambios, atención al cliente, marketing, organización, productividad y gestión.</p><p>Un libro pensado desde dentro del sector, con ejemplos y herramientas aplicables al trabajo diario para descubrir que la IA no es únicamente tecnología: también puede convertirse en una herramienta de gestión.</p></div></div><h3>ChatGPT para gerentes de CAT</h3><a class="buy" href="https://www.amazon.es/dp/B0GZLP5GJP" target="_blank" rel="noopener" aria-label="Ver ChatGPT para gerentes de CAT en Amazon"><span class="buy-txt">Ver en </span><img class="amz-logo" src="assets/amazon-logo.webp" alt="Amazon" width="237" height="72"><span aria-hidden="true">→</span></a></article>
+    <article class="book"><div class="cover" tabindex="0" aria-describedby="syn-ventana" aria-label="Sinopsis de La ventana del revés"><img src="https://m.media-amazon.com/images/I/715W1OhnxyL._SL600_.jpg" alt="Portada de La ventana del revés" width="600" height="900" loading="lazy" decoding="async"><div class="synopsis" id="syn-ventana" role="tooltip"><p class="syn-hook">La primera vez que vio morir a aquella mujer, Daniel Ferrer pensó que lo más difícil sería conseguir que alguien le creyera. Se equivocaba. Lo más difícil fue verla viva a la noche siguiente.</p><p>Todas las noches, a las once menos veinte, se enciende la misma ventana del edificio de enfrente. Una noche, Daniel ve cómo un hombre golpea a una mujer y ella cae al suelo. La policía entra en el piso y lo encuentra vacío desde hace meses. A la noche siguiente, la mujer vuelve a aparecer. Mira hacia su cocina. Y le saluda.</p><p>Un thriller psicológico de observación, memoria y engaño, en el que un hombre corriente descubre que a veces el que observa es el observado.</p></div></div><h3>La ventana del revés</h3><a class="buy" href="https://www.amazon.es/dp/B0HJZY9QKC" target="_blank" rel="noopener" aria-label="Ver La ventana del revés en Amazon"><span class="buy-txt">Ver en </span><img class="amz-logo" src="assets/amazon-logo.webp" alt="Amazon" width="237" height="72"><span aria-hidden="true">→</span></a></article>
    </div>
   </section>
 
@@ -423,34 +446,46 @@ const lev=(a,b)=>{if(Math.abs(a.length-b.length)>2)return 9;const d=Array.from({
 const BOOKS=[
  {id:'titulitis',title:'TITULITIS',sub:'Cuando las empresas confunden formación con talento',asin:'B0HJXDSBFT',img:'71uw7EAj21L',local:'titulitis',
   alias:['titulitis'],
-  kw:{empresa:3,empresario:3,rrhh:4,'recursos humanos':4,seleccion:4,contratar:4,contratacion:4,entrevista:3,curriculum:4,cv:3,talento:4,titulo:4,carrera:2,universidad:3,grado:2,fp:4,'formacion profesional':4,autodidacta:4,experiencia:3,jefe:2,directivo:3,dirige:3,dirigir:3,liderazgo:2,equipo:2,trabajo:2,empleo:3,oposicion:1,estudiar:2,estudio:2,master:2,meritocracia:3,'sin estudios':4,'sin titulo':5,infravalorado:3,trabajador:2,plantilla:3,negocio:1},
-  pitch:'Va de por qué muchas empresas descartan talento real por no tener un papel. **No va contra estudiar**: critica usar el título como atajo para no evaluar lo que una persona sabe hacer, y defiende la FP, la experiencia y el aprendizaje autodidacta.',
+  kw:{credencial:4,capacidad:2,empresa:3,empresario:3,rrhh:4,'recursos humanos':4,seleccion:4,contratar:4,contratacion:4,entrevista:3,curriculum:4,cv:3,talento:4,titulo:4,carrera:2,universidad:3,grado:2,fp:4,'formacion profesional':4,autodidacta:4,experiencia:3,jefe:2,directivo:3,dirige:3,dirigir:3,liderazgo:2,equipo:2,trabajo:2,empleo:3,oposicion:1,estudiar:2,estudio:2,master:2,meritocracia:3,'sin estudios':4,'sin titulo':5,infravalorado:3,trabajador:2,plantilla:3,negocio:1},
+  pitch:'Analiza cómo muchas empresas confunden credenciales con capacidad y dejan en segundo plano la experiencia, el talento, la FP y el aprendizaje autodidacta. **No es un libro contra estudiar**: es una invitación a mirar más allá del currículum y preguntarnos qué sabemos hacer realmente.',
   para:'empresarios, directivos y RR. HH., y también profesionales con experiencia sin grado, perfiles de FP, autodidactas y estudiantes',
   gift:'alguien que contrata o dirige equipos, o alguien que se siente infravalorado por no tener un título'},
+ {id:'aprender',title:'Aprender haciendo',sub:'Hay cosas que solo entiendes cuando empiezas',asin:'B0HK16QS67',img:'71CIjCt-tpL',local:'aprender',
+  alias:['aprender haciendo','aprende haciendo'],
+  kw:{aprender:4,aprendizaje:4,empezar:4,'empezar algo':4,'empezar de cero':4,arrancar:3,reinventarse:5,reinventarme:5,reinvencion:5,'cambiar de trabajo':4,'cambiar de profesion':4,'nuevo trabajo':3,curso:3,tutorial:4,video:2,practica:4,practicar:4,error:3,equivocarse:4,fracaso:3,proyecto:3,habilidad:4,portfolio:4,'plan de 30 dias':5,procrastinar:4,procrastinacion:4,'no me atrevo':5,atreverme:4,preparado:3,preparandome:4,'a mi edad':4,cuarenta:3,cincuenta:3,tutor:3,oficio:3,autodidacta:3,'aprender solo':4,estancado:3,'salir de la zona de confort':4},
+  pitch:'Explica cómo se convierte **un problema real en una habilidad**, un error en información útil y un proyecto pequeño en capacidad. Sin promesas vacías y sin despreciar la formación: la teoría te da el mapa, pero el terreno solo se aprende caminando. Incluye un **anexo práctico** con plantillas, diario de errores, reglas para usar la IA sin que lo haga todo por ti y un plan de 30 días.',
+  para:'quien lleva tiempo preparándose sin arrancar, quien quiere aprender algo nuevo y quien quiere reinventarse a los 40, 50 o 55 años sin empezar de cero',
+  gift:'alguien que quiere empezar algo nuevo o dar un giro a su trabajo'},
  {id:'algoritmo',title:'El algoritmo no sabe vivir',sub:'Lo que nadie te cuenta cuando empieza tu vida adulta',asin:'B0HJX61794',img:'71YWhQ50+YL',local:'algoritmo',
   alias:['algoritmo no sabe vivir','el algoritmo'],
-  kw:{joven:4,hijo:3,hija:3,nieto:3,nieta:3,sobrino:3,adolescente:4,chaval:4,estudiante:2,redes:4,'redes sociales':4,tiktok:4,instagram:4,youtube:3,movil:3,pantalla:4,influencer:4,algoritmo:4,tecnologia:3,internet:2,'vida adulta':4,proposito:3,disciplina:3,libertad:2,criterio:2,comparar:2,comparacion:2,dopamina:3,distraccion:3,concentracion:3,profesor:2,alumno:3,generacion:3,veinteanero:4,madurar:3,independizarse:3,motivacion:2},
-  pitch:'Está pensado para quien empieza su vida adulta: ayuda a **no confundir lo que se ve en redes con la realidad**, a entender que consumir contenido no es lo mismo que aprender y a construir criterio propio. Sin sermones ni guerra generacional.',
+  kw:{decision:2,ruido:2,crecer:3,joven:4,hijo:3,hija:3,nieto:3,nieta:3,sobrino:3,adolescente:4,chaval:4,estudiante:2,redes:4,'redes sociales':4,tiktok:4,instagram:4,youtube:3,movil:3,pantalla:4,influencer:4,algoritmo:4,tecnologia:3,internet:2,'vida adulta':4,proposito:3,disciplina:3,libertad:2,criterio:2,comparar:2,comparacion:2,dopamina:3,distraccion:3,concentracion:3,profesor:2,alumno:3,generacion:3,veinteanero:4,madurar:3,independizarse:3,motivacion:2},
+  pitch:'Habla de crecer y tomar decisiones en un mundo de redes sociales, comparación y ruido constante. **No pretende que renuncies a la tecnología**, sino ayudarte a usarla sin que acabe decidiendo quién eres.',
   para:'jóvenes de 17 a 25 años; muchas veces lo compran padres, abuelos o profesores para regalarlo',
   gift:'un hijo, nieto o alumno que empieza su vida adulta'},
  {id:'nomepasa',title:'No me pasa nada y aun así duele',sub:'Lo que la artritis no deja ver y cómo acompañar sin hacer daño',asin:'B0H21Q1QQ1',img:'61vo00Y1LKL',local:'no-me-pasa',
   alias:['no me pasa nada','aun asi duele'],
-  kw:{artritis:5,dolor:4,duele:4,articulacion:4,reuma:4,reumatoide:5,enfermedad:3,cronica:3,cronico:3,invisible:4,acompanar:4,pareja:3,familiar:3,cuidar:3,cuidador:4,empatia:4,comprension:3,incomprendido:4,rigidez:4,inflamacion:2,salud:2,fibromialgia:3,lupus:3,autoinmune:3},
-  pitch:'Pone palabras a lo que vive una persona con artritis y que desde fuera no se ve, y explica **cómo acompañar sin hacer daño sin querer**: qué ayuda, qué frases sobran y cómo estar de verdad.',
-  para:'personas con artritis u otro dolor crónico, y sobre todo sus parejas, familias y amigos',
+  kw:{prueba:4,'informe medico':5,'no me encuentran nada':5,'no me sale nada':5,analitica:3,diagnostico:3,incertidumbre:3,'todo bien':2,artritis:5,dolor:4,duele:4,articulacion:4,reuma:4,reumatoide:5,enfermedad:3,cronica:3,cronico:3,invisible:4,acompanar:4,pareja:3,familiar:3,cuidar:3,cuidador:4,empatia:4,comprension:3,incomprendido:4,rigidez:4,inflamacion:2,salud:2,fibromialgia:3,lupus:3,autoinmune:3},
+  pitch:'Se acerca a esa distancia tan frustrante entre lo que dice un informe médico y lo que una persona siente cada día: **cuando las pruebas dicen que todo está bien, pero sigue doliendo**. Habla de dolor, incertidumbre, búsqueda de respuestas y de aprender a convivir con lo que aún no tiene una explicación sencilla.',
+  para:'personas con un dolor persistente que no siempre se ve en las pruebas, como la artritis, y quienes las acompañan',
   gift:'alguien que convive con dolor crónico, o quien le cuida'},
  {id:'sana',title:'Sana tu cuerpo, recupera tu vida',sub:'La guía antiinflamatoria definitiva',asin:'B0GZDC1GPP',img:'71lDSspk7pL',local:'sana',
   alias:['sana tu cuerpo','recupera tu vida'],
-  kw:{salud:3,antiinflamatoria:5,antiinflamatorio:5,inflamacion:4,receta:5,cocina:4,cocinar:4,comer:3,comida:3,alimentacion:4,dieta:3,nutricion:4,suplemento:5,suplementacion:5,vitamina:3,fatiga:5,cansancio:4,cansado:4,energia:3,agotamiento:4,agotado:4,cuidarme:3,cuidarse:3,habito:3,bienestar:3,medibitacora:5,digestion:2,sano:3,saludable:4},
-  pitch:'Es una guía práctica antiinflamatoria: **55 recetas**, suplementación estratégica y el **método MediBitácora Pro** para registrar cómo te sientes y plantar cara a la fatiga crónica con hábitos concretos.',
+  kw:{caloria:4,'comer mejor':4,'contar calorias':5,salud:3,antiinflamatoria:5,antiinflamatorio:5,inflamacion:4,receta:5,cocina:4,cocinar:4,comer:3,comida:3,alimentacion:4,dieta:3,nutricion:4,suplemento:5,suplementacion:5,vitamina:3,fatiga:5,cansancio:4,cansado:4,energia:3,agotamiento:4,agotado:4,cuidarme:3,cuidarse:3,habito:3,bienestar:3,medibitacora:5,digestion:2,sano:3,saludable:4},
+  pitch:'Cuidarse sin contar calorías ni seguir dietas imposibles: entender cómo la alimentación y los hábitos influyen en cómo te sientes. Un recorrido práctico por **nutrición antiinflamatoria, recetas y decisiones diarias** para que el cuidado personal sea sostenible. No se trata de comer perfecto, sino de comer mejor.',
   para:'quien quiere cuidarse a través de la alimentación y los hábitos, sobre todo si arrastra cansancio o fatiga',
   gift:'alguien que quiere empezar a cuidarse o que siempre va cansado'},
  {id:'chatgpt',title:'ChatGPT para gerentes de CAT',sub:'Productividad, ventas, control interno y ventaja competitiva con IA',asin:'B0GZLP5GJP',img:'71XMz-PXojL',local:'chatgpt-cat',
   alias:['chatgpt para gerentes','gerentes de cat','chatgpt','chat gpt'],
-  kw:{chatgpt:5,'chat gpt':5,ia:4,'inteligencia artificial':5,gpt:4,prompt:4,automatizar:4,automatizacion:4,desguace:5,cat:4,'centro autorizado':5,vehiculo:3,coche:3,pieza:4,recambio:4,chatarra:3,reciclaje:3,gerente:4,gestion:3,productividad:4,venta:4,vender:3,'venta online':4,'control interno':5,legal:3,normativa:3,negocio:3,pyme:3,competencia:2,taller:2,tecnologia:3,herramienta:2,oficina:2,excel:2},
-  pitch:'Enseña a usar ChatGPT en el día a día de un **Centro Autorizado de Tratamiento (desguace)**: automatizar tareas, vender más online, reforzar el control interno y la parte legal, y ganar ventaja frente a la competencia.',
+  kw:{'atencion al cliente':4,marketing:4,administracion:3,cliente:2,chatgpt:5,'chat gpt':5,ia:4,'inteligencia artificial':5,gpt:4,prompt:4,automatizar:4,automatizacion:4,desguace:5,cat:4,'centro autorizado':5,vehiculo:3,coche:3,pieza:4,recambio:4,chatarra:3,reciclaje:3,gerente:4,gestion:3,productividad:4,venta:4,vender:3,'venta online':4,'control interno':5,legal:3,normativa:3,negocio:3,pyme:3,competencia:2,taller:2,tecnologia:3,herramienta:2,oficina:2,excel:2},
+  pitch:'Lleva la IA al funcionamiento real de un **Centro Autorizado de Tratamiento (desguace)**: administración, venta de recambios, atención al cliente, marketing, organización y gestión. Está escrito desde dentro del sector, con ejemplos y herramientas para el trabajo diario.',
   para:'gerentes, dueños y responsables de desguaces y CAT, y en general pymes que quieren aplicar IA sin complicarse',
-  gift:'alguien que dirige un desguace o un negocio del sector del automóvil'}
+  gift:'alguien que dirige un desguace o un negocio del sector del automóvil'},
+ {id:'ventana',title:'La ventana del revés',sub:'Thriller psicológico',asin:'B0HJZY9QKC',img:'715W1OhnxyL',local:'ventana',
+  alias:['la ventana del reves','ventana del reves'],
+  kw:{novela:5,thriller:5,suspense:5,misterio:5,intriga:5,'novela negra':5,policiaca:4,crimen:4,asesinato:4,psicologico:4,ficcion:4,entretenimiento:3,desconectar:3,'para desconectar':4,engancha:4,enganche:4,'que enganche':5,malaga:3,vacaciones:3,playa:2,verano:2,relato:2,personaje:2,historia:2},
+  pitch:'Es un **thriller psicológico** ambientado en Málaga. Daniel Ferrer ve desde su cocina cómo un hombre golpea a una mujer en la ventana de enfrente; la policía encuentra el piso vacío desde hace meses… y a la noche siguiente ella vuelve a aparecer y le saluda. Una historia de observación, memoria y engaño donde a veces **el que observa es el observado**.',
+  para:'lectores de suspense y thriller psicológico que disfrutan con historias que no sueltan hasta la última página',
+  gift:'alguien a quien le gustan las novelas de misterio y suspense'}
 ];
 const BY=Object.fromEntries(BOOKS.map(b=>[b.id,b]));
 BOOKS.forEach(b=>{b.nkw=Object.entries(b.kw).map(([k,v])=>[norm(k),v]);b.nalias=b.alias.map(norm)});
@@ -488,8 +523,8 @@ const refersFocus=t=>has(t,/\b(ese|este|esa|esta|eso|ese libro|este libro|el lib
 const R=(text,books=[],chips=null)=>({text,books,chips});
 const CH={
   start:['Recomiéndame un libro','Busco un regalo','Ver todos los libros','¿Quién es Gustavo?'],
-  topics:['Empresa y trabajo','Jóvenes y redes sociales','Salud y alimentación','Artritis y dolor crónico','IA para desguaces'],
-  gift:['Para un hijo o nieto joven','Para alguien que dirige un negocio','Para alguien con dolor crónico','Para alguien que quiere cuidarse','Para alguien de un desguace'],
+  topics:['Empresa y trabajo','Aprender y reinventarse','Jóvenes y redes sociales','Salud y alimentación','Dolor crónico','IA para desguaces','Novela de suspense'],
+  gift:['Para un hijo o nieto joven','Para alguien que dirige un negocio','Para alguien que quiere empezar algo nuevo','Para alguien con dolor crónico','Para alguien que quiere cuidarse','Para alguien de un desguace','Para alguien a quien le gusta el suspense'],
   after:b=>['¿Para quién es?','Cuéntame más','Otra opción','¿Dónde lo compro?'],
 };
 function recommend(ids,intro,alt){
@@ -507,10 +542,10 @@ function describe(id,mode){
 function another(){
   const order=ctx.scores?ctx.scores.map(x=>x[0]):BOOKS.map(b=>b.id);
   const rest=order.filter(i=>!ctx.shown.includes(i));
-  if(!rest.length){ctx.shown=ctx.focus?[ctx.focus]:[];return R('Ya te he enseñado los cinco 😄 Aquí los tienes todos juntos para que compares:',BOOKS.map(b=>b.id),CH.topics)}
+  if(!rest.length){ctx.shown=ctx.focus?[ctx.focus]:[];return R('Ya te los he enseñado todos 😄 Aquí los tienes juntos para que compares:',BOOKS.map(b=>b.id),CH.topics)}
   const id=rest[0];return recommend([id],pick(['Vale, otra opción distinta:','Te propongo otro:','Mira este otro:']),true);
 }
-function listAll(){ctx.last=BOOKS.map(b=>b.id);return R('Estos son los cinco libros de Gustavo. Dime qué te interesa y te digo cuál encaja mejor contigo:',ctx.last,CH.topics)}
+function listAll(){ctx.last=BOOKS.map(b=>b.id);return R('Estos son los siete libros de Gustavo, del ensayo práctico a la novela. Dime qué te interesa y te digo cuál encaja mejor contigo:',ctx.last,CH.topics)}
 
 function reply(raw){
   const t=norm(raw);
@@ -564,7 +599,7 @@ function reply(raw){
   if(has(t,/\b(contacto|contactar|email|correo|telefono|whatsapp|hablar con gustavo|escribir a gustavo)\b/))
     return R('Para contactar con Gustavo, lo más directo es a través de **Limonada Web** (limonadaweb.com). Y si es por un libro, en su ficha de Amazon también puedes dejar tu opinión, que siempre se agradece.',[],CH.start);
   if(has(t,/\b(gustavo|autor|escritor|quien (los )?escribe|quien ha escrito)\b/)&&!book)
-    return R('**Gustavo Molina Zafra** es empresario malagueño con más de 25 años en el sector del reciclaje de vehículos, donde dirige un Centro Autorizado de Tratamiento. Es técnico en vehículos híbridos y eléctricos y fundador de Limonada Web; empezó en lo digital en 2005, de forma autodidacta y por pura necesidad.\nPor eso escribe desde la experiencia real: empresa, tecnología, salud y vida práctica, sin rodeos.',[],['Ver todos los libros','Recomiéndame un libro']);
+    return R('**Gustavo Molina Zafra** es empresario malagueño con más de 25 años en el sector del reciclaje de vehículos, donde dirige un Centro Autorizado de Tratamiento. Es técnico en vehículos híbridos y eléctricos y fundador de Limonada Web; empezó en lo digital en 2005, de forma autodidacta y por pura necesidad.\nPor eso escribe desde la experiencia real: empresa, aprendizaje, tecnología, salud y vida práctica, sin rodeos. Y también novela: «La ventana del revés» es su thriller psicológico.',[],['Ver todos los libros','Recomiéndame un libro']);
 
   if(has(t,/\b(precio|cuesta|cuanto vale|cuanto sale|euros|barato|caro|oferta|descuento)\b/)){
     const ids=book?[book]:(ctx.focus?[ctx.focus]:BOOKS.map(b=>b.id));
@@ -617,8 +652,8 @@ function reply(raw){
   if(greet)return R(pick([`¡Hola${hi}! 🐟 Soy Librín. Cuéntame qué te interesa o qué problema tienes entre manos y te digo qué libro de Gustavo encaja contigo.`,`¡Buenas${hi}! ¿Buscas algo para ti o es para regalar?`]),[],CH.start);
 
   ctx.miss++;
-  if(ctx.miss>=2){ctx.miss=0;return R('Creo que no te estoy entendiendo bien, perdona. Te pongo los cinco libros y los temas que tratan, y eliges tú:',BOOKS.map(b=>b.id),CH.topics)}
-  return R(pick(['Mmm, de eso no sé mucho: soy especialista en los libros de Gustavo 🐟 ¿Me cuentas qué tema te interesa o para quién es el libro?','No estoy seguro de haberte entendido. ¿Buscas algo sobre empresa, jóvenes y redes, salud, artritis o IA para desguaces?']),[],CH.topics);
+  if(ctx.miss>=2){ctx.miss=0;return R('Creo que no te estoy entendiendo bien, perdona. Te pongo todos los libros y eliges tú:',BOOKS.map(b=>b.id),CH.topics)}
+  return R(pick(['Mmm, de eso no sé mucho: soy especialista en los libros de Gustavo 🐟 ¿Me cuentas qué tema te interesa o para quién es el libro?','No estoy seguro de haberte entendido. ¿Buscas algo sobre empresa, aprender algo nuevo, jóvenes y redes, salud, IA para desguaces… o una novela de suspense?']),[],CH.topics);
 }
 return {reply,BOOKS,BY,ctx};
 })();
@@ -676,6 +711,12 @@ hide.addEventListener('click',()=>{bubble.classList.add('gone');hide.classList.a
 chatClose.addEventListener('click',closeChat);
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&chat.classList.contains('open'))closeChat()});
 form.addEventListener('submit',e=>{e.preventDefault();const q=input.value;input.value='';ask(q)});
+/* sinopsis en pantallas táctiles: tocar la portada la abre y la cierra */
+document.querySelectorAll('.book .cover').forEach(c=>{
+  c.addEventListener('click',e=>{if(matchMedia('(hover:hover)').matches)return;const b=c.closest('.book'),open=b.classList.contains('syn-open');document.querySelectorAll('.book.syn-open').forEach(x=>x.classList.remove('syn-open'));if(!open)b.classList.add('syn-open');e.stopPropagation()});
+  c.addEventListener('keydown',e=>{if(e.key==='Escape')c.blur()});
+});
+document.addEventListener('click',()=>document.querySelectorAll('.book.syn-open').forEach(x=>x.classList.remove('syn-open')));
 </script>
 
 </body>
