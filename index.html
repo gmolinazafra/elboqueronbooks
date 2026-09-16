@@ -783,8 +783,7 @@ form.addEventListener('submit',e=>{e.preventDefault();const q=input.value;input.
 
   /* --- bloquear scroll vertical mientras el dedo/rueda va horizontal --- */
   bx.addEventListener('wheel',function(e){
-    if(Math.abs(e.deltaX)>Math.abs(e.deltaY)){e.preventDefault()}
-    else{bx.scrollLeft+=e.deltaY;e.preventDefault()}
+    e.preventDefault();  // bloquear scroll con rueda del ratón
   },{passive:false});
 
   /* --- clonar libros para el bucle infinito --- */
