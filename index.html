@@ -270,6 +270,13 @@ footer{padding:20px 0 28px}
 @media(max-width:720px){.synopsis,.book:first-child .synopsis,.book:last-child .synopsis{left:-6px;right:-6px;top:-6px;bottom:-6px;width:auto;margin:0;overflow-y:auto;padding:12px 12px 14px;font-size:11.5px;pointer-events:auto}.book .synopsis p{font-size:11.5px}.book .synopsis .syn-hook{font-size:14.5px}}
 @media(prefers-reduced-motion:reduce){.synopsis{transition:none}}
 
+/* puntos de navegación del carrusel */
+.car-dots{display:flex;justify-content:center;gap:7px;margin-top:12px}
+.car-dots button{width:8px;height:8px;border-radius:50%;border:none;background:rgba(13,92,71,.18);padding:0;cursor:pointer;transition:background .2s,transform .2s}
+.car-dots button.active{background:var(--green);transform:scale(1.35)}
+.car-dots button:hover:not(.active){background:rgba(13,92,71,.4)}
+@media(max-width:720px){.car-dots{gap:6px}.car-dots button{width:7px;height:7px}}
+
 /* ---------- responsive ---------- */
 @media(min-width:1440px){.bookmark{margin-left:-56px}}
 @media(max-width:1280px){
@@ -712,24 +719,32 @@ hide.addEventListener('click',()=>{bubble.classList.add('gone');hide.classList.a
 chatClose.addEventListener('click',closeChat);
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&chat.classList.contains('open'))closeChat()});
 form.addEventListener('submit',e=>{e.preventDefault();const q=input.value;input.value='';ask(q)});
-/* carrusel automático (todos los tamaños) */
+/* carrusel automático con bucle infinito y puntos de navegación */
 (function(){
   var bx=document.querySelector('.books');if(!bx)return;
-  var idx=0,timer=null,running=false,DELAY=3400,RESUME=2500;
+  var DELAY=3400,RESUME=2000,idx=0,timer=null,running=false;
+  var dotsWrap=document.createElement('div');dotsWrap.className='car-dots';
+  var books=bx.querySelectorAll('.book');
+  books.forEach(function(_,i){
+    var d=document.createElement('button');d.type='button';d.setAttribute('aria-label','Libro '+(i+1));
+    d.addEventListener('click',function(){stop();goTo(i);clearTimeout(bx._rt);bx._rt=setTimeout(function(){running=false;start()},RESUME)});
+    dotsWrap.appendChild(d);
+  });
+  bx.parentElement.insertBefore(dotsWrap,bx.nextSibling);
+  function setDot(i){Array.from(dotsWrap.children).forEach(function(d,j){d.classList.toggle('active',j===i)})}
   function cards(){return Array.from(bx.querySelectorAll('.book'))}
   function snapIdx(){var cl=bx.scrollLeft,best=0,bd=Infinity;cards().forEach(function(c,i){var d=Math.abs(c.offsetLeft-bx.offsetLeft-cl);if(d<bd){bd=d;best=i}});return best}
-  function goTo(i){var c=cards();if(!c.length)return;i=((i%c.length)+c.length)%c.length;idx=i;bx.scrollTo({left:c[i].offsetLeft-bx.offsetLeft,behavior:'smooth'})}
+  function goTo(i){var c=cards();if(!c.length)return;i=((i%c.length)+c.length)%c.length;idx=i;bx.scrollTo({left:c[i].offsetLeft-bx.offsetLeft,behavior:'smooth'});setDot(i)}
   function stop(){clearInterval(timer);timer=null;running=false}
-  function start(){if(running)return;running=true;timer=setInterval(function(){idx=snapIdx();goTo(idx+1)},DELAY)}
-  // pausa al tocar o arrastrar con el ratón, reanuda tras RESUME ms
+  function start(){if(running)return;running=true;timer=setInterval(function(){var n=snapIdx()+1;if(n>=cards().length)n=0;goTo(n)},DELAY)}
+  bx.addEventListener('scroll',function(){setDot(snapIdx())},{passive:true});
   bx.addEventListener('touchstart',stop,{passive:true});
   bx.addEventListener('mousedown',stop);
   bx.addEventListener('touchend',function(){clearTimeout(bx._rt);bx._rt=setTimeout(function(){idx=snapIdx();running=false;start()},RESUME)},{passive:true});
   bx.addEventListener('mouseup',function(){clearTimeout(bx._rt);bx._rt=setTimeout(function(){idx=snapIdx();running=false;start()},RESUME)});
-  // pausa al pasar el ratón por encima (sinopsis hover) y reanuda al salir
   bx.addEventListener('mouseenter',stop);
   bx.addEventListener('mouseleave',function(){clearTimeout(bx._rt);bx._rt=setTimeout(function(){running=false;start()},800)});
-  setTimeout(start,1000);
+  setDot(0);setTimeout(start,1000);
 })();
 </script>
 
