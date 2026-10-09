@@ -10,10 +10,12 @@
    origen:    Amazon · WhatsApp · Instagram · Facebook · Email · En persona (opcional)
    estrellas: de 1 a 5 (opcional; si el lector no puntuó, no se ponen)
    texto:     separa párrafos con \n\n
+   destacado: frase corta de la reseña que sale grande arriba (opcional)
    ========================================================== */
 const RESENAS = [
   {
     nombre: "Claudia",
+    destacado: "Hay libros que se leen, otros que se olvidan y otros que te acompañan.",
     libro: "",
     titulo: "La ventaja invisible",
     fecha: "2026-10",
@@ -58,11 +60,11 @@ const RESENAS = [
   track.classList.toggle("rev-track--one", lista.length === 1);
   track.innerHTML = lista.map((r) => {
     const b = libro(r);
-    const top = (+r.estrellas > 0 ? '<span class="rev-stars" aria-label="' + r.estrellas + ' de 5 estrellas">' + estrellas(r.estrellas) + "</span>" : '<span class="rev-quote" aria-hidden="true">“</span>') +
+    const top = (+r.estrellas > 0 ? '<span class="rev-stars" aria-label="' + r.estrellas + ' de 5 estrellas">' + estrellas(r.estrellas) + "</span>" : (r.destacado ? "" : '<span class="rev-quote" aria-hidden="true">“</span>')) +
       (r.origen ? '<span class="rev-origin">' + esc(r.origen) + "</span>" : "");
     return '<article class="rev-card">' +
-      '<div class="rev-top">' + top + "</div>" +
-      '<blockquote class="rev-text">' + parrafos(r.texto) + "</blockquote>" +
+      (top ? '<div class="rev-top">' + top + "</div>" : "") +
+      '<blockquote class="rev-body">' + (r.destacado ? '<p class="rev-highlight">“' + esc(r.destacado) + '”</p>' : "") + '<div class="rev-text">' + parrafos(r.texto) + "</div></blockquote>" +
       '<button type="button" class="rev-more" hidden>Leer completa</button>' +
       '<div class="rev-foot">' +
         (b && b.img ? '<img src="' + esc(b.img) + '" alt="" width="40" height="60" loading="lazy">' : "") +
