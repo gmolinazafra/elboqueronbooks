@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="El Boquerón Books · Libros de Gustavo Molina Zafra sobre empresa, aprendizaje, tecnología, salud, vida práctica y novela.">
+<meta name="description" content="El Boquerón Books · Libros de Gustavo Molina Zafra sobre empresa, aprendizaje, tecnología, salud, vida práctica y novela. Y un libro solidario de descarga gratuita sobre acoso escolar: No era una broma.">
 <meta name="theme-color" content="#0d5c47">
 <link rel="canonical" href="https://elboqueronbooks.com/">
 <meta property="og:type" content="website">
@@ -104,6 +104,19 @@ button,input{font:inherit}
 .buy{margin-top:auto;align-self:flex-start;display:inline-flex;align-items:center;gap:8px;background:var(--green);color:#fff;padding:9px 16px 9px 10px;border-radius:12px;font-size:13px;font-weight:500;white-space:nowrap}
 .buy .amazon-a{width:24px;height:24px;font-size:14px}
 .pile{position:absolute;z-index:1;top:70px;right:calc(-1 * max(32px,(100vw - var(--wrap)) / 2) - 18px);width:clamp(250px,21vw,340px);pointer-events:none;filter:drop-shadow(-10px 18px 18px rgba(40,30,20,.22))}
+
+/* libro solidario */
+.solidario{position:relative;z-index:2;margin:6px 0 26px;max-width:min(1010px,78%);display:grid;grid-template-columns:auto 1fr auto;gap:26px;align-items:center;padding:18px 30px 18px 22px;background:rgba(251,248,242,.94);border-radius:18px;border:1px solid var(--line);box-shadow:var(--shadow)}
+.sol-cover{width:92px;height:auto;border-radius:4px;box-shadow:0 10px 18px rgba(0,0,0,.2)}
+.sol-tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#7a4b00;background:#fdf0c2;border-radius:999px;padding:4px 10px;margin-bottom:8px}
+.sol-copy h2{font-family:"DM Serif Display",serif;font-weight:400;font-size:28px;line-height:1.05;margin:0 0 4px}
+.sol-copy p{margin:0;color:#4f615a;font-size:15px;line-height:1.45;max-width:520px}
+.sol-cta{display:inline-flex;align-items:center;gap:10px;background:var(--yellow);color:#1c2522;padding:14px 26px;border-radius:999px;font-weight:700;white-space:nowrap;box-shadow:0 10px 22px rgba(245,196,0,.28)}
+.sol-cta:hover{background:#e8b900}
+.buy.free{background:var(--yellow);color:#1c2522;font-weight:700;padding:9px 16px}
+.buy.free:hover{background:#e8b900}
+.bcard .free-link{display:inline-block;margin-top:6px;background:var(--yellow);color:#1c2522;font-weight:700;border-radius:8px;padding:6px 10px;font-size:13px}
+@media (max-width:720px){.solidario{grid-template-columns:auto 1fr;max-width:100%;padding:16px;gap:16px}.sol-cta{grid-column:1/-1;justify-content:center}.sol-cover{width:74px}.sol-copy h2{font-size:23px}.sol-copy p{font-size:14px}}
 
 /* BookMark */
 .bookmark{position:relative;z-index:2;margin:30px 0 0;max-width:min(1170px,91%);padding:18px 44px 18px 40px;background:rgba(251,248,242,.9);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border-radius:18px;box-shadow:var(--shadow);display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:48px}
@@ -443,9 +456,21 @@ footer a.lw-powered{color:inherit;font-weight:700;text-decoration:underline;text
    </div>
   </section>
 
+  <section class="solidario" id="solidario" aria-labelledby="solidarioTitle">
+   <img class="sol-cover" src="assets/book-no-era-una-broma.webp" alt="Portada de No era una broma" width="600" height="851" loading="lazy" decoding="async">
+   <div class="sol-copy">
+    <span class="sol-tag">Nuevo · Libro solidario gratuito</span>
+    <h2 id="solidarioTitle">No era una broma</h2>
+    <p>Una novela breve y una guía práctica sobre el acoso escolar para adolescentes, familias y docentes. Descárgalo gratis en PDF o ePub y compártelo.</p>
+   </div>
+   <a class="sol-cta" href="libros/no-era-una-broma/">Descargar gratis <span aria-hidden="true">→</span></a>
+  </section>
+
   <section class="books-area" id="libros" aria-labelledby="librosTitle">
-   <div class="section-head"><h2 id="librosTitle">Mis libros</h2><p>Diez libros, del ensayo práctico a la novela. Una misma forma de ver el mundo: con criterio y sin rodeos.</p></div>
+   <div class="section-head"><h2 id="librosTitle">Mis libros</h2><p>Diez libros en Amazon y uno solidario de descarga gratuita. Con criterio y sin rodeos.</p></div>
    <div class="books">
+    <article class="book"><div class="cover" tabindex="0" aria-describedby="syn-broma" aria-label="Sinopsis de No era una broma"><img src="assets/book-no-era-una-broma.webp" alt="Portada de No era una broma: Lo que el silencio esconde sobre el acoso escolar" width="600" height="851" loading="lazy" decoding="async"><div class="synopsis" id="syn-broma" role="tooltip"><p class="syn-hook">A veces el acoso no empieza con un golpe, sino con una risa, un silencio o un grupo del que alguien queda fuera.</p><p>No era una broma es una historia cercana y valiente sobre el bullying, la soledad, el miedo a hablar y la importancia de actuar a tiempo.</p><p>A través de la historia de Álex y de quienes le rodean, ayuda a comprender cómo nace el acoso, cómo afecta a quien lo sufre y qué pueden hacer los compañeros, las familias y los centros educativos para frenarlo. Libro solidario de descarga gratuita.</p></div></div><h3>No era una broma</h3><button type="button" class="syn-btn" aria-expanded="false">📖 Sinopsis</button>
+    <a class="buy free" href="libros/no-era-una-broma/" aria-label="Descargar gratis No era una broma">Descargar gratis <span aria-hidden="true">→</span></a></article>
     <article class="book"><div class="cover" tabindex="0" aria-describedby="syn-titulitis" aria-label="Sinopsis de TITULITIS"><img src="https://m.media-amazon.com/images/I/71uw7EAj21L._SL600_.jpg" onerror="this.onerror=null;this.src='assets/book-titulitis.webp'" alt="Portada de TITULITIS" width="600" height="833" loading="lazy" decoding="async"><div class="synopsis" id="syn-titulitis" role="tooltip"><p class="syn-hook">La formación importa. Pero un título no siempre cuenta toda la historia.</p><p>TITULITIS analiza cómo muchas empresas confunden credenciales con capacidad, dejando en segundo plano la experiencia, el talento, la Formación Profesional y el aprendizaje autodidacta.</p><p>No es un libro contra estudiar. Es una invitación a mirar más allá del currículum y preguntarnos qué sabemos hacer realmente. Porque acumular títulos puede abrir puertas, pero demostrar capacidad es lo que permite avanzar.</p></div></div><h3>TITULITIS</h3><button type="button" class="syn-btn" aria-expanded="false">📖 Sinopsis</button>
     <a class="buy" href="https://www.amazon.es/dp/B0HJXDSBFT" target="_blank" rel="noopener" aria-label="Ver TITULITIS en Amazon"><span class="buy-txt">Ver en </span><img class="amz-logo" src="assets/amazon-logo.webp" alt="Amazon" width="237" height="72"><span aria-hidden="true">→</span></a></article>
     <article class="book"><div class="cover" tabindex="0" aria-describedby="syn-aprender" aria-label="Sinopsis de Aprender haciendo"><img src="https://m.media-amazon.com/images/I/71CIjCt-tpL._SL600_.jpg" alt="Portada de Aprender haciendo" width="600" height="900" loading="lazy" decoding="async"><div class="synopsis" id="syn-aprender" role="tooltip"><p class="syn-hook">¿Cuánto tiempo llevas preparándote para algo que solo aprenderás cuando empieces?</p><p>Cursos. Vídeos. Tutoriales. Apuntes. Planes. Hay personas que pasan meses, incluso años, aprendiendo antes de atreverse a hacer. Hasta que descubren algo incómodo: la parte que faltaba solo podía aprenderse haciendo.</p><p>Aprender haciendo explica cómo se convierte un problema real en una habilidad, un error en información útil y un proyecto pequeño en capacidad. Sin promesas vacías y sin despreciar la formación, porque la teoría te da el mapa, pero el terreno solo se aprende caminando.</p></div></div><h3>Aprender haciendo</h3><button type="button" class="syn-btn" aria-expanded="false">📖 Sinopsis</button>
@@ -609,6 +634,12 @@ const BOOKS=[
   pitch:'Una reflexión personal sobre aprender a distinguir entre contacto y cercanía, entre ser necesario y ser querido, entre ayudar porque quieres y hacerlo porque **nunca aprendiste a decir que no**. Sobre dejar de contar cuántas personas se sientan a tu mesa y empezar a valorar quiénes están realmente presentes.',
   para:'quien está revisando sus relaciones y quiere aprender a poner límites sin culpa',
   gift:'alguien que siempre está disponible para todos y necesita aprender a elegir'},
+ {id:'broma',title:'No era una broma',sub:'Lo que el silencio esconde sobre el acoso escolar',free:true,url:'libros/no-era-una-broma/',cover:'assets/book-no-era-una-broma.webp',
+  alias:['no era una broma','era una broma'],
+  kw:{acoso:5,'acoso escolar':5,bullying:5,ciberacoso:5,acosador:4,colegio:3,cole:3,instituto:3,insti:3,clase:2,companero:3,docente:4,profesor:3,profesora:3,maestro:3,maestra:3,tutor:3,tutora:3,orientador:4,orientadora:4,adolescente:3,insulto:3,burla:4,'grupo de whatsapp':4,excluido:4,exclusion:4,'novela juvenil':5,juvenil:4,prevencion:4,prevenir:3,gratis:4,gratuito:4,solidario:5,descargar:4,descarga:4,secundaria:3},
+  pitch:'Es una **novela breve y una guía práctica** sobre el acoso escolar. A través de la historia de Álex y de quienes le rodean, ayuda a entender cómo empieza el acoso, cómo afecta a quien lo sufre y qué pueden hacer compañeros, familias y centros para frenarlo. Es un **libro solidario de descarga gratuita**, en PDF accesible y ePub.',
+  para:'adolescentes desde los 12 años, familias y docentes',
+  gift:'un adolescente, una familia o un docente; además es gratis, así que puedes compartirlo con quien quieras'},
  {id:'ventana',title:'La ventana del revés',sub:'Thriller psicológico',asin:'B0HJZY9QKC',img:'715W1OhnxyL',local:'ventana',
   alias:['la ventana del reves','ventana del reves'],
   kw:{novela:5,thriller:5,suspense:5,misterio:5,intriga:5,'novela negra':5,policiaca:4,crimen:4,asesinato:4,psicologico:4,ficcion:4,entretenimiento:3,desconectar:3,'para desconectar':4,engancha:4,enganche:4,'que enganche':5,malaga:3,vacaciones:3,playa:2,verano:2,relato:2,personaje:2,historia:2},
@@ -652,9 +683,9 @@ const refersFocus=t=>has(t,/\b(ese|este|esa|esta|eso|ese libro|este libro|el lib
 const R=(text,books=[],chips=null)=>({text,books,chips});
 const CH={
   start:['Recomiéndame un libro','Busco un regalo','Ver todos los libros','¿Quién es Gustavo?'],
-  topics:['Empresa y trabajo','Aprender y reinventarse','Jóvenes y redes sociales','Salud y alimentación','Dolor crónico','IA para desguaces','Empresa y liderazgo','Límites y relaciones','Novela de suspense','Novela íntima y relaciones'],
-  gift:['Para un hijo o nieto joven','Para alguien que dirige un negocio','Para alguien que quiere empezar algo nuevo','Para alguien con dolor crónico','Para alguien que quiere cuidarse','Para alguien de un desguace','Para alguien a quien le gusta el suspense','Para quien dirige un negocio o equipo','Para quien quiere aprender a poner límites','Para alguien que le gusten las novelas de relaciones'],
-  after:b=>['¿Para quién es?','Cuéntame más','Otra opción','¿Dónde lo compro?'],
+  topics:['Acoso escolar (gratis)','Empresa y trabajo','Aprender y reinventarse','Jóvenes y redes sociales','Salud y alimentación','Dolor crónico','IA para desguaces','Empresa y liderazgo','Límites y relaciones','Novela de suspense','Novela íntima y relaciones'],
+  gift:['Para un adolescente o un docente (acoso escolar)','Para un hijo o nieto joven','Para alguien que dirige un negocio','Para alguien que quiere empezar algo nuevo','Para alguien con dolor crónico','Para alguien que quiere cuidarse','Para alguien de un desguace','Para alguien a quien le gusta el suspense','Para quien dirige un negocio o equipo','Para quien quiere aprender a poner límites','Para alguien que le gusten las novelas de relaciones'],
+  after:b=>['¿Para quién es?','Cuéntame más','Otra opción',BY[b]&&BY[b].free?'¿Dónde lo descargo?':'¿Dónde lo compro?'],
 };
 function recommend(ids,intro,alt){
   const [a,b]=ids;ctx.focus=a;ctx.last=ids.slice();ids.forEach(i=>{if(!ctx.shown.includes(i))ctx.shown.push(i)});
@@ -665,8 +696,9 @@ function recommend(ids,intro,alt){
 }
 function describe(id,mode){
   const B=BY[id];ctx.focus=id;ctx.last=[id];if(!ctx.shown.includes(id))ctx.shown.push(id);
-  if(mode==='para')return R(`**${B.title}** está pensado para ${B.para}.\nComo regalo es ideal para ${B.gift}.`,[id],['Cuéntame más','Otra opción','¿Dónde lo compro?']);
-  return R(`**${B.title}** — ${B.sub}.\n${B.pitch}\nEs para ${B.para}.`,[id],['¿Para quién es?','Otra opción','¿Dónde lo compro?']);
+  const dl=B.free?'¿Dónde lo descargo?':'¿Dónde lo compro?';
+  if(mode==='para')return R(`**${B.title}** está pensado para ${B.para}.\n${B.free?'Para compartir':'Como regalo'} es ideal para ${B.gift}.`,[id],['Cuéntame más','Otra opción',dl]);
+  return R(`**${B.title}** — ${B.sub}.\n${B.pitch}\nEs para ${B.para}.`,[id],['¿Para quién es?','Otra opción',dl]);
 }
 function another(){
   const order=ctx.scores?ctx.scores.map(x=>x[0]):BOOKS.map(b=>b.id);
@@ -674,7 +706,7 @@ function another(){
   if(!rest.length){ctx.shown=ctx.focus?[ctx.focus]:[];return R('Ya te los he enseñado todos 😄 Aquí los tienes juntos para que compares:',BOOKS.map(b=>b.id),CH.topics)}
   const id=rest[0];return recommend([id],pick(['Vale, otra opción distinta:','Te propongo otro:','Mira este otro:']),true);
 }
-function listAll(){ctx.last=BOOKS.map(b=>b.id);return R('Estos son los diez libros de Gustavo, del ensayo práctico a la novela. Dime qué te interesa y te digo cuál encaja mejor contigo:',ctx.last,CH.topics)}
+function listAll(){ctx.last=BOOKS.map(b=>b.id);return R('Estos son los libros de Gustavo: diez a la venta en Amazon, del ensayo práctico a la novela, y **No era una broma**, un libro solidario de descarga gratuita. Dime qué te interesa y te digo cuál encaja mejor contigo:',ctx.last,CH.topics)}
 
 function reply(raw){
   const t=norm(raw);
@@ -684,6 +716,11 @@ function reply(raw){
   if(has(t,/\b(suicid\w*|quitarme la vida|no quiero vivir|matarme|acabar con todo|hacerme dano)\b/)){
     ctx.awaiting=null;
     return R('Siento mucho que estés pasando por algo así. No estás solo/a. Por favor, habla ahora con alguien que pueda ayudarte: en España puedes llamar gratis al **024** (atención a la conducta suicida, 24 horas) o al **112** si hay peligro inmediato.',[],['Ver todos los libros']);
+  }
+
+  if(has(t,/\b(me (hacen|estan haciendo) (bullying|acoso)|sufro (bullying|acoso)|me acosan|me pegan|me insultan|se meten conmigo|se rien de mi|me hacen la vida imposible|mi hij[oa] sufre (bullying|acoso)|a mi hij[oa] le (hacen|pegan|insultan))\b/)){
+    ctx.awaiting=null;ctx.focus='broma';
+    return R('Siento que estés pasando por esto. **No es culpa tuya y no tienes que aguantarlo en silencio.** Cuéntaselo hoy a un adulto de confianza: tu familia, tu tutor o tutora, o el equipo de orientación de tu centro.\nPuedes llamar gratis al **900 018 018** (teléfono contra el acoso escolar, a cualquier hora) o a la **Fundación ANAR**, **900 20 20 10**. Si hay peligro inmediato, llama al **112**.\nY si te sirve, **No era una broma** es un libro gratuito que habla justo de esto y de cómo pedir ayuda.',['broma'],['¿Dónde lo descargo?','Cuéntame más']);
   }
 
   const greet=has(t,/^(hola|holi|buenas|hey|ey|saludos|buenos dias|buenas tardes|buenas noches)\b/);
@@ -714,7 +751,7 @@ function reply(raw){
     return R('Soy **Librín**, el boquerón lector de la casa 🐟📚. Soy un asistente virtual, no una persona: me sé de memoria los libros de Gustavo y te ayudo a encontrar el que mejor encaja contigo.',[],CH.start);
   if(has(t,/\b(por que (un )?boqueron|porque boqueron|por que te llamas|por que librin)\b/))
     return R('Porque El Boquerón Books nace en Málaga, y aquí el boquerón es de la familia. Y lo de Librín… bueno, un boquerón que vive entre libros no podía llamarse de otra forma 😄',[],CH.start);
-  if(has(t,/\b(chiste|broma|algo gracioso)\b/))
+  if(has(t,/\b(chiste|broma|algo gracioso)\b/)&&!has(t,/\bera una broma\b/))
     return R(pick(['¿Sabes por qué los libros nunca pasan frío? Porque siempre llevan tapa 📚','Un libro le dice a otro: «¿Qué te pasa?». Y el otro: «Nada, que tengo muchos problemas… y todos resueltos al final» 😄','Yo no leo en la playa: con tanta agua se me mojan las páginas… y las aletas 🐟']),[],CH.start);
   if(has(t,/\b(que tal|como estas|como va)\b/)&&tokens(t).length<=4)
     return R(pick([`¡Muy bien${hi}, rodeado de libros, que es como mejor se está! ¿Te ayudo a elegir uno?`,'¡Nadando entre páginas, como siempre! ¿Buscas algo en concreto?']),[],CH.start);
@@ -730,6 +767,10 @@ function reply(raw){
   if(has(t,/\b(gustavo|autor|escritor|quien (los )?escribe|quien ha escrito)\b/)&&!book)
     return R('**Gustavo Molina Zafra** es empresario malagueño con más de 25 años en el sector del reciclaje de vehículos, donde dirige un Centro Autorizado de Tratamiento. Es técnico en vehículos híbridos y eléctricos y fundador de Limonada Web; empezó en lo digital en 2005, de forma autodidacta y por pura necesidad.\nPor eso escribe desde la experiencia real: empresa, aprendizaje, tecnología, salud y vida práctica, sin rodeos. Y también novela: «La ventana del revés» es su thriller psicológico.',[],['Ver todos los libros','Recomiéndame un libro']);
 
+  if(has(t,/\b(gratis|gratuito|gratuita|solidario|solidaria|descargar|descargo|descarga|sin pagar|regalado)\b/)||((book==='broma'||(!book&&ctx.focus==='broma'))&&has(t,/\b(comprar|compro|donde lo|donde se|precio|cuesta|pdf|epub|formato|leer)\b/))){
+    ctx.focus='broma';ctx.last=['broma'];
+    return R('**No era una broma** es un libro solidario: se descarga **gratis** en su página, en **PDF accesible** o en **ePub**, y puedes compartirlo con quien quieras. Lo único que no se puede es venderlo ni modificarlo. Pulsa «Descargar gratis» en la tarjeta.',['broma'],['¿Para quién es?','Cuéntame más','Ver todos los libros']);
+  }
   if(has(t,/\b(precio|cuesta|cuanto vale|cuanto sale|euros|barato|caro|oferta|descuento)\b/)){
     const ids=book?[book]:(ctx.focus?[ctx.focus]:BOOKS.map(b=>b.id));
     return R('Los precios pueden cambiar, así que prefiero no inventarme ninguno: en la ficha de Amazon ves el **precio actualizado** y los formatos disponibles.',ids,['Recomiéndame un libro','Ver todos los libros']);
@@ -740,7 +781,7 @@ function reply(raw){
   }
   if(has(t,/\b(comprar|compro|consigo|conseguir|encuentro|pedirlo|pedir|envio|donde lo|donde se|amazon|tienda|libreria)\b/)){
     const ids=book?[book]:(ctx.focus?[ctx.focus]:BOOKS.map(b=>b.id));
-    return R('Todos se venden en **Amazon**. Pulsa «Ver en Amazon» en el libro que quieras y te lleva directo a su ficha.',ids,['Otra opción','Ver todos los libros']);
+    return R('Los libros de Gustavo se venden en **Amazon**: pulsa «Ver en Amazon» en el que quieras y te lleva directo a su ficha. La excepción es **No era una broma**, que es solidario y se descarga gratis.',ids,['Otra opción','Ver todos los libros']);
   }
 
   if(has(t,/\b(que libros|cuales (son|tienes|hay)|todos los libros|catalogo|lista|ver libros|ver todos|cuantos libros|tus libros|sus libros)\b/))return listAll();
@@ -800,6 +841,12 @@ function richText(el,text){
 }
 function bookCard(id){
   const B=Librin.BY[id],a=document.createElement('div');a.className='bcard';
+  if(B.free){
+    const im=document.createElement('img');im.className='bc-cover';im.alt='';im.loading='lazy';im.src=B.cover;im.onload=()=>{body.scrollTop=body.scrollHeight};
+    const inf=document.createElement('div');const tt=document.createElement('b');tt.textContent=B.title;const ss=document.createElement('small');ss.textContent=B.sub;
+    const ln=document.createElement('a');ln.className='free-link';ln.href=B.url;ln.textContent='Descargar gratis →';ln.setAttribute('aria-label',`Descargar gratis ${B.title}`);
+    inf.append(tt,ss,ln);a.append(im,inf);return a;
+  }
   const img=document.createElement('img');img.className='bc-cover';img.alt='';img.loading='lazy';img.src=`https://m.media-amazon.com/images/I/${B.img}._SL200_.jpg`;img.onerror=()=>{img.onerror=null;img.src=`assets/book-${B.local}.webp`};img.onload=()=>{body.scrollTop=body.scrollHeight};
   const info=document.createElement('div');const t=document.createElement('b');t.textContent=B.title;const s=document.createElement('small');s.textContent=B.sub;
   const link=document.createElement('a');link.href=`https://www.amazon.es/dp/${B.asin}`;link.target='_blank';link.rel='noopener';link.setAttribute('aria-label',`Ver ${B.title} en Amazon`);link.innerHTML='Ver en '+AMZ_LOGO;
