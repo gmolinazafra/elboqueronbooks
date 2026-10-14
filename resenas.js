@@ -5,7 +5,7 @@
    RESENAS y cambia sus datos. La más reciente, arriba.
 
    libro:     titulitis · aprender · algoritmo · nomepasa · sana ·
-              chatgpt · cuando-deje · diriges · ahora-elijo · ventana
+              chatgpt · ventaja · cuando-deje · diriges · ahora-elijo · ventana
               (si el libro no está en la web, deja libro: "" y pon titulo: "…")
    origen:    Amazon · WhatsApp · Instagram · Facebook · Email · En persona (opcional)
    estrellas: de 1 a 5 (opcional; si el lector no puntuó, no se ponen)
@@ -16,7 +16,7 @@ const RESENAS = [
   {
     nombre: "Claudia",
     destacado: "Hay libros que se leen, otros que se olvidan y otros que te acompañan.",
-    libro: "",
+    libro: "ventaja",
     titulo: "La ventaja invisible",
     fecha: "2026-10",
     texto: "Me regalaron La ventaja invisible y tengo que decir que ha sido todo un descubrimiento.\n\nLo que más me ha gustado es que no es el típico libro de autoayuda que te vende humo, ni te promete que todo va a ser maravilloso. Es un libro real, sincero, de esos que te hacen pensar y en los que te ves reflejada.\n\nSe nota que está escrito desde el corazón, desde las experiencias y los sentimientos de alguien que sabe de lo que habla. No intenta darte lecciones, simplemente te llega.\n\nY lo mejor es que no es uno de esos libros que lees y dejas olvidados en una estantería. Yo vuelvo a él cada vez que tengo un mal día, releo algunas de sus páginas y siempre encuentro algo que necesitaba escuchar en ese momento.\n\nHay libros que se leen, otros que se olvidan y otros que te acompañan. Para mí, La ventaja invisible es de estos últimos. ❤️\n\nGracias por un libro tan auténtico y tan necesario."
