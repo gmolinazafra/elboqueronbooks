@@ -481,7 +481,7 @@ footer a.lw-powered{color:inherit;font-weight:700;text-decoration:underline;text
      <div class="sol-copy">
       <span class="sol-tag">Nuevo · Libro gratuito</span>
       <h2 id="solidarioTitle2">Las cosas que nunca dijimos</h2>
-      <p>Doce relatos entrelazados sobre lo que callamos por miedo, por orgullo o por cariño, y lo que todavía estamos a tiempo de decir. Descárgalo gratis en PDF.</p>
+      <p>Doce relatos entrelazados sobre lo que callamos por miedo, por orgullo o por cariño, y lo que todavía estamos a tiempo de decir. Descárgalo gratis en PDF o ePub.</p>
      </div>
      <a class="sol-cta" href="libros/las-cosas-que-nunca-dijimos/" tabindex="-1">Descargar gratis <span aria-hidden="true">→</span></a>
     </div>
@@ -700,7 +700,7 @@ const BOOKS=[
  {id:'cosas',title:'Las cosas que nunca dijimos',sub:'Porque hay palabras que merecen ser pronunciadas a tiempo',free:true,url:'libros/las-cosas-que-nunca-dijimos/',cover:'assets/book-las-cosas-que-nunca-dijimos.webp',
   alias:['las cosas que nunca dijimos','cosas que nunca dijimos','nunca dijimos'],
   kw:{relatos:5,relato:4,cuentos:5,cuento:4,'relatos cortos':5,familia:4,familiar:3,madre:4,padre:4,padres:4,hijos:3,hermanos:4,abuela:4,abuelo:3,duelo:5,perdida:4,memoria:4,alzheimer:4,demencia:4,olvido:3,perdon:4,reconciliacion:5,'segundas oportunidades':5,emocionante:4,emotivo:5,conmovedor:5,llorar:3,ternura:4,mayores:3,vejez:3,'amor tardio':5,despedida:4,despedidas:4,carta:3,literatura:3,'ficcion literaria':4,gratis:3,gratuito:3,descargar:3,descarga:3,'regalo para mi madre':4},
-  pitch:'Son **doce relatos entrelazados** que pasan por la misma cuesta de un barrio de Málaga y, sin que sus protagonistas lo sepan, terminan tocándose: un hijo que descubre los audios que su madre le dejó, una familia alrededor de una silla vacía, una carta sin sello que tarda cuarenta años en llegar, dos personas mayores que coinciden cada jueves en un banco bajo un olivo. Con humor, ternura y sin trampas. Es de **descarga gratuita** en PDF.',
+  pitch:'Son **doce relatos entrelazados** que pasan por la misma cuesta de un barrio de Málaga y, sin que sus protagonistas lo sepan, terminan tocándose: un hijo que descubre los audios que su madre le dejó, una familia alrededor de una silla vacía, una carta sin sello que tarda cuarenta años en llegar, dos personas mayores que coinciden cada jueves en un banco bajo un olivo. Con humor, ternura y sin trampas. Es de **descarga gratuita** en PDF y ePub.',
   para:'lectores adultos a los que les tocan las historias de familia, memoria, despedidas y segundas oportunidades',
   gift:'alguien importante con quien tienes una conversación pendiente; además es gratis, así que puedes compartirlo'},
  {id:'ventana',title:'La ventana del revés',sub:'Thriller psicológico',asin:'B0HJZY9QKC',img:'715W1OhnxyL',local:'ventana',
@@ -833,11 +833,11 @@ function reply(raw){
   {const fb=(book&&BY[book]&&BY[book].free)?book:((!book&&ctx.focus&&BY[ctx.focus]&&BY[ctx.focus].free)?ctx.focus:null);
   if(has(t,/\b(gratis|gratuito|gratuita|solidario|solidaria|descargar|descargo|descarga|sin pagar|regalado)\b/)||(fb&&has(t,/\b(comprar|compro|donde lo|donde se|precio|cuesta|pdf|epub|formato|leer)\b/))){
     if(fb==='cosas'){ctx.focus='cosas';ctx.last=['cosas'];
-      return R('**Las cosas que nunca dijimos** se descarga **gratis** en su página, en **PDF**, y puedes compartir el enlace con quien quieras. Pulsa «Descargar gratis» en la tarjeta.',['cosas'],['¿Para quién es?','Cuéntame más','Ver todos los libros']);}
+      return R('**Las cosas que nunca dijimos** se descarga **gratis** en su página, en **PDF** o en **ePub**, y puedes compartir el enlace con quien quieras. Pulsa «Descargar gratis» en la tarjeta.',['cosas'],['¿Para quién es?','Cuéntame más','Ver todos los libros']);}
     if(fb==='broma'){ctx.focus='broma';ctx.last=['broma'];
       return R('**No era una broma** es un libro solidario: se descarga **gratis** en su página, en **PDF accesible** o en **ePub**, y puedes compartirlo con quien quieras. Lo único que no se puede es venderlo ni modificarlo. Pulsa «Descargar gratis» en la tarjeta.',['broma'],['¿Para quién es?','Cuéntame más','Ver todos los libros']);}
     ctx.last=['broma','cosas'];
-    return R('Hay **dos libros de descarga gratuita**: **No era una broma**, una novela breve y una guía sobre el acoso escolar (PDF accesible y ePub), y **Las cosas que nunca dijimos**, doce relatos entrelazados sobre lo que callamos y lo que todavía estamos a tiempo de decir (PDF). Pulsa «Descargar gratis» en el que quieras.',['broma','cosas'],['Ver todos los libros','Recomiéndame un libro']);
+    return R('Hay **dos libros de descarga gratuita**: **No era una broma**, una novela breve y una guía sobre el acoso escolar (PDF accesible y ePub), y **Las cosas que nunca dijimos**, doce relatos entrelazados sobre lo que callamos y lo que todavía estamos a tiempo de decir (PDF y ePub). Pulsa «Descargar gratis» en el que quieras.',['broma','cosas'],['Ver todos los libros','Recomiéndame un libro']);
   }}
   if(has(t,/\b(precio|cuesta|cuanto vale|cuanto sale|euros|barato|caro|oferta|descuento)\b/)){
     const ids=book?[book]:(ctx.focus?[ctx.focus]:BOOKS.map(b=>b.id));

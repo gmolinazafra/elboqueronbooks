@@ -83,6 +83,8 @@ h1{font-family:"DM Serif Display",serif;font-weight:400;font-size:clamp(40px,5vw
 .btn.pdf:hover{background:#e8b900}
 .btn.epub{background:var(--green);color:#fff}
 .btn.epub:hover{background:var(--green2)}
+.btn.leer{background:#fff;color:var(--ink);border:1px solid rgba(19,63,52,.25)}
+.btn.leer:hover{background:var(--paper2)}
 .nota-desc{font-size:14px;color:var(--muted);margin:10px 0 0;max-width:640px;line-height:1.5}
 
 .datos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:34px 0 0;padding:0;list-style:none}
@@ -161,6 +163,10 @@ footer a{color:#fff;font-weight:600}
     <a class="btn epub" href="../../descargas/no-era-una-broma.epub" download="No-era-una-broma.epub" type="application/epub+zip">
      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
      <span>Descargar ePub<small>9,7 MB · para lectores electrónicos y móvil</small></span>
+    </a>
+    <a class="btn leer" href="../../descargas/no-era-una-broma.pdf" target="_blank" rel="noopener" type="application/pdf">
+     <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>
+     <span>Leer en el navegador<small>Sin descargar nada</small></span>
     </a>
    </div>
    <p class="nota-desc">Gratis y sin registro. El PDF es el formato de lectura con la maquetación del libro; el ePub se adapta al tamaño de cualquier pantalla.</p>
