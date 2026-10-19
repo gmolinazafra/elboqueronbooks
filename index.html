@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="El Boquerón Books · Libros de Gustavo Molina Zafra sobre empresa, aprendizaje, tecnología, salud, vida práctica y novela. Y un libro solidario de descarga gratuita sobre acoso escolar: No era una broma.">
+<meta name="description" content="El Boquerón Books · Libros de Gustavo Molina Zafra sobre empresa, aprendizaje, tecnología, salud, vida práctica y novela. Y dos libros de descarga gratuita: No era una broma, sobre acoso escolar, y Las cosas que nunca dijimos, doce relatos entrelazados.">
 <meta name="theme-color" content="#0d5c47">
 <link rel="canonical" href="https://elboqueronbooks.com/">
 <meta property="og:type" content="website">
@@ -113,10 +113,19 @@ button,input{font:inherit}
 .sol-copy p{margin:0;color:#4f615a;font-size:15px;line-height:1.45;max-width:520px}
 .sol-cta{display:inline-flex;align-items:center;gap:10px;background:var(--yellow);color:#1c2522;padding:14px 26px;border-radius:999px;font-weight:700;white-space:nowrap;box-shadow:0 10px 22px rgba(245,196,0,.28)}
 .sol-cta:hover{background:#e8b900}
+.solidario.sol-carousel{display:block;padding-bottom:26px}
+.sol-track{display:grid}
+.sol-slide{grid-area:1/1;display:grid;grid-template-columns:auto 1fr auto;gap:26px;align-items:center;opacity:0;visibility:hidden;transition:opacity .6s ease,visibility .6s}
+.sol-slide.is-active{opacity:1;visibility:visible}
+.sol-dots{position:absolute;left:0;right:0;bottom:9px;display:flex;justify-content:center;gap:8px}
+.sol-dot{width:8px;height:8px;padding:0;border:0;border-radius:999px;background:rgba(19,63,52,.22);cursor:pointer;transition:width .25s,background .25s}
+.sol-dot.is-active{width:22px;background:var(--yellow)}
+.sol-dot:focus-visible{outline:2px solid var(--green);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){.sol-slide{transition:none}}
 .buy.free{background:var(--yellow);color:#1c2522;font-weight:700;padding:9px 16px}
 .buy.free:hover{background:#e8b900}
 .bcard .free-link{display:inline-block;margin-top:6px;background:var(--yellow);color:#1c2522;font-weight:700;border-radius:8px;padding:6px 10px;font-size:13px}
-@media (max-width:720px){.solidario{grid-template-columns:auto 1fr;max-width:100%;padding:16px;gap:16px}.sol-cta{grid-column:1/-1;justify-content:center}.sol-cover{width:74px}.sol-copy h2{font-size:23px}.sol-copy p{font-size:14px}}
+@media (max-width:720px){.solidario{grid-template-columns:auto 1fr;max-width:100%;padding:16px;gap:16px}.solidario.sol-carousel{padding-bottom:30px}.sol-slide{grid-template-columns:auto 1fr;gap:16px}.sol-cta{grid-column:1/-1;justify-content:center}.sol-cover{width:74px}.sol-copy h2{font-size:23px}.sol-copy p{font-size:14px}}
 
 /* BookMark */
 .bookmark{position:relative;z-index:2;margin:30px 0 0;max-width:min(1170px,91%);padding:18px 44px 18px 40px;background:rgba(251,248,242,.9);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border-radius:18px;box-shadow:var(--shadow);display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:48px}
@@ -456,21 +465,63 @@ footer a.lw-powered{color:inherit;font-weight:700;text-decoration:underline;text
    </div>
   </section>
 
-  <section class="solidario" id="solidario" aria-labelledby="solidarioTitle">
-   <img class="sol-cover" src="assets/book-no-era-una-broma.webp" alt="Portada de No era una broma" width="600" height="851" loading="lazy" decoding="async">
-   <div class="sol-copy">
-    <span class="sol-tag">Nuevo · Libro solidario gratuito</span>
-    <h2 id="solidarioTitle">No era una broma</h2>
-    <p>Una novela breve y una guía práctica sobre el acoso escolar para adolescentes, familias y docentes. Descárgalo gratis en PDF o ePub y compártelo.</p>
+  <section class="solidario sol-carousel" id="solidario" aria-roledescription="carrusel" aria-label="Libros de descarga gratuita">
+   <div class="sol-track">
+    <div class="sol-slide is-active" role="group" aria-roledescription="diapositiva" aria-label="1 de 2">
+     <img class="sol-cover" src="assets/book-no-era-una-broma.webp" alt="Portada de No era una broma" width="600" height="851" loading="lazy" decoding="async">
+     <div class="sol-copy">
+      <span class="sol-tag">Nuevo · Libro solidario gratuito</span>
+      <h2 id="solidarioTitle">No era una broma</h2>
+      <p>Una novela breve y una guía práctica sobre el acoso escolar para adolescentes, familias y docentes. Descárgalo gratis en PDF o ePub y compártelo.</p>
+     </div>
+     <a class="sol-cta" href="libros/no-era-una-broma/">Descargar gratis <span aria-hidden="true">→</span></a>
+    </div>
+    <div class="sol-slide" role="group" aria-roledescription="diapositiva" aria-label="2 de 2" aria-hidden="true">
+     <img class="sol-cover" src="assets/book-las-cosas-que-nunca-dijimos.webp" alt="Portada de Las cosas que nunca dijimos" width="600" height="849" loading="lazy" decoding="async">
+     <div class="sol-copy">
+      <span class="sol-tag">Nuevo · Libro gratuito</span>
+      <h2 id="solidarioTitle2">Las cosas que nunca dijimos</h2>
+      <p>Doce relatos entrelazados sobre lo que callamos por miedo, por orgullo o por cariño, y lo que todavía estamos a tiempo de decir. Descárgalo gratis en PDF.</p>
+     </div>
+     <a class="sol-cta" href="libros/las-cosas-que-nunca-dijimos/" tabindex="-1">Descargar gratis <span aria-hidden="true">→</span></a>
+    </div>
    </div>
-   <a class="sol-cta" href="libros/no-era-una-broma/">Descargar gratis <span aria-hidden="true">→</span></a>
+   <div class="sol-dots" role="tablist" aria-label="Elegir libro">
+    <button type="button" class="sol-dot is-active" role="tab" aria-selected="true" aria-label="No era una broma"></button>
+    <button type="button" class="sol-dot" role="tab" aria-selected="false" aria-label="Las cosas que nunca dijimos"></button>
+   </div>
   </section>
 
+  <script>
+  (function(){
+   var root=document.getElementById('solidario');if(!root)return;
+   var slides=root.querySelectorAll('.sol-slide'),dots=root.querySelectorAll('.sol-dot'),i=0,timer=null,n=slides.length;
+   var calm=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+   function show(k){
+    i=(k+n)%n;
+    slides.forEach(function(sl,j){var on=j===i;sl.classList.toggle('is-active',on);sl.setAttribute('aria-hidden',on?'false':'true');sl.querySelectorAll('a').forEach(function(a){a.tabIndex=on?0:-1})});
+    dots.forEach(function(d,j){var on=j===i;d.classList.toggle('is-active',on);d.setAttribute('aria-selected',on?'true':'false')});
+   }
+   function play(){if(calm||n<2)return;stop();timer=setInterval(function(){show(i+1)},6500)}
+   function stop(){if(timer){clearInterval(timer);timer=null}}
+   dots.forEach(function(d,j){d.addEventListener('click',function(){show(j);play()})});
+   root.addEventListener('mouseenter',stop);root.addEventListener('mouseleave',play);
+   root.addEventListener('focusin',stop);root.addEventListener('focusout',play);
+   document.addEventListener('visibilitychange',function(){document.hidden?stop():play()});
+   var x0=null;
+   root.addEventListener('touchstart',function(e){x0=e.touches[0].clientX;stop()},{passive:true});
+   root.addEventListener('touchend',function(e){if(x0===null)return;var dx=e.changedTouches[0].clientX-x0;if(Math.abs(dx)>40)show(i+(dx<0?1:-1));x0=null;play()},{passive:true});
+   show(0);play();
+  })();
+  </script>
+
   <section class="books-area" id="libros" aria-labelledby="librosTitle">
-   <div class="section-head"><h2 id="librosTitle">Mis libros</h2><p>Once libros en Amazon y uno solidario de descarga gratuita. Con criterio y sin rodeos.</p></div>
+   <div class="section-head"><h2 id="librosTitle">Mis libros</h2><p>Once libros en Amazon y dos de descarga gratuita. Con criterio y sin rodeos.</p></div>
    <div class="books">
     <article class="book"><div class="cover" tabindex="0" aria-describedby="syn-broma" aria-label="Sinopsis de No era una broma"><img src="assets/book-no-era-una-broma.webp" alt="Portada de No era una broma: Lo que el silencio esconde sobre el acoso escolar" width="600" height="851" loading="lazy" decoding="async"><div class="synopsis" id="syn-broma" role="tooltip"><p class="syn-hook">A veces el acoso no empieza con un golpe, sino con una risa, un silencio o un grupo del que alguien queda fuera.</p><p>No era una broma es una historia cercana y valiente sobre el bullying, la soledad, el miedo a hablar y la importancia de actuar a tiempo.</p><p>A través de la historia de Álex y de quienes le rodean, ayuda a comprender cómo nace el acoso, cómo afecta a quien lo sufre y qué pueden hacer los compañeros, las familias y los centros educativos para frenarlo. Libro solidario de descarga gratuita.</p></div></div><h3>No era una broma</h3><button type="button" class="syn-btn" aria-expanded="false">📖 Sinopsis</button>
     <a class="buy free" href="libros/no-era-una-broma/" aria-label="Descargar gratis No era una broma">Descargar gratis <span aria-hidden="true">→</span></a></article>
+    <article class="book"><div class="cover" tabindex="0" aria-describedby="syn-cosas" aria-label="Sinopsis de Las cosas que nunca dijimos"><img src="assets/book-las-cosas-que-nunca-dijimos.webp" alt="Portada de Las cosas que nunca dijimos: un banco de madera bajo un olivo frente a la bahía al atardecer" width="600" height="849" loading="lazy" decoding="async"><div class="synopsis" id="syn-cosas" role="tooltip"><p class="syn-hook">Hay palabras que merecen ser pronunciadas a tiempo.</p><p>Doce relatos entrelazados que pasan por la misma cuesta de un barrio de Málaga: un hijo que descubre los audios que su madre le dejó, una familia alrededor de una silla vacía, una carta sin sello que tarda cuarenta años en llegar, dos personas mayores que coinciden cada jueves en un banco bajo un olivo.</p><p>Historias de padres e hijos, de hermanos, de abuelas, de amores tardíos y de perdones que llegan o no llegan. Libro de descarga gratuita.</p></div></div><h3>Las cosas que nunca dijimos</h3><button type="button" class="syn-btn" aria-expanded="false">📖 Sinopsis</button>
+    <a class="buy free" href="libros/las-cosas-que-nunca-dijimos/" aria-label="Descargar gratis Las cosas que nunca dijimos">Descargar gratis <span aria-hidden="true">→</span></a></article>
     <article class="book"><div class="cover" tabindex="0" aria-describedby="syn-titulitis" aria-label="Sinopsis de TITULITIS"><img src="https://m.media-amazon.com/images/I/71uw7EAj21L._SL600_.jpg" onerror="this.onerror=null;this.src='assets/book-titulitis.webp'" alt="Portada de TITULITIS" width="600" height="833" loading="lazy" decoding="async"><div class="synopsis" id="syn-titulitis" role="tooltip"><p class="syn-hook">La formación importa. Pero un título no siempre cuenta toda la historia.</p><p>TITULITIS analiza cómo muchas empresas confunden credenciales con capacidad, dejando en segundo plano la experiencia, el talento, la Formación Profesional y el aprendizaje autodidacta.</p><p>No es un libro contra estudiar. Es una invitación a mirar más allá del currículum y preguntarnos qué sabemos hacer realmente. Porque acumular títulos puede abrir puertas, pero demostrar capacidad es lo que permite avanzar.</p></div></div><h3>TITULITIS</h3><button type="button" class="syn-btn" aria-expanded="false">📖 Sinopsis</button>
     <a class="buy" href="https://www.amazon.es/dp/B0HJXDSBFT" target="_blank" rel="noopener" aria-label="Ver TITULITIS en Amazon"><span class="buy-txt">Ver en </span><img class="amz-logo" src="assets/amazon-logo.webp" alt="Amazon" width="237" height="72"><span aria-hidden="true">→</span></a></article>
     <article class="book"><div class="cover" tabindex="0" aria-describedby="syn-aprender" aria-label="Sinopsis de Aprender haciendo"><img src="https://m.media-amazon.com/images/I/71CIjCt-tpL._SL600_.jpg" alt="Portada de Aprender haciendo" width="600" height="900" loading="lazy" decoding="async"><div class="synopsis" id="syn-aprender" role="tooltip"><p class="syn-hook">¿Cuánto tiempo llevas preparándote para algo que solo aprenderás cuando empieces?</p><p>Cursos. Vídeos. Tutoriales. Apuntes. Planes. Hay personas que pasan meses, incluso años, aprendiendo antes de atreverse a hacer. Hasta que descubren algo incómodo: la parte que faltaba solo podía aprenderse haciendo.</p><p>Aprender haciendo explica cómo se convierte un problema real en una habilidad, un error en información útil y un proyecto pequeño en capacidad. Sin promesas vacías y sin despreciar la formación, porque la teoría te da el mapa, pero el terreno solo se aprende caminando.</p></div></div><h3>Aprender haciendo</h3><button type="button" class="syn-btn" aria-expanded="false">📖 Sinopsis</button>
@@ -648,6 +699,12 @@ const BOOKS=[
   pitch:'Es una **novela breve y una guía práctica** sobre el acoso escolar. A través de la historia de Álex y de quienes le rodean, ayuda a entender cómo empieza el acoso, cómo afecta a quien lo sufre y qué pueden hacer compañeros, familias y centros para frenarlo. Es un **libro solidario de descarga gratuita**, en PDF accesible y ePub.',
   para:'adolescentes desde los 12 años, familias y docentes',
   gift:'un adolescente, una familia o un docente; además es gratis, así que puedes compartirlo con quien quieras'},
+ {id:'cosas',title:'Las cosas que nunca dijimos',sub:'Porque hay palabras que merecen ser pronunciadas a tiempo',free:true,url:'libros/las-cosas-que-nunca-dijimos/',cover:'assets/book-las-cosas-que-nunca-dijimos.webp',
+  alias:['las cosas que nunca dijimos','cosas que nunca dijimos','nunca dijimos'],
+  kw:{relatos:5,relato:4,cuentos:5,cuento:4,'relatos cortos':5,familia:4,familiar:3,madre:4,padre:4,padres:4,hijos:3,hermanos:4,abuela:4,abuelo:3,duelo:5,perdida:4,memoria:4,alzheimer:4,demencia:4,olvido:3,perdon:4,reconciliacion:5,'segundas oportunidades':5,emocionante:4,emotivo:5,conmovedor:5,llorar:3,ternura:4,mayores:3,vejez:3,'amor tardio':5,despedida:4,despedidas:4,carta:3,literatura:3,'ficcion literaria':4,gratis:3,gratuito:3,descargar:3,descarga:3,'regalo para mi madre':4},
+  pitch:'Son **doce relatos entrelazados** que pasan por la misma cuesta de un barrio de Málaga y, sin que sus protagonistas lo sepan, terminan tocándose: un hijo que descubre los audios que su madre le dejó, una familia alrededor de una silla vacía, una carta sin sello que tarda cuarenta años en llegar, dos personas mayores que coinciden cada jueves en un banco bajo un olivo. Con humor, ternura y sin trampas. Es de **descarga gratuita** en PDF.',
+  para:'lectores adultos a los que les tocan las historias de familia, memoria, despedidas y segundas oportunidades',
+  gift:'alguien importante con quien tienes una conversación pendiente; además es gratis, así que puedes compartirlo'},
  {id:'ventana',title:'La ventana del revés',sub:'Thriller psicológico',asin:'B0HJZY9QKC',img:'715W1OhnxyL',local:'ventana',
   alias:['la ventana del reves','ventana del reves'],
   kw:{novela:5,thriller:5,suspense:5,misterio:5,intriga:5,'novela negra':5,policiaca:4,crimen:4,asesinato:4,psicologico:4,ficcion:4,entretenimiento:3,desconectar:3,'para desconectar':4,engancha:4,enganche:4,'que enganche':5,malaga:3,vacaciones:3,playa:2,verano:2,relato:2,personaje:2,historia:2},
@@ -714,7 +771,7 @@ function another(){
   if(!rest.length){ctx.shown=ctx.focus?[ctx.focus]:[];return R('Ya te los he enseñado todos 😄 Aquí los tienes juntos para que compares:',BOOKS.map(b=>b.id),CH.topics)}
   const id=rest[0];return recommend([id],pick(['Vale, otra opción distinta:','Te propongo otro:','Mira este otro:']),true);
 }
-function listAll(){ctx.last=BOOKS.map(b=>b.id);return R('Estos son los libros de Gustavo: once a la venta en Amazon, del ensayo práctico a la novela, y **No era una broma**, un libro solidario de descarga gratuita. Dime qué te interesa y te digo cuál encaja mejor contigo:',ctx.last,CH.topics)}
+function listAll(){ctx.last=BOOKS.map(b=>b.id);return R('Estos son los libros de Gustavo: once a la venta en Amazon, del ensayo práctico a la novela, y dos de descarga gratuita: **No era una broma**, sobre acoso escolar, y **Las cosas que nunca dijimos**, doce relatos entrelazados. Dime qué te interesa y te digo cuál encaja mejor contigo:',ctx.last,CH.topics)}
 
 function reply(raw){
   const t=norm(raw);
@@ -775,10 +832,15 @@ function reply(raw){
   if(has(t,/\b(gustavo|autor|escritor|quien (los )?escribe|quien ha escrito)\b/)&&!book)
     return R('**Gustavo Molina Zafra** es técnico de vehículos híbridos y eléctricos, malagueño, con más de 25 años en el sector del reciclaje de vehículos, y fundador de Limonada Web; empezó en lo digital en 2005, de forma autodidacta y por pura necesidad.\nPor eso escribe desde la experiencia real: empresa, aprendizaje, tecnología, salud y vida práctica, sin rodeos. Y también novela: «La ventana del revés» es su thriller psicológico.',[],['Ver todos los libros','Recomiéndame un libro']);
 
-  if(has(t,/\b(gratis|gratuito|gratuita|solidario|solidaria|descargar|descargo|descarga|sin pagar|regalado)\b/)||((book==='broma'||(!book&&ctx.focus==='broma'))&&has(t,/\b(comprar|compro|donde lo|donde se|precio|cuesta|pdf|epub|formato|leer)\b/))){
-    ctx.focus='broma';ctx.last=['broma'];
-    return R('**No era una broma** es un libro solidario: se descarga **gratis** en su página, en **PDF accesible** o en **ePub**, y puedes compartirlo con quien quieras. Lo único que no se puede es venderlo ni modificarlo. Pulsa «Descargar gratis» en la tarjeta.',['broma'],['¿Para quién es?','Cuéntame más','Ver todos los libros']);
-  }
+  {const fb=(book&&BY[book]&&BY[book].free)?book:((!book&&ctx.focus&&BY[ctx.focus]&&BY[ctx.focus].free)?ctx.focus:null);
+  if(has(t,/\b(gratis|gratuito|gratuita|solidario|solidaria|descargar|descargo|descarga|sin pagar|regalado)\b/)||(fb&&has(t,/\b(comprar|compro|donde lo|donde se|precio|cuesta|pdf|epub|formato|leer)\b/))){
+    if(fb==='cosas'){ctx.focus='cosas';ctx.last=['cosas'];
+      return R('**Las cosas que nunca dijimos** se descarga **gratis** en su página, en **PDF**, y puedes compartir el enlace con quien quieras. Pulsa «Descargar gratis» en la tarjeta.',['cosas'],['¿Para quién es?','Cuéntame más','Ver todos los libros']);}
+    if(fb==='broma'){ctx.focus='broma';ctx.last=['broma'];
+      return R('**No era una broma** es un libro solidario: se descarga **gratis** en su página, en **PDF accesible** o en **ePub**, y puedes compartirlo con quien quieras. Lo único que no se puede es venderlo ni modificarlo. Pulsa «Descargar gratis» en la tarjeta.',['broma'],['¿Para quién es?','Cuéntame más','Ver todos los libros']);}
+    ctx.last=['broma','cosas'];
+    return R('Hay **dos libros de descarga gratuita**: **No era una broma**, una novela breve y una guía sobre el acoso escolar (PDF accesible y ePub), y **Las cosas que nunca dijimos**, doce relatos entrelazados sobre lo que callamos y lo que todavía estamos a tiempo de decir (PDF). Pulsa «Descargar gratis» en el que quieras.',['broma','cosas'],['Ver todos los libros','Recomiéndame un libro']);
+  }}
   if(has(t,/\b(precio|cuesta|cuanto vale|cuanto sale|euros|barato|caro|oferta|descuento)\b/)){
     const ids=book?[book]:(ctx.focus?[ctx.focus]:BOOKS.map(b=>b.id));
     return R('Los precios pueden cambiar, así que prefiero no inventarme ninguno: en la ficha de Amazon ves el **precio actualizado** y los formatos disponibles.',ids,['Recomiéndame un libro','Ver todos los libros']);
@@ -789,7 +851,7 @@ function reply(raw){
   }
   if(has(t,/\b(comprar|compro|consigo|conseguir|encuentro|pedirlo|pedir|envio|donde lo|donde se|amazon|tienda|libreria)\b/)){
     const ids=book?[book]:(ctx.focus?[ctx.focus]:BOOKS.map(b=>b.id));
-    return R('Los libros de Gustavo se venden en **Amazon**: pulsa «Ver en Amazon» en el que quieras y te lleva directo a su ficha. La excepción es **No era una broma**, que es solidario y se descarga gratis.',ids,['Otra opción','Ver todos los libros']);
+    return R('Los libros de Gustavo se venden en **Amazon**: pulsa «Ver en Amazon» en el que quieras y te lleva directo a su ficha. Las excepciones son **No era una broma** y **Las cosas que nunca dijimos**, que se descargan gratis.',ids,['Otra opción','Ver todos los libros']);
   }
 
   if(has(t,/\b(que libros|cuales (son|tienes|hay)|todos los libros|catalogo|lista|ver libros|ver todos|cuantos libros|tus libros|sus libros)\b/))return listAll();
